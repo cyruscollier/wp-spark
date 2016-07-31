@@ -46,15 +46,20 @@ class CalendarEvent extends Post {
 	public getPostType() {
 		return 'calendar_event'; //could also be a constant defined in the class or elsewhere
 	}
+	
+	/* sets some value object you invent for this field */
+	protected function setEventDuration($duration) {
+		$this->event_duration = new EventDuration($duration);
+	}
 
-	/* returns some value object you invent for this field
 	public function getEventDuration() {
-		return new EventDuration($this->event_duration);
+		return $this->event_duration;
 	}
 	
-	/* a more expressive method to change event time
-	public function setEventTime( DateTime $start, DateTime $end ) {
-	
+	/* a more expressive method to change event time */
+	public function setEventTime( DateTime $start, $duration ) {
+		$this->post_date = $this->setPostDate($start);
+		$this->event_duration = $this->setEventDuration($duration);
 	}
 }
 
