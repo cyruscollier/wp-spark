@@ -1,0 +1,44 @@
+{
+    "name": "cyruscollier/wp-spark",
+    "description": "An expressive and elegant object-oriented API for WordPress",
+    "keywords": ["wordpress", "model", "object-oriented"],
+    "homepage": "http://github.com/cyruscollier/wp-spark",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Cyrus Collier",
+            "email": "web@cyruscollier.com",
+            "homepage": "http://www.collierwebdesign.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.1",
+        "wordpress-dev": "4.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spark\\": "src/"
+        }
+    },
+    "repositories": [
+		{
+		    "type": "package",
+		    "package": {
+				"name": "wordpress-dev",
+				"version": "4.5",
+				"source" : {
+					"url"  : "git://develop.git.wordpress.org/",
+					"type" : "git",
+					"reference": "master"
+				}
+		    }
+		}
+    ],
+    "config": {
+        "secure-http": false
+    }
+    
+}
