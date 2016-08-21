@@ -43,12 +43,12 @@ echo $Post->published_date->format('l, F jS, Y h:i:sa'); // returns a standard P
 class CalendarEvent extends PostType {
 	
 	const POST_TYPE = 'calendar_event';
-
-	/* returns some value object you invent for a custom metadata field
-	public function getEventDuration() {
-		return new EventDuration($this->_metadata['event_duration']);
-	}
 	
+	/* sets some value object you invent for this field */
+	protected function setEventDuration($duration) {
+		$this->event_duration = new EventDuration($duration);
+	}
+
 	/* a more expressive method to change event time
 	public function setEventTime( DateTime $start, DateTime $end ) {
 		$this->publish_data = new PostDate( $start );
