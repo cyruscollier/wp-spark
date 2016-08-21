@@ -28,33 +28,31 @@ This framework is for you! *Spark* is an expressive and elegant object-oriented 
 Spark provides straight-forward entities and value objects to represent internal WordPress concepts and behavior: 
 
 ```php
-use Spark\Model\Post;
+use Spark\Model\PostType;
+use Spark\Model\PostType\Post;
 
 $post_id = 123;
 
-$Post = new Post($id); //instantiate a post with ID 123 us
+$Post = new Post($id); //instantiate a post with ID 123
 
-echo $Post->getPostTitle()->unfiltered(); // returns a PostTitle value object and outputs without using apply_filters('post_title')
+echo $Post->title; // returns a PostTitle value object that automaticaly uses apply_filters('post_title')
 
-echo $Post->getPostDate()->format('l, F jS, Y h:i:sa'); // returns a standard PHP DateTime instance and formats the output
+echo $Post->published_date->format('l, F jS, Y h:i:sa'); // returns a standard PHP DateTime instance and formats the output
 
 /* Custom Post Type */
-class CalendarEvent extends Post {
-
-	protected $event_duration; //post meta field automagically added to all instances
+class CalendarEvent extends PostType {
 	
-	public getPostType() {
-		return 'calendar_event'; //could also be a constant defined in the class or elsewhere
-	}
+	const POST_TYPE = 'calendar_event';
 
-	/* returns some value object you invent for this field
+	/* returns some value object you invent for a custom metadata field
 	public function getEventDuration() {
-		return new EventDuration($this->event_duration);
+		return new EventDuration($this->_metadata['event_duration']);
 	}
 	
 	/* a more expressive method to change event time
 	public function setEventTime( DateTime $start, DateTime $end ) {
-	
+		$this->publish_data = new PostDate( $start );
+        $this->event_duration = $this->setEventDuration( $end );
 	}
 }
 
