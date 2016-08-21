@@ -166,6 +166,16 @@ abstract class PostType extends Model
         $this->modified_date = $modified_date;
     }
     
+    /**
+     * Return property name used for model's unique identifier
+     *
+     * @return string
+     */
+    protected function getKeyName() {
+        return 'id';
+    }
+    
+    
     public function __get( $name )
     {
         if ( $value = parent::__get( $name ) );

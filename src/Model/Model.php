@@ -11,6 +11,23 @@ namespace Spark\Model;
 abstract class Model
 {
     /**
+     * Return unique identifier for model, used in Collections
+     * 
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->{$this->getKeyName()};
+    }
+    
+    /**
+     * Return property name used for model's unique identifier
+     * 
+     * @return string
+     */
+    abstract protected function getKeyName();
+    
+    /**
      * Check isset() on non-hidden property
      * 
      * @param string $name
@@ -49,7 +66,10 @@ abstract class Model
         if ( $setter = $this->getMethodFromProperty( $name, 'set' ) ) {
             call_user_func( [$this, $setter], $value );
         }
-        if ( property_exists( $this, $name ) && !$this->isHiddenProperty( $name ) ) {
+        if ( 
+            property_exists( $this, $name ) && 
+            !( $this->isHiddenProperty( $name ) || $name == $this->getKeyName() ) 
+        ) {
             $this->$name = $value;
         }
         return false;
