@@ -22,31 +22,31 @@ class TaxonomyQuery extends SubQuery
      * @param string $field
      * @return $this
      */
-	function add( $taxonomy, $terms, $operator = 'IN', $field = 'slug' )
-	{
-		return $this->addClause( compact( 'taxonomy', 'terms', 'operator', 'field' ) );
-	}
-	
-	/**
-	 * Name of query key to user for this subquery
-	 *
-	 * @return string
-	 */
-	function getQueryKey()
-	{
-	    return 'tax_query';
-	}
-	
-	/**
-	 * Gets value inside of clause
-	 *
-	 * @param array $clause
-	 * @return mixed
-	 */
-	protected function getClauseValue( array $clause )
-	{
-		return $clause['terms'];
-	}
-	
-	
+    function add( $taxonomy, $terms, $operator = 'IN', $field = 'slug' )
+    {
+        return $this->addClause( compact( 'taxonomy', 'terms', 'operator', 'field' ) );
+    }
+    
+    /**
+     * Name of query key to user for this subquery
+     *
+     * @return string
+     */
+    function getQueryKey()
+    {
+        return 'tax_query';
+    }
+    
+    /**
+     * Gets value inside of clause
+     *
+     * @param array $clause
+     * @return mixed
+     */
+    protected function getClauseValue( array $clause )
+    {
+        return $clause['terms'];
+    }
+    
+    
 }

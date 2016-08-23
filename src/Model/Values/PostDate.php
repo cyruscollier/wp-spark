@@ -134,14 +134,14 @@ class PostDate implements DateTimeInterface
     public function __toString()
     {
         return (string) $this->defaultFormat();
-	}
-	
-	public function __call( $name, $arguments = [] )
-	{
-	    if ( method_exists( $this->post_date, $name ) )
-	        return call_user_func_array( [$this->post_date, $name], $arguments );
-	    throw new \BadMethodCallException( $name );
-	}
-	
+    }
+    
+    public function __call( $name, $arguments = [] )
+    {
+        if ( method_exists( $this->post_date, $name ) )
+            return call_user_func_array( [$this->post_date, $name], $arguments );
+        throw new \BadMethodCallException( $name );
+    }
+    
     
 }
