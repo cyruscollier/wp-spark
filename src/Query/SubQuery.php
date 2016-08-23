@@ -9,7 +9,8 @@ namespace Spark\Query;
  * @author cyruscollier
  *
  */
-abstract class SubQuery {
+abstract class SubQuery
+{
 
     /**
      * Holds stack of query clauses
@@ -22,7 +23,8 @@ abstract class SubQuery {
 	 * 
 	 * @return array
 	 */
-	function build() {
+	public function build()
+	{
 		$filtered_query = array_filter( $this->query, [$this, 'hasClauseValue'] );
 		if ( count( $filtered_query ) > 1 ) $filtered_query['relation'] = 'AND';
 		return $filtered_query;
@@ -34,7 +36,8 @@ abstract class SubQuery {
 	 * @param array $clause
 	 * @return $this
 	 */
-	protected function addClause( array $clause ) {
+	protected function addClause( array $clause )
+	{
 		$this->query[] = $clause;
 		return $this;
 	}
@@ -45,7 +48,8 @@ abstract class SubQuery {
 	 * @param array $clause
 	 * @return bool
 	 */
-	protected function hasClauseValue( array $clause ) {
+	protected function hasClauseValue( array $clause )
+	{
 		$value = $this->getClauseValue( $clause );
 		if ( is_array( $value ) ) $value = array_filter( $value );
 		return !empty( $value );

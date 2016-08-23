@@ -10,7 +10,8 @@ use Spark\Query\SubQuery;
  * @author cyruscollier
  *
  */
-class TaxonomyQuery extends SubQuery {
+class TaxonomyQuery extends SubQuery
+{
 
     /**
      * Adds clause
@@ -21,7 +22,8 @@ class TaxonomyQuery extends SubQuery {
      * @param string $field
      * @return $this
      */
-	function add( $taxonomy, $terms, $operator = 'IN', $field = 'slug' ) {
+	function add( $taxonomy, $terms, $operator = 'IN', $field = 'slug' )
+	{
 		return $this->addClause( compact( 'taxonomy', 'terms', 'operator', 'field' ) );
 	}
 	
@@ -41,7 +43,8 @@ class TaxonomyQuery extends SubQuery {
 	 * @param array $clause
 	 * @return mixed
 	 */
-	protected function getClauseValue( array $clause ) {
+	protected function getClauseValue( array $clause )
+	{
 		return $clause['terms'];
 	}
 	

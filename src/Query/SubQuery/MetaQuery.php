@@ -10,7 +10,8 @@ use Spark\Query\SubQuery;
  * @author cyruscollier
  *
  */
-class MetaQuery extends SubQuery {
+class MetaQuery extends SubQuery
+{
 
     /**
      * Adds clause
@@ -21,7 +22,8 @@ class MetaQuery extends SubQuery {
      * @param string $type
      * @return $this
      */
-	function add( $key, $value, $compare = '=', $type = 'CHAR' ) {
+	function add( $key, $value, $compare = '=', $type = 'CHAR' )
+	{
 		return $this->addClause( compact( 'key', 'value', 'compare', 'type' ) );
 	}
 	
@@ -33,7 +35,8 @@ class MetaQuery extends SubQuery {
 	 * @param int $upper_value
 	 * @return $this
 	 */
-	function addRange( $key, $lower_value, $upper_value ) {
+	function addRange( $key, $lower_value, $upper_value )
+	{
 		return $this->add( $key, [$lower_value, $upper_value], 'BETWEEN', 'NUMERIC' );
 	}
 	
@@ -53,9 +56,8 @@ class MetaQuery extends SubQuery {
 	 * @param array $clause
 	 * @return mixed
 	 */	
-	 protected function getClauseValue( array $clause ) {
+	 protected function getClauseValue( array $clause )
+	 {
 		return $clause['value'];
-	}
-	
-	
+     }
 }

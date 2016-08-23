@@ -2,17 +2,39 @@
 
 namespace Spark\Model;
 
+/**
+ * Iterator for set of Model instances
+ * 
+ * @author cyruscollier
+ *
+ */
 class Collection implements \ArrayAccess, \IteratorAggregate
 {
+    /**
+     * Array of Model instances
+     * 
+     * @var Model[]
+     */
     protected $items = [];
     
-    public function __construct( array $items )
+    /**
+     * Constructor takes array of Model instances
+     * 
+     * @param array $items
+     */
+    public function __construct( array $items = [] )
     {
         foreach ( $items as $item ) {
             $this->add( $item );
         }
     }
     
+    /**
+     * Append a Model instance to the collection
+     * 
+     * @param Model $Object
+     * @return $this
+     */
     public function add( Model $Object )
     {
         $this->items[] = $Object;
@@ -20,7 +42,10 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     }
     
     /**
-     * @param offset
+     * ArrayAccess isset($array[$i])
+     * 
+     * @param int $offest
+     * @return boolean
      */
     public function offsetExists( $offset )
     {
@@ -28,7 +53,10 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     }
     
     /**
-     * @param offset
+     * ArrayAccess $array[$i]
+     * 
+     * @param int $offset
+     * @return Model
      */
     public function offsetGet( $offset ) 
     {
@@ -36,8 +64,10 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     }
     
     /**
-     * @param offset
-     * @param value
+     * ArrayAccess $array[$i] = ..., $array[] = ...
+     * 
+     * @param int|null $offset
+     * @param mixed $value
      */
     public function offsetSet ( $offset, $value )
     {
@@ -51,16 +81,23 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     }
     
     /**
-     * @param offset
+     * ArrayAccess unset($array[$i])
+     * 
+     * @param int $offset
      */
     public function offsetUnset( $offset ) {
         unset( $this->items[$offset] );
     }  
     
-    
+    /**
+     * Iterator for collection
+     * 
+     * {@inheritDoc}
+     * @see IteratorAggregate::getIterator()
+     */
     public function getIterator()
     {
-        return new ArrayIterator($this->items);
+        return new ArrayIterator( $this->items );
     }
     
 }
