@@ -107,16 +107,12 @@ abstract class PostType extends Model
     
     protected $_metadata = [];
     
-    public function __construct( $id )
-    {
-        $this->id = (int) $id;
-    }
-    
     static function createFromPost( WP_Post $post )
     {
         if ( $post->post_type != static::POST_TYPE )
             throw new \InvalidArgumentException( 'Post type mismatch.' );
-        $Post = new static( $post->ID );
+        $Post = new static;
+        $Post->id = (int) $post->ID;
         $Post->parent_id = (int) $post->post_parent;
         $Post->author_id = (int) $post->author;
         $Post->title = new Values\PostTitle( $post_title );
@@ -164,17 +160,7 @@ abstract class PostType extends Model
     protected function setModifiedDate( Values\PostModifiedDate $modified_date )
     {
         $this->modified_date = $modified_date;
-    }
-    
-    /**
-     * Return property name used for model's unique identifier
-     *
-     * @return string
-     */
-    protected function getKeyName() {
-        return 'id';
-    }
-    
+    }    
     
     public function __get( $name )
     {

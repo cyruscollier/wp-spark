@@ -10,14 +10,16 @@ namespace Spark\Model;
  */
 abstract class Model
 {
+    protected $unique_key = 'id';
+    
     /**
      * Return unique identifier for model, used in Collections
      * 
      * @return string
      */
-    public function getKey()
+    public function getId()
     {
-        return $this->{$this->getKeyName()};
+        return $this->{$this->getIdProperty()};
     }
     
     /**
@@ -25,7 +27,10 @@ abstract class Model
      * 
      * @return string
      */
-    abstract protected function getKeyName();
+    protected function getIdProperty()
+    {
+        return $this->unique_key;
+    }
     
     /**
      * Check isset() on non-hidden property
