@@ -6,8 +6,10 @@ use Spark\Model\Model;
 use Spark\Model\PostType;
 use Spark\Model\Collection;
 use Spark\Query\SubQuery;
+use Spark\Query\QueryBuilder;
 
-class PostTypeQueryBuilder implements QueryBuilder {
+class PostTypeQueryBuilder implements QueryBuilder
+{
     
     /**
      * Bound model class name
@@ -28,7 +30,7 @@ class PostTypeQueryBuilder implements QueryBuilder {
      * 
      * @var Collection
      */
-    protected $cached_collection;
+    protected $previousCollection;
     
     /**
      * Constructor checks if provided model class name is a PostType
@@ -38,10 +40,20 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function __construct( $model_class )
     {
+        $this->reset( $model_class );
+    }
+    
+    /**
+     * Clears parameters and previous Colleciton, rebinds to a model class
+     *
+     * @param string $model_class
+     */
+    public function reset( $model_class ) {
         if ( !is_a( $model_class, PostType::class, true ) )
-            throw new \InvalidArgumentException( 'Provided class name is not a Model: ' . $model_class );
+            throw new \InvalidArgumentException( 'Provided class name is not a PostType: ' . $model_class );
         $this->model_class = $model_class;
-        $this->parameters['post_type'] = $model_class::POST_TYPE;
+        $this->parameters = ['post_type' => $model_class::POST_TYPE];
+        $this->previousCollection = null;
     }
     
     /**
@@ -51,7 +63,7 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function findAll()
     {
-        $this->cached_collection = null;
+        $this->previousCollection = null;
         $this->parameters['posts_per_page'] = -1;
         return $this;
     }
@@ -64,7 +76,7 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function findOne( $params = [] )
     {
-        $this->cached_collection = null;
+        $this->previousCollection = null;
         $Collection = $this->where( $params )->get();
         return !empty( $Collection ) ? $Collection[0] : false;
     }
@@ -77,7 +89,7 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function where( $params )
     {
-        $this->cached_collection = null;
+        $this->previousCollection = null;
         $this->parameters = array_merge( $this->parameters, $this->sanitizeParams( $params ) );
         return $this;
     }
@@ -90,7 +102,7 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function orderBy( $order_bys )
     {
-        $this->cached_collection = null;
+        $this->previousCollection = null;
         if ( !isset( $this->parameters['orderby'] ) ) $this->parameters['orderby'] = [];
         if ( !isset( $this->parameters['order'] ) ) $this->parameters['order'] = [];
         if ( !is_array( $order_bys ) ) $order_bys = explode( ',', $order_bys );
@@ -110,7 +122,7 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function limit( $limit )
     {
-        $this->cached_collection = null;
+        $this->previousCollection = null;
         $this->parameters['posts_per_page'] = (int) $limit;
         return $this;
     }
@@ -123,7 +135,7 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function page( $page )
     {
-        $this->cached_collection = null;
+        $this->previousCollection = null;
         $this->parameters['paged'] = (int) $page;
         return $this;
     }
@@ -136,7 +148,7 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function offset( $offset )
     {
-        $this->cached_collection = null;
+        $this->previousCollection = null;
         $this->parameters['offset'] = (int) $offset;
     }
     
@@ -148,27 +160,23 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function withQuery( SubQuery $SubQuery )
     {
-        $this->cached_collection = null;
+        $this->previousCollection = null;
         $key = $SubQuery->getQueryKey();
         $this->parameters[$key] = $SubQuery->build();
         return $this;
     }
     
     /**
-     * Execute query and return colleciton of found records
+     * Get single post if id provided or collection using stored parameters
      * 
      * @return Collection
      */
-    public function get()
+    public function get( $id = false )
     {
-        $posts = get_posts( $this->parameters );
-        $items = [];
-        $post_type = $this->model_class;
-        foreach ( $posts as $post ) {
-            $items[] = $post_type::createFromPost( $post );
+        if ( false !== $id ) {
+            return $this->getPost( $id );
         }
-        $this->cached_collection = new Collection( $items );
-        return $this->cached_collection;
+        return $this->getPosts();
     }
     
     /**
@@ -178,8 +186,8 @@ class PostTypeQueryBuilder implements QueryBuilder {
      */
     public function getIterator()
     {
-        return $this->cached_collection ? 
-            $this->cached_collection->getIterator() :
+        return $this->previousCollection ? 
+            $this->previousCollection->getIterator() :
             $this->get()->getIterator();
     } 
     
@@ -189,9 +197,26 @@ class PostTypeQueryBuilder implements QueryBuilder {
      * @param array $params
      * @return array
      */
-    protected function sanitizeParams( $params ) {
+    protected function sanitizeParams( $params )
+    {
         if ( isset( $params['post_type'] ) ) unset( $params['post_type'] );
         return $params;
+    }
+    
+    protected function getPost( $id )
+    {
+        $post_type = $this->model_class;
+        return $post_type::createFromPost( $post );
+    }
+    
+    protected function getPosts()
+    {
+        $this->previousCollection = new Collection();
+        $post_type = $this->model_class;
+        foreach ( get_posts( $this->parameters ) as $post ) {
+            $this->previousCollection->add( $post_type::createFromPost( $post ) );
+        }
+        return $this->previousCollection;
     }
         
 }

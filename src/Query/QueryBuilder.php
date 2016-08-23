@@ -15,11 +15,20 @@ interface QueryBuilder extends \IteratorAggregate
 {
     
     /**
-     * Constructor binds instance to a specific model class
+     * Constructor binds instance to a model class
      * 
      * @param string $model_class
+     * @throws \InvalidArgumentException if argument is not the correct model class
      */
     public function __construct( $model_class );
+    
+    /**
+     * Clears parameters and previous Colleciton, rebinds to a model class
+     *
+     * @param string $model_class
+     * @throws \InvalidArgumentException if argument is not the correct model class
+     */
+    public function reset( $model_class );
     
     /**
      * All records
@@ -87,9 +96,10 @@ interface QueryBuilder extends \IteratorAggregate
     /**
      * Execute query and return colleciton of found records
      * 
+     * @param mixed $id
      * @return Collection
      */
-    public function get();
+    public function get( $id = false );
     
     /**
      * Execute query and return colleciton of found records
