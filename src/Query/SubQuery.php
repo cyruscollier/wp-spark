@@ -51,8 +51,8 @@ abstract class SubQuery
     protected function hasClauseValue( array $clause )
     {
         $value = $this->getClauseValue( $clause );
-        if ( is_array( $value ) ) $value = array_filter( $value );
-        return !empty( $value );
+        if ( is_array( $value ) ) $value = array_filter( $value, function($v) { return isset($v); } );
+        return isset( $value );
     }
     
     /**
