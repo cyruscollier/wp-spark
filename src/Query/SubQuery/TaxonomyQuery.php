@@ -24,6 +24,7 @@ class TaxonomyQuery extends SubQuery
      */
     function add( $taxonomy, $terms, $operator = 'IN', $field = 'slug' )
     {
+        if ( !is_array( $terms ) ) $terms = [$terms];
         return $this->addClause( compact( 'taxonomy', 'terms', 'operator', 'field' ) );
     }
     
