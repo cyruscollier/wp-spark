@@ -1,0 +1,8 @@
+suites:
+    spark:
+        namespace: Spark
+        psr4_prefix: Spark		
+        spec_prefix: unit
+        spec_path: tests
+extensions:
+    PhpSpec\PhpMock\Extension\PhpMockExtension
