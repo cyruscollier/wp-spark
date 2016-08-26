@@ -106,6 +106,6 @@ interface QueryBuilder extends \IteratorAggregate
      * 
      * @return Collection
      */
-    public function getIterator () {} 
+    public function getIterator ();
     
 }
