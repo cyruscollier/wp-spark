@@ -8,7 +8,7 @@ namespace Spark\Model;
  * @author cyruscollier
  *
  */
-class Collection implements \ArrayAccess, \IteratorAggregate
+class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
 {
     /**
      * Array of Model instances
@@ -97,7 +97,17 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function getIterator()
     {
-        return new ArrayIterator( $this->items );
+        return new \ArrayIterator( $this->items );
+    }
+    
+    /**
+     * Model instance count in collection
+     * 
+     * @param int $mode
+     * @return int
+     */
+    public function count ($mode = null) {
+        return count( $this->items );
     }
     
 }
