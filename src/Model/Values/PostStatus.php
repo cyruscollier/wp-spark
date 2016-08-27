@@ -66,7 +66,7 @@ class PostStatus extends FilteredValue {
     
     static function getAllStatuses()
     {
-        global $wp_post_statuses;
-        return array_merge( self::$core_statuses, array_keys( $wp_post_statuses ) );
+        $core_statuses = isset( $GLOBALS['wp_post_statuses'] ) ? $GLOBALS['wp_post_statuses'] : [];
+        return array_merge( self::$core_statuses, array_keys( $core_statuses ) );
     }
 }
