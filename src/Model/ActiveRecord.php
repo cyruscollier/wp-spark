@@ -10,22 +10,25 @@ use Spark\Query\SubQuery;
  * 
  * @author Cyrus
  * 
+ * @method static QueryBuilder reset()
  * @method static QueryBuilder findAll()
- * @method static QueryBuilder findOne(array $params)
+ * @method static QueryBuilder findOne()
  * @method static QueryBuilder where(array $params)
  * @method static QueryBuilder orderBy(string $order_by)
  * @method static QueryBuilder limit(int $limit)
  * @method static QueryBuilder page(int $page)
  * @method static QueryBuilder offset(int $offset)
  * @method static QueryBuilder withQuery(SubQuery $RelatedQuery)
- * @method static QueryBuilder get(mixed $id)
+ * @method static self getOne(array $params)
+ * @method static self|Collection get(mixed $id)
+ * @method static Collection getIterator()
+ * @method static array getParameters()
+ * 
  *
  */
 trait ActiveRecord {
     
-    protected $QueryBuilder;
-    
-    protected function query()
+    public function query()
     {
         $model_class = get_class( $this );
         switch ( get_class( $this ) ) {
@@ -41,8 +44,9 @@ trait ActiveRecord {
     public function __callStatic( $method, $arguments )
     {
         $model = new static;
-        if ( method_exists( $model->QueryBuilder, $method ) ) {
-            return call_user_func_array( [$model->QueryBuilder, $method ], $arguments );
+        $QueryBuilder = $model->query();
+        if ( method_exists( $QueryBuilder, $method ) ) {
+            return call_user_func_array( [$QueryBuilder, $method], $arguments );
         }
     }
 }
