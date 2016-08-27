@@ -54,6 +54,7 @@ class PostTypeQueryBuilder implements QueryBuilder
         $this->model_class = $model_class;
         $this->parameters = ['post_type' => $model_class::POST_TYPE];
         $this->previousCollection = null;
+        return $this;
     }
     
     /**
@@ -71,14 +72,11 @@ class PostTypeQueryBuilder implements QueryBuilder
     /**
      * Immediately return one matching record
      * 
-     * @param array $params
-     * @return Model|false
+     * @return $this
      */
-    public function findOne( $params = [] )
+    public function findOne()
     {
-        $this->previousCollection = null;
-        $Collection = $this->where( $params )->get();
-        return !empty( $Collection ) ? $Collection[0] : false;
+        return $this->limit( 1 );
     }
     
     /**
@@ -107,7 +105,7 @@ class PostTypeQueryBuilder implements QueryBuilder
         if ( !isset( $this->parameters['order'] ) ) $this->parameters['order'] = [];
         if ( !is_array( $order_bys ) ) $order_bys = explode( ',', $order_bys );
         foreach ( $order_bys as $order_by ) {
-            $parts = explode( ' ', $order_by );
+            $parts = explode( ' ', trim( $order_by ) );
             $this->parameters['orderby'][] = $parts[0];
             $this->parameters['order'][] = isset( $parts[1] ) ? $parts[1] : 'DESC';
         }
@@ -150,6 +148,7 @@ class PostTypeQueryBuilder implements QueryBuilder
     {
         $this->previousCollection = null;
         $this->parameters['offset'] = (int) $offset;
+        return $this;
     }
     
     /**
@@ -167,6 +166,20 @@ class PostTypeQueryBuilder implements QueryBuilder
     }
     
     /**
+     * Immediately return one matching record
+     * 
+     * @param array $params
+     * @return Model|false
+     */
+    public function getOne( $params = [] )
+    {
+        $this->previousCollection = null;
+        $Collection = $this->where( $params )->findOne()->get();
+        return !empty( $Collection ) ? $Collection[0] : false;
+        
+    }
+    
+    /**
      * Get single post if id provided or collection using stored parameters
      * 
      * @return Collection
@@ -177,6 +190,16 @@ class PostTypeQueryBuilder implements QueryBuilder
             return $this->getPost( $id );
         }
         return $this->getPosts();
+    }
+    
+    /**
+     * All sotred parameters
+     * 
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
     
     /**
@@ -206,7 +229,7 @@ class PostTypeQueryBuilder implements QueryBuilder
     protected function getPost( $id )
     {
         $post_type = $this->model_class;
-        return $post_type::createFromPost( $post );
+        return $post_type::createFromPost( get_post( $id ) );
     }
     
     protected function getPosts()
