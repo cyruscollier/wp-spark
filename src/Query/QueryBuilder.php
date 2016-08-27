@@ -26,6 +26,7 @@ interface QueryBuilder extends \IteratorAggregate
      * Clears parameters and previous Colleciton, rebinds to a model class
      *
      * @param string $model_class
+     * @return $this
      * @throws \InvalidArgumentException if argument is not the correct model class
      */
     public function reset( $model_class );
@@ -38,12 +39,11 @@ interface QueryBuilder extends \IteratorAggregate
     public function findAll();
     
     /**
-     * Immediately return one matching record
+     * Limit to one record
      * 
-     * @param array $params
-     * @return Model|false
+     * @return $this
      */
-    public function findOne( $params = [] );
+    public function findOne();
     
     /**
      * Filter records by provided parameters
@@ -93,6 +93,15 @@ interface QueryBuilder extends \IteratorAggregate
      */
     public function withQuery( SubQuery $RelatedQuery );
     
+
+    /**
+     * Immediately return one matching record
+     *
+     * @param array $params
+     * @return Model|false
+     */
+    public function getOne( $params = [] );
+    
     /**
      * Execute query and return colleciton of found records
      * 
@@ -100,6 +109,13 @@ interface QueryBuilder extends \IteratorAggregate
      * @return Collection
      */
     public function get( $id = false );
+    
+    /**
+     * All sotred parameters
+     * 
+     * @return array
+     */
+    public function getParameters();
     
     /**
      * Execute query and return colleciton of found records
