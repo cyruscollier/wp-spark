@@ -4,5 +4,8 @@ suites:
         psr4_prefix: Spark		
         spec_prefix: unit
         spec_path: tests
+
+bootstrap: tests/unit/bootstrap.php
+
 extensions:
-    PhpSpec\PhpMock\Extension\PhpMockExtension
+    - PhpSpec\PhpMock\Extension\PhpMockExtension
