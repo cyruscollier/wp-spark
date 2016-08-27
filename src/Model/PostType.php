@@ -114,19 +114,13 @@ abstract class PostType extends Model
         $Post = new static;
         $Post->id = (int) $post->ID;
         $Post->parent_id = (int) $post->post_parent;
-        $Post->author_id = (int) $post->author;
-        $Post->title = new Values\PostTitle( $post_title );
+        $Post->author_id = (int) $post->post_author;
+        $Post->title = new Values\PostTitle( $post->post_title );
         $Post->content = new Values\PostContent( $post->post_content );
         $Post->excerpt = new Values\PostExcerpt( get_the_excerpt( $post ) );
         $Post->status = new Values\PostStatus( $post->post_status );
-        $Post->published_date = new Values\PostDate( 
-            new DateTimeImmutable( $post->post_date ), 
-            new DateTimeImmutable( $post->post_date_gmt ) 
-        );
-        $Post->modified_date = new Values\PostModifiedDate( 
-            new DateTimeImmutable( $post->post_modified ), 
-            new DateTimeImmutable( $post->post_modified_gmt ) 
-        );
+        $Post->published_date = new Values\PostDate( $post->post_date, $post->post_date_gmt );
+        $Post->modified_date = new Values\PostModifiedDate( $post->post_modified, $post->post_modified_gmt ); 
         $Post->slug = $post->post_name;
         $Post->_wp_post = $post;
         return $Post;
@@ -160,7 +154,7 @@ abstract class PostType extends Model
     protected function setModifiedDate( Values\PostModifiedDate $modified_date )
     {
         $this->modified_date = $modified_date;
-    }    
+    }   
     
     public function __get( $name )
     {
