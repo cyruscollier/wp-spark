@@ -3,7 +3,7 @@
 namespace Spark\Query;
 
 use Spark\Model\Model;
-use Spark\Model\Collection;
+use Spark\Model\ModelCollection;
 
 /**
  * Fluent interface for building query parameters
@@ -106,7 +106,7 @@ interface QueryBuilder extends \IteratorAggregate
      * Execute query and return colleciton of found records
      * 
      * @param mixed $id
-     * @return Collection
+     * @return ModelCollection
      */
     public function get( $id = false );
     
@@ -120,7 +120,7 @@ interface QueryBuilder extends \IteratorAggregate
     /**
      * Execute query and return colleciton of found records
      * 
-     * @return Collection
+     * @return ModelCollection
      */
     public function getIterator();
     

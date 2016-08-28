@@ -20,8 +20,8 @@ use Spark\Query\SubQuery;
  * @method static QueryBuilder offset(int $offset)
  * @method static QueryBuilder withQuery(SubQuery $RelatedQuery)
  * @method static self getOne(array $params)
- * @method static self|Collection get(mixed $id)
- * @method static Collection getIterator()
+ * @method static self|ModelCollection get(mixed $id)
+ * @method static ModelCollection getIterator()
  * @method static array getParameters()
  * 
  *

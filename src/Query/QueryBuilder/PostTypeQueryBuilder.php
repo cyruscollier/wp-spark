@@ -4,7 +4,7 @@ namespace Spark\Query\QueryBuilder;
 
 use Spark\Model\Model;
 use Spark\Model\PostType;
-use Spark\Model\Collection;
+use Spark\Model\ModelCollection;
 use Spark\Query\SubQuery;
 use Spark\Query\QueryBuilder;
 
@@ -182,7 +182,7 @@ class PostTypeQueryBuilder implements QueryBuilder
     /**
      * Get single post if id provided or collection using stored parameters
      * 
-     * @return Collection
+     * @return ModelCollection
      */
     public function get( $id = false )
     {
@@ -205,7 +205,7 @@ class PostTypeQueryBuilder implements QueryBuilder
     /**
      * Execute query and return collection of found records
      * 
-     * @return Collection
+     * @return ModelCollection
      */
     public function getIterator()
     {
@@ -234,7 +234,7 @@ class PostTypeQueryBuilder implements QueryBuilder
     
     protected function getPosts()
     {
-        $this->previousCollection = new Collection();
+        $this->previousCollection = new ModelCollection();
         $post_type = $this->model_class;
         foreach ( get_posts( $this->parameters ) as $post ) {
             $this->previousCollection->add( $post_type::createFromPost( $post ) );

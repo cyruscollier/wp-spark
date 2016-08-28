@@ -8,7 +8,7 @@ namespace Spark\Model;
  * @author cyruscollier
  *
  */
-class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
+class ModelCollection implements \ArrayAccess, \IteratorAggregate, \Countable
 {
     /**
      * Array of Model instances
@@ -69,10 +69,10 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
      * @param int|null $offset
      * @param mixed $value
      */
-    public function offsetSet ( $offset, $value )
+    public function offsetSet( $offset, $value )
     {
         if ( !( $value instanceof Model ) )
-            throw new \InvalidArgumentException( 'Model Collection must only contain Model instances' );
+            throw new \InvalidArgumentException( 'ModelCollection must only contain Model instances' );
         if ( is_null( $offset ) ) {
             $this->add( $value );
         } else {
@@ -106,7 +106,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
      * @param int $mode
      * @return int
      */
-    public function count ($mode = null) {
+    public function count($mode = null) {
         return count( $this->items );
     }
     

@@ -13,7 +13,7 @@ abstract class Model
     protected $unique_key = 'id';
     
     /**
-     * Return unique identifier for model, used in Collections
+     * Return unique identifier for model, used in ModelCollection
      * 
      * @return string
      */
