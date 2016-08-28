@@ -17,7 +17,8 @@
     "require-dev": {
         "phpspec/phpspec": "~2.1",
         "cyruscollier/phpspec-php-mock": "dev-master",
-        "wordpress-dev": "4.5"
+        "wordpress-dev": "4.5",
+        "phpunit/phpunit": "^5.5"
     },
     "autoload": {
         "psr-4": {
