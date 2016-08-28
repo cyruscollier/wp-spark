@@ -5,6 +5,7 @@ namespace Spark\Model;
 use Spark\Model\Values;
 use WP_Post, WP_User;
 use DateTimeImmutable;
+use Spark\Model\Values\PostMetaField;
 
 /**
  * Base class for all post types
@@ -107,7 +108,7 @@ abstract class PostType extends Model
     
     protected $_metadata = [];
     
-    static function createFromPost( WP_Post $post )
+    static function createFromPost( WP_Post $post, $metadata = [] )
     {
         if ( $post->post_type != static::POST_TYPE )
             throw new \InvalidArgumentException( 'Post type mismatch.' );
@@ -154,7 +155,12 @@ abstract class PostType extends Model
     protected function setModifiedDate( Values\PostModifiedDate $modified_date )
     {
         $this->modified_date = $modified_date;
-    }   
+    }
+    
+    public function setMetadata( Metadata $metadata )
+    {
+        $this->_metadata[$metadata->getKey()] = $metadata;
+    }
     
     public function __get( $name )
     {
@@ -172,9 +178,10 @@ abstract class PostType extends Model
         if ( false !== parent::__set( $name, $value ) ) {
             return;
         }
-        if ( array_key_exists( $name, $this->_metadata ) ) {
-            $this->_metadata[$name] = $value;
+        if ( !( $value instanceof Metadata ) ) {
+            $value = new PostMetaField( $name, $value );
         }
+        $this->setMetadata( $value );
     }
         
 }
