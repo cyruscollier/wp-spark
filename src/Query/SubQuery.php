@@ -21,12 +21,13 @@ abstract class SubQuery
     /**
      * Assembles clauses and prepares it for query assignment
      * 
+     * @param string $relation
      * @return array
      */
-    public function build()
+    public function build( $relation = 'AND' )
     {
         $filtered_query = array_filter( $this->query, [$this, 'hasClauseValue'] );
-        if ( count( $filtered_query ) > 1 ) $filtered_query['relation'] = 'AND';
+        if ( count( $filtered_query ) > 1 ) $filtered_query['relation'] = $relation;
         return $filtered_query;
     }
     
@@ -60,11 +61,9 @@ abstract class SubQuery
      * 
      * @param string $key
      * @param mixed $value
-     * @param string $compare
-     * @param string $type
      * @return $this
      */
-    abstract function add( $key, $value, $compare = '', $type = '' );
+    abstract function add( $key, $value );
     
     /**
      * Name of query key to user for this subquery
