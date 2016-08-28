@@ -8,7 +8,13 @@ use Spark\Model\ModelCollection;
 use Spark\Query\SubQuery;
 use Spark\Query\QueryBuilder;
 
-class PostTypeQueryBuilder implements QueryBuilder
+/**
+ * Query Builder for all post types
+ * 
+ * @author ccollier
+ *
+ */
+class PostTypeQueryBuilder extends QueryBuilderWithMetadata
 {
     
     /**
