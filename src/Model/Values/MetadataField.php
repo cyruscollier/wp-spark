@@ -2,6 +2,9 @@
 
 namespace Spark\Model\Values;
 
+use Spark\Model\MetadataCollection;
+use Spark\Model\Metadata;
+
 /**
  * Representation of one metadata field
  * 
@@ -10,12 +13,6 @@ namespace Spark\Model\Values;
  */
 abstract class MetadataField implements Metadata
 {
-    
-    /**
-     * Metadata type, set in subclass
-     * @var string
-     */
-    protected $type;
     
     /**
      * @var string
@@ -39,11 +36,6 @@ abstract class MetadataField implements Metadata
         $this->value = $meta_value;
     }
     
-    public function getType()
-    {
-        return $this->type;
-    }
-    
     public function getKey()
     {
         return $this->key;
@@ -59,7 +51,6 @@ abstract class MetadataField implements Metadata
         return (string) $this->previous ? $this->previous : $this->value;
     }
     
-    
     public function __toString()
     {
         return (string) $this->getValue();
@@ -67,6 +58,19 @@ abstract class MetadataField implements Metadata
     
     public function toCollection()
     {
-        return new MetadataCollection($meta_key, $meta_value)
+        return new MetadataCollection( [$this] );
+    }
+    
+    public function updateValue( $value )
+    {
+        $field = new static( $this->key, $value );
+        $field->previous = $this->value;
+        return $field;
+    }
+    
+    static function type()
+    {
+        $field = new static( '', '' );
+        return $field->getType();
     }
 }
