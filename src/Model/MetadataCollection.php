@@ -3,6 +3,7 @@
 namespace Spark\Model;
 
 use Spark\Support\Collection;
+use Spark\Model\Values\MetadataField;
 /**
  * Representation of multiple metadata fields of the same type and key
  * 
@@ -22,6 +23,9 @@ class MetadataCollection implements Metadata, Collection
      */
     protected $key;
     
+    /**
+     * @var MetadataField[]
+     */
     protected $fields = [];
         
     public function __construct( $fields = [] )
@@ -53,6 +57,24 @@ class MetadataCollection implements Metadata, Collection
         return array_values( array_filter( $this->fields ) );
     }
     
+    public function update( Metadata $metadata )
+    {
+        foreach ( $metadata->toCollection() as $field ) {
+            $this->add( $field );
+        }
+        return $this;
+    }
+    
+    public function toCollection()
+    {
+        return $this;
+    }
+
+    public function isCollection()
+    {
+        return true;
+    }
+    
     public function __toString()
     {
         return implode( ',', array_map( 'strval', $this->fields ) );
@@ -61,14 +83,21 @@ class MetadataCollection implements Metadata, Collection
     public function add( MetadataField $field )
     {
         $this->checkValidField( $field );
-        $this->fields[$field->getIndex()] = $field;
+        $index = $field->getIndex();
+        $this->fields[$index] = isset( $this->fields[$index] ) ? 
+            $this->fields[$index]->updateValue( $field->getValue() ) : 
+            $field;
+        return $this;
     }
     
     public function remove( MetadataField $field )
     {
         $this->checkValidField( $field );
-        if ( isset( $this->fields[$field->getIndex()] ) )
-            $this->fields[$field->getIndex()] = null;
+        $index = $field->getIndex();
+        if ( isset( $this->fields[$index] ) ) {
+            $this->fields[$index] = $this->fields[$index]->updateValue( null );
+        }
+        return $this;
     }
     
     /**
@@ -106,7 +135,7 @@ class MetadataCollection implements Metadata, Collection
         $this->checkValidField( $field );
         if ( !is_null( $offset ) )
             throw new \BadMethodCallException( 'Invalid offset, use MetadataCollection::add()' );
-        $this->add( $value );
+        $this->add( $field );
     }
     
     /**
@@ -115,7 +144,7 @@ class MetadataCollection implements Metadata, Collection
      * @param int $offset
      */
     public function offsetUnset( $offset ) {
-        throw new \BadMethodCallException( 'Invalid offset, use MetadataColleciton::remove()' );
+        throw new \BadMethodCallException( 'Invalid offset, use MetadataCollection::remove()' );
     }
     
     /**

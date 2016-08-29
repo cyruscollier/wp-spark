@@ -60,12 +60,24 @@ abstract class MetadataField implements Metadata
     {
         return new MetadataCollection( [$this] );
     }
+
+    public function isCollection()
+    {
+        return false;
+    }
     
     public function updateValue( $value )
     {
         $field = new static( $this->key, $value );
         $field->previous = $this->value;
         return $field;
+    }
+    
+    public function update( Metadata $metadata )
+    {
+        return $metadata->isCollection() ?
+            $this->toCollection()->update( $metadata ) :
+            $this->updateValue( $metadata->getValue() );
     }
     
     static function type()
