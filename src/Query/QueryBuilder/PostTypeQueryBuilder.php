@@ -218,13 +218,5 @@ class PostTypeQueryBuilder extends QueryBuilderWithMetadata
         }
         return $this->previousCollection;
     }
-    
-    /**
-     * @return ModelWithMetadata
-     */
-    protected function createModel()
-    {
-        return new $this->model_class;
-    }
         
 }

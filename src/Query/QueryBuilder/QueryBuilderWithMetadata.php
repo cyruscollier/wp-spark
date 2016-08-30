@@ -102,11 +102,14 @@ abstract class QueryBuilderWithMetadata implements QueryBuilder
             return $metadata;
         }
         return $model->createMetadataField( $key, $value );
-    }
+    }    
     
     /**
      * @return ModelWithMetadata
      */
-    abstract protected function createModel();
+    protected function createModel()
+    {
+        return new $this->model_class;
+    }
     
 }
