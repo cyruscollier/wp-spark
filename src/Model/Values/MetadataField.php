@@ -48,7 +48,8 @@ abstract class MetadataField implements Metadata
     
     public function getIndex()
     {
-        return (string) $this->previous ? $this->previous : $this->value;
+        $value = $this->previous ? $this->previous : $this->value;
+        return md5( maybe_serialize( $value ) );
     }
     
     public function __toString()
@@ -79,10 +80,5 @@ abstract class MetadataField implements Metadata
             $this->toCollection()->update( $metadata ) :
             $this->updateValue( $metadata->getValue() );
     }
-    
-    static function type()
-    {
-        $field = new static( '', '' );
-        return $field->getType();
-    }
+
 }
