@@ -105,7 +105,13 @@ abstract class PostType extends ModelWithMetadata
      */
     protected $_wp_post;
     
-    static function createFromPost( WP_Post $post, $metadata = [] )
+    /**
+     * 
+     * @param WP_Post $post
+     * @param Metadata[] $all_metadata
+     * @throws \InvalidArgumentException
+     */
+    static function createFromPost( WP_Post $post, $all_metadata = [] )
     {
         if ( $post->post_type != static::POST_TYPE )
             throw new \InvalidArgumentException( 'Post type mismatch.' );
@@ -121,6 +127,9 @@ abstract class PostType extends ModelWithMetadata
         $Post->modified_date = new Values\PostModifiedDate( $post->post_modified, $post->post_modified_gmt ); 
         $Post->slug = $post->post_name;
         $Post->_wp_post = $post;
+        foreach ( $all_metadata as $metadata ) {
+            $Post->setMetadata( $metadata );
+        }
         return $Post;
     }
     
@@ -167,7 +176,7 @@ abstract class PostType extends ModelWithMetadata
      * @param mixed $value
      * @return MetadataField
      */
-    protected function createMetadataField( $key, $value )
+    public function createMetadataField( $key, $value )
     {
         return new PostMetaField( $key, $value );
     }
