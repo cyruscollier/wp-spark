@@ -4,7 +4,6 @@ namespace Spark\Model;
 
 use Spark\Model\Values;
 use WP_Post, WP_User;
-use DateTimeImmutable;
 use Spark\Model\Values\PostMetaField;
 
 /**
@@ -13,7 +12,7 @@ use Spark\Model\Values\PostMetaField;
  * @author cyruscollier
  *
  */
-abstract class PostType extends Model
+abstract class PostType extends ModelWithMetadata
 {
     
     /**
@@ -106,8 +105,6 @@ abstract class PostType extends Model
      */
     protected $_wp_post;
     
-    protected $_metadata = [];
-    
     static function createFromPost( WP_Post $post, $metadata = [] )
     {
         if ( $post->post_type != static::POST_TYPE )
@@ -157,31 +154,22 @@ abstract class PostType extends Model
         $this->modified_date = $modified_date;
     }
     
-    public function setMetadata( Metadata $metadata )
-    {
-        $this->_metadata[$metadata->getKey()] = $metadata;
-    }
-    
     public function __get( $name )
     {
         if ( $value = parent::__get( $name ) );
             return $value;
         if ( property_exists( $this->_wp_post, $name ) )
             return $this->_wp_post->$name;
-        if ( array_key_exists( $name, $this->_metadata ) ) {
-            return $this->_metadata[$name];
-        }
     }
     
-    public function __set( $name, $value )
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return MetadataField
+     */
+    protected function createMetadataField( $key, $value )
     {
-        if ( false !== parent::__set( $name, $value ) ) {
-            return;
-        }
-        if ( !( $value instanceof Metadata ) ) {
-            $value = new PostMetaField( $name, $value );
-        }
-        $this->setMetadata( $value );
+        return new PostMetaField( $key, $value );
     }
         
 }
