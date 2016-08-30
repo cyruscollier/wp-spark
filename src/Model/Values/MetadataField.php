@@ -33,7 +33,7 @@ abstract class MetadataField implements Metadata
     public function __construct( $meta_key, $meta_value )
     {
         $this->key = $meta_key;
-        $this->value = $meta_value;
+        $this->value = maybe_unserialize( $value );
     }
     
     public function getKey()
