@@ -22,17 +22,16 @@ abstract class ModelWithMetadata extends Model
     {
         $key = $metadata->getKey();
         $this->_metadata[$key] = isset( $this->_metadata[$key] ) ?
-        $this->_metadata[$key]->update( $metadata ) :
-        $metadata;
+            $this->_metadata[$key]->update( $metadata ) :
+            $metadata;
     }
     
     public function __get( $name )
     {
-        if ( $value = parent::__get( $name ) );
+        if ( $value = parent::__get( $name ) )
             return $value;
-        if ( array_key_exists( $name, $this->_metadata ) ) {
+        if ( array_key_exists( $name, $this->_metadata ) )
             return $this->_metadata[$name];
-        }
     }
     
     public function __set( $name, $value )

@@ -52,12 +52,10 @@ abstract class Model
      */
     public function __get( $name )
     {
-        if ( $getter = $this->getMethodFromProperty( $name, 'get' ) ){
+        if ( $getter = $this->getMethodFromProperty( $name, 'get' ) )
             return call_user_func( [$this, $getter] );
-        }
-        if ( property_exists( $this, $name ) && !$this->isHiddenProperty( $name ) ) {
+        if ( property_exists( $this, $name ) && !$this->isHiddenProperty( $name ) )
             return $this->$name;
-        }
     }
     
     /**
@@ -73,7 +71,7 @@ abstract class Model
         }
         if ( 
             property_exists( $this, $name ) && 
-            !( $this->isHiddenProperty( $name ) || $name == $this->getKeyName() ) 
+            !( $this->isHiddenProperty( $name ) || $name == $this->getIdProperty() ) 
         ) {
             $this->$name = $value;
         }

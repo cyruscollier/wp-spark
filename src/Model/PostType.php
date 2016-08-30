@@ -165,7 +165,7 @@ abstract class PostType extends ModelWithMetadata
     
     public function __get( $name )
     {
-        if ( $value = parent::__get( $name ) );
+        if ( $value = parent::__get( $name ) )
             return $value;
         if ( property_exists( $this->_wp_post, $name ) )
             return $this->_wp_post->$name;
