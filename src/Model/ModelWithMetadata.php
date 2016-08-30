@@ -45,12 +45,17 @@ abstract class ModelWithMetadata extends Model
         }
         $this->setMetadata( $value );
     }
+    
+    public function getMetadataType()
+    {
+        return $this->createMetadataField( '', '' )->getType();
+    }
 
     /**
      * @param string $key
      * @param mixed $value
      * @return MetadataField
      */
-    abstract protected function createMetadataField( $key, $value );
+    public abstract function createMetadataField( $key, $value );
     
 }
