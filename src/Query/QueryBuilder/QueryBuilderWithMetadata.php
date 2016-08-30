@@ -80,20 +80,20 @@ abstract class QueryBuilderWithMetadata implements QueryBuilder
      */
     protected function getAllMetadata( array $object_ids )
     {
-        $metadata_class = $this->metadata_class;
-        $metadata_raw = update_meta_cache( $metadata_class::type(), $object_ids );
+        $model = $this->createModel();
+        $metadata_raw = update_meta_cache( $model->getMetadataType(), $object_ids );
         $metadata = [];
         foreach ( $metadata_raw as $object_id => $fields ) {
+            $metadata[$object_id] = [];
             foreach ( $fields as $key => $value_raw ) {
-                $metadata[] = $this->createMetadata( $key, $value_raw );
+                $metadata[$object_id][] = $this->createMetadata( $model, $key, $value_raw );
             }
         }
         return $metadata;
     }
     
-    protected function createMetadata( $key, $value_raw )
+    protected function createMetadata( ModelWithMetadata $model, $key, $value_raw )
     {
-        $model = $this->createModel();
         if ( is_array( $value_raw ) ) {
             $metadata = new MetadataCollection();
             foreach ( $value_raw as $value ){

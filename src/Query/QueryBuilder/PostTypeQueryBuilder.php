@@ -206,15 +206,20 @@ class PostTypeQueryBuilder extends QueryBuilderWithMetadata
     protected function getPost( $id )
     {
         $post_type = $this->model_class;
-        return $post_type::createFromPost( get_post( $id ) );
+        $all_metadata = $this->getAllMetadata( [$id] );
+        return $post_type::createFromPost( get_post( $id ), $all_metadata[$id] );
     }
     
     protected function getPosts()
     {
         $this->previousCollection = new ModelCollection();
         $post_type = $this->model_class;
-        foreach ( get_posts( $this->parameters ) as $post ) {
-            $this->previousCollection->add( $post_type::createFromPost( $post ) );
+        $posts = get_posts( $this->parameters );
+        $post_ids = array_map( function( $p ) { return $p->ID; }, $posts );
+        $all_metadata = $this->getAllMetadata( $post_ids );
+        foreach ( $posts as $post ) {
+            $Post = $post_type::createFromPost( $post, $all_metadata[$post->ID] );
+            $this->previousCollection->add( $Post );
         }
         return $this->previousCollection;
     }
