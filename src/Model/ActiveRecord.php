@@ -41,7 +41,7 @@ trait ActiveRecord {
         }
     }
     
-    public function __callStatic( $method, $arguments )
+    public static function __callStatic( $method, $arguments )
     {
         $model = new static;
         $QueryBuilder = $model->query();

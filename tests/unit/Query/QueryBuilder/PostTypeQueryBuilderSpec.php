@@ -104,7 +104,9 @@ class PostTypeQueryBuilderSpec extends ObjectBehavior
         ];
         $post = new \WP_Post((object)$post_arr);
         $functions->get_post(123)->willReturn($post);
-        $functions->update_meta_cache( 'post', [123] )->willReturn([123 => []]);
+        $functions->update_meta_cache( 'post', [123] )->willReturn([
+            123 => ['meta_key1' => '1', 'meta_key2' => '2']
+        ]);
         $this->get(123)->shouldBeAnInstanceOf(Post::class);
     }
     
@@ -117,7 +119,10 @@ class PostTypeQueryBuilderSpec extends ObjectBehavior
         $functions->get_posts(
             ['post_type' => 'post', 'category_name' => 'video']
         )->willReturn([$post1, $post2]);
-        $functions->update_meta_cache( 'post', [123, 456] )->willReturn([123 => [], 456 => []]);
+        $functions->update_meta_cache( 'post', [123, 456] )->willReturn([
+            123 => ['meta_key1' => '1', 'meta_key2' => '2'], 
+            456 => ['meta_key1' => '3', 'meta_key2' => '4']
+        ]);
         $this->where(['category_name' => 'video']);
         $this->get()->shouldBeAnInstanceOf(ModelCollection::class);
         $this->get()->shouldHaveCount(2);

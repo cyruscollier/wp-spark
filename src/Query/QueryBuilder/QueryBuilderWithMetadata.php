@@ -101,7 +101,7 @@ abstract class QueryBuilderWithMetadata implements QueryBuilder
             }
             return $metadata;
         }
-        return $model->createMetadataField( $key, $value );
+        return $model->createMetadataField( $key, $value_raw );
     }    
     
     /**
