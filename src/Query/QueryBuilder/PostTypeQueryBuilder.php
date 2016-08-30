@@ -16,38 +16,12 @@ use Spark\Query\QueryBuilder;
  */
 class PostTypeQueryBuilder extends QueryBuilderWithMetadata
 {
-    
     /**
-     * Bound model class name
-     * 
+     * Parent model class of bounded class
+     *
      * @var string
      */
-    protected $model_class;
-    
-    /**
-     * List of parameters for get_posts()
-     * 
-     * @var array
-     */
-    protected $parameters = [];
-    
-    /**
-     * Stored after each query
-     * 
-     * @var Collection
-     */
-    protected $previousCollection;
-    
-    /**
-     * Constructor checks if provided model class name is a PostType
-     * 
-     * @param string $model_class
-     * @throws \InvalidArgumentException
-     */
-    public function __construct( $model_class )
-    {
-        $this->reset( $model_class );
-    }
+    protected $base_model_class = PostType::class;
     
     /**
      * Clears parameters and previous Colleciton, rebinds to a model class
@@ -55,11 +29,8 @@ class PostTypeQueryBuilder extends QueryBuilderWithMetadata
      * @param string $model_class
      */
     public function reset( $model_class ) {
-        if ( !is_a( $model_class, PostType::class, true ) )
-            throw new \InvalidArgumentException( 'Provided class name is not a PostType: ' . $model_class );
-        $this->model_class = $model_class;
-        $this->parameters = ['post_type' => $model_class::POST_TYPE];
-        $this->previousCollection = null;
+        parent::reset( $model_class );
+        $this->parameters['post_type'] = $model_class::POST_TYPE;
         return $this;
     }
     
@@ -246,6 +217,14 @@ class PostTypeQueryBuilder extends QueryBuilderWithMetadata
             $this->previousCollection->add( $post_type::createFromPost( $post ) );
         }
         return $this->previousCollection;
+    }
+    
+    /**
+     * @return ModelWithMetadata
+     */
+    protected function createModel()
+    {
+        return new $this->model_class;
     }
         
 }

@@ -5,6 +5,7 @@ namespace Spark\Query\QueryBuilder;
 use Spark\Query\QueryBuilder;
 use Spark\Model\Metadata;
 use Spark\Model\MetadataCollection;
+use Spark\Model\ModelWithMetadata;
 
 /**
  * Base class for all types of query builder that support metadata
@@ -14,12 +15,62 @@ use Spark\Model\MetadataCollection;
  */
 abstract class QueryBuilderWithMetadata implements QueryBuilder
 {
+    
     /**
-     * Set in subclass
+     * Bound model class name
+     *
+     * @var string
+     */
+    protected $model_class;
+    
+    /**
+     * Parent model class of bounded class, override in subclasses
      * 
      * @var string
      */
-    protected $metadata_class;
+    protected $base_model_class = ModelWithMetadata::class;
+    
+    /**
+     * List of parameters for get_posts()
+     *
+     * @var array
+     */
+    protected $parameters = [];
+    
+    /**
+     * Stored after each query
+     *
+     * @var Collection
+     */
+    protected $previousCollection;
+    
+    /**
+     * Constructor checks if provided model class name is a PostType
+     *
+     * @param string $model_class
+     * @throws \InvalidArgumentException
+     */
+    public function __construct( $model_class )
+    {
+        $this->reset( $model_class );
+    }
+    
+    /**
+     * Clears parameters and previous Collection, rebinds to a model class
+     *
+     * @param string $model_class
+     */
+    public function reset( $model_class ) {
+        if ( !is_a( $model_class, $this->base_model_class, true ) ) {
+            throw new \InvalidArgumentException( 
+                'Provided class name is not an instance of ' . $this->base_model_class );
+        }
+        $this->model_class = $model_class;
+        $this->parameters = [];
+        $this->previousCollection = null;
+        return $this;
+    }
+    
     
     /**
      * Get all metadata instances for a set of object ids
@@ -42,15 +93,20 @@ abstract class QueryBuilderWithMetadata implements QueryBuilder
     
     protected function createMetadata( $key, $value_raw )
     {
-        $metadata_class = $this->metadata_class;
+        $model = $this->createModel();
         if ( is_array( $value_raw ) ) {
             $metadata = new MetadataCollection();
             foreach ( $value_raw as $value ){
-                $metadata->add( new $metadata_class( $key, maybe_unserialize( $value ) ) );
+                $metadata->add( $model->createMetadataField( $key, $value ) );
             }
             return $metadata;
         }
-        return new $metadata_class( $key, maybe_unserialize( $value ) );
+        return $model->createMetadataField( $key, $value );
     }
+    
+    /**
+     * @return ModelWithMetadata
+     */
+    abstract protected function createModel();
     
 }
