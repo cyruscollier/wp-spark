@@ -30,23 +30,23 @@ trait ActiveRecord {
     
     public function query()
     {
-        $model_class = get_class( $this );
-        switch ( get_class( $this ) ) {
-            case PostType::class:
-                return new PostTypeQueryBuilder( $model_class );
-                break;
-            default:
-                throw new \RuntimeException( 'Active Record trait used on invalid class' );
-                break;
-        }
+        if ( $this instanceof PostType )
+            return new PostTypeQueryBuilder( get_class( $this ) );
+        return $this->getDefaultQueryBuilder();
+    }
+    
+    public function __call( $method, $arguments )
+    {
+        return call_user_func_array( [$this->query(), $method], $arguments );
     }
     
     public static function __callStatic( $method, $arguments )
     {
-        $model = new static;
-        $QueryBuilder = $model->query();
-        if ( method_exists( $QueryBuilder, $method ) ) {
-            return call_user_func_array( [$QueryBuilder, $method], $arguments );
-        }
+        return call_user_func_array( [new static, $method], $arguments );
+    }
+    
+    protected function getDefaultQueryBuilder()
+    {
+        throw new \RuntimeException( 'Active Record trait used on invalid class' );
     }
 }
