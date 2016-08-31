@@ -2,13 +2,15 @@
 
 namespace Spark\Model;
 
+use Spark\Support\Collection;
+
 /**
  * Iterator for set of Model instances
  * 
  * @author cyruscollier
  *
  */
-class ModelCollection implements \ArrayAccess, \IteratorAggregate, \Countable
+class ModelCollection implements Collection
 {
     /**
      * Array of Model instances
@@ -16,6 +18,13 @@ class ModelCollection implements \ArrayAccess, \IteratorAggregate, \Countable
      * @var Model[]
      */
     protected $items = [];
+    
+    /**
+     * Bound class for all instances inside collection
+     * 
+     * @var string
+     */
+    protected $model_class;
     
     /**
      * Constructor takes array of Model instances
@@ -37,7 +46,27 @@ class ModelCollection implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     public function add( Model $Object )
     {
+        if ( empty( $this->items ) ) {
+            $this->model_class = get_class( $Object );
+        }
+        $this->checkValidModel( $Object );
         $this->items[] = $Object;
+        return $this;
+    }
+    
+
+    /**
+     * 
+     * @param Model $Object
+     * @return $this
+     */
+    public function remove( Model $Object )
+    {
+        foreach ( $this->items as $index => $item ) {
+            if ( $item === $Object ) {
+                $this->offsetUnset( $index );
+            }
+        }
         return $this;
     }
     
@@ -108,6 +137,15 @@ class ModelCollection implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     public function count($mode = null) {
         return count( $this->items );
+    }
+    
+    protected function checkValidModel( Model $model )
+    {
+        if ( !( $model instanceof $this->model_class ) ) {
+            throw new \InvalidArgumentException(
+                'ModelCollection items must all be the same Model class'
+            );
+        }
     }
     
 }
