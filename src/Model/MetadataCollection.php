@@ -4,6 +4,7 @@ namespace Spark\Model;
 
 use Spark\Support\Collection;
 use Spark\Model\Values\MetadataField;
+
 /**
  * Representation of multiple metadata fields of the same type and key
  * 
@@ -34,10 +35,6 @@ class MetadataCollection implements Metadata, Collection
         {
             if ( !( $field instanceof MetadataField ) )
                 throw new \InvalidArgumentException( 'MetadataCollection must contain MetadataField instances' );
-            if ( $index == 0 ) {
-                $this->type = $field->getType();
-                $this->key = $field->getKey();
-            }
             $this->add( $field );
         }
     }
@@ -54,7 +51,7 @@ class MetadataCollection implements Metadata, Collection
     
     public function getValue()
     {
-        return array_values( array_filter( $this->fields ) );
+        return array_values( array_filter( $this->fields, [$this, 'isFieldSet'] ) );
     }
     
     public function update( Metadata $metadata )
@@ -82,7 +79,12 @@ class MetadataCollection implements Metadata, Collection
     
     public function add( MetadataField $field )
     {
+        if ( empty( $this->fields ) ) {
+            $this->type = $field->getType();
+            $this->key = $field->getKey();
+        }
         $this->checkValidField( $field );
+            
         $index = $field->getIndex();
         $this->fields[$index] = isset( $this->fields[$index] ) ? 
             $this->fields[$index]->updateValue( $field->getValue() ) : 
@@ -108,8 +110,8 @@ class MetadataCollection implements Metadata, Collection
      */
     public function offsetExists( $offset )
     {
-        $values = $this->getValue();
-        return isset( $values[$offset] );
+        $values = array_values( $this->fields );
+        return isset( $values[$offset] ) && $this->isFieldSet( $values[$offset] );
     }
     
     /**
@@ -120,8 +122,9 @@ class MetadataCollection implements Metadata, Collection
      */
     public function offsetGet( $offset )
     {
-        $values = $this->getValue();
-        return $values[$offset];
+        $values = array_values( $this->fields );
+        $field = $values[$offset];
+        return $this->isFieldSet( $field ) ? $field : null;
     }
     
     /**
@@ -132,10 +135,12 @@ class MetadataCollection implements Metadata, Collection
      */
     public function offsetSet( $offset, $field )
     {
+        $values = array_values( $this->fields );
         $this->checkValidField( $field );
-        if ( !is_null( $offset ) )
-            throw new \BadMethodCallException( 'Invalid offset, use MetadataCollection::add()' );
-        $this->add( $field );
+        if ( isset( $values[$offset] ) )
+            $values[$offset]->update( $field );
+        else
+            $this->add( $field );
     }
     
     /**
@@ -144,7 +149,8 @@ class MetadataCollection implements Metadata, Collection
      * @param int $offset
      */
     public function offsetUnset( $offset ) {
-        throw new \BadMethodCallException( 'Invalid offset, use MetadataCollection::remove()' );
+        $values = array_values( $this->fields );
+        $this->remove( $values[$offset] );
     }
     
     /**
@@ -164,7 +170,7 @@ class MetadataCollection implements Metadata, Collection
      * @param int $mode
      * @return int
      */
-    public function count ($mode = null) {
+    public function count( $mode = null ) {
         return count( $this->getValue() );
     }
     
@@ -179,4 +185,10 @@ class MetadataCollection implements Metadata, Collection
             );
         }
     }
+    
+    protected function isFieldSet( MetadataField $field )
+    {
+        return !is_null( $field->getValue() );
+    }
+    
 }
