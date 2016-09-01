@@ -13,6 +13,7 @@
     ],
     "license": "MIT",
     "require": {
+        "php-di/php-di": "^5.4"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",
@@ -23,7 +24,8 @@
     "autoload": {
         "psr-4": {
             "Spark\\": "src/"
-        }
+        },
+        "files": ["src/functions.php"]
     },
     "repositories": [
 		{
