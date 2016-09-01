@@ -1,6 +1,5 @@
 <?php 
 
-define('SPARK_PATH', dirname(dirname(__DIR__)));
 define('WP_PATH', 'vendor/wordpress-dev/src/');
 define('WP_CONTENT_DIR', WP_PATH . '/wp-content/');
 
