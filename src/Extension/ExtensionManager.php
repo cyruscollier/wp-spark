@@ -25,20 +25,30 @@ class ExtensionManager
     
     public function registerExtensions( array $extensions_classes )
     {
+        $registered_extensions = [];
         foreach ( $extensions_classes as $extension_class ) {
             $Extension = $this->getExtensionInstance( $extension_class );
-            if ( !$Extension->isRegistered() ) $Extension->register();
+            if ( !$Extension->isRegistered() ) {
+                $Extension->register();
+                $registered_extensions[] = $Extension;
+            }
             $this->addToRegistry( $Extension );
         }
+        return $registered_extensions;
     }
     
     public function deregisterExtensions( array $extension_classes )
     {
+        $deregistered_extensions = [];
         foreach ( $extension_classes as $extension_class ) {
             $Extension = $this->getExtensionInstance( $extension_class );
-            if ( $Extension->isRegistered() ) $Extension->deregister();
+            if ( $Extension->isRegistered() ) {
+                $Extension->deregister();
+                $deregistered_extensions[] = $Extension;
+            }
             $this->removeFromRegistry( $Extension );
         }
+        return $deregistered_extensions;
     }
     
     protected function getExtensionInstance( $extension_class)
