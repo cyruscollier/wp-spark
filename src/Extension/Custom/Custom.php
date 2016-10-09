@@ -13,42 +13,42 @@ use Spark\Extension\Extension;
 abstract class Custom implements Extension {
 	
 	const NAME = null;
+	const FORMAT_NAME = '@n';
+	const FORMAT_SLUG = '@s';
+	const FORMAT_SINGULAR = '@S';
+	const FORMAT_PLURAL = '@P';
+	const FORMAT_PLURAL_LOWERCASE = '@p';
+	
 	
 	protected $slug;
 	protected $label_singular;
 	protected $label_plural;
-	protected $textdomain = 'spark';
-	protected $format;
+	protected $text_domain = SPARK_TEXT_DOMAIN;
 	
 	protected $labels = [];
-	protected $labels_defaults = [
-		'name'                => '%3$s',
-		'singular_name'       => '%2$s',
-		'menu_name'           => '%3$s',
-		'parent_item'		  => 'Parent %2$s',
-		'parent_item_colon'   => 'Parent %2$s:',
-		'all_items'           => 'All %3$s',
-		'add_new_item'        => 'Add New %2$s',
-		'view_item'           => 'View %2$s',
-		'edit_item'           => 'Edit %2$s',
-		'update_item'         => 'Update %2$s',
-		'search_items'        => 'Search %4$s',
-		'not_found'           => 'No %4$s found',
-		'not_found_in_trash'  => 'No %4$s found in Trash'
+	protected $labels_defaults = [];
+	protected $labels_defaults_shared = [
+		'name'                => '@P',
+		'singular_name'       => '@S',
+		'menu_name'           => '@P',
+		'parent_item'		  => 'Parent @S',
+		'parent_item_colon'   => 'Parent @P:',
+		'all_items'           => 'All @P',
+		'add_new_item'        => 'Add New @S',
+		'view_item'           => 'View @S',
+		'edit_item'           => 'Edit @S',
+		'update_item'         => 'Update @S',
+		'search_items'        => 'Search @P',
+		'not_found'           => 'No @p found',
 	];
+	
+	protected $contexts = [];
 	
 	protected $rewrite = [];
-	protected $rewrite_defaults = [
-		'slug'                => '%1$s',
-		'with_front'          => true
-	];
+	protected $rewrite_defaults = [];
 	
 	protected $config = [];
-	protected $config_defaults = [
-		'hierarchical'        => true,
-		'public'              => true,
-		'has_archive'         => true
-	];
+	protected $config_defaults = [];
 	
 	public function register()
 	{
@@ -57,41 +57,36 @@ abstract class Custom implements Extension {
 	        $this->registerCustom( $config );
 	    }, 1 );
 	}
-		
-	public function isRegistered();
-	
-	public function deregister();
 	
 	abstract protected function registerCustom( $config );
 	
-	protected function formatMap( $value ) {
-		if ( is_array( $value ) ) {
-			$context = $value[1];
-			$value = $value[0];
+	protected function loadConfig()
+	{
+		$labels = array_merge( $this->labels_defaults_shared, $this->labels_defaults, $this->labels );
+		array_walk( $labels, [$this, 'formatLabel'] );
+		$rewrite = array_merge( $this->rewrite_defaults, $this->rewrite );
+		if ( isset( $rewrite['slug'] ) ) {
+		    $rewrite['slug'] = str_replace( self::FORMAT_SLUG, $this->slug, $rewrite['slug'] );
 		}
-		$value = sprintf( $value,
-			static::NAME,
-			$this->label_singular,
-			$this->label_plural,
-			strtolower( $this->label_plural )
-		);
-		if ( $context ) {
-			return _x( $value, $context, $this->textdomain );
-		}
-		if ( is_string( $value ) ) {
-			return __( $value, $this->textdomain );
-		}
-		return $value;
-	}
-		
-	protected function loadConfig() {
-		$labels = wp_parse_args( $this->labels, $this->labels_defaults );
-		$labels = array_map( [$this, 'formatMap'], $labels );
-		$rewrite = wp_parse_args( $this->rewrite, $this->rewrite_defaults );
-		$rewrite['slug'] = sprintf( $rewrite['slug'], $this->slug );
-		$config = wp_parse_args( $this->config, $this->config_defaults );
+		$config = array_merge( $this->config_defaults, $this->config );
 		$config['labels'] = $labels;
 		$config['rewrite'] = $rewrite;
 		return $config;
+	}
+	
+	protected function formatLabel( &$value, $key )
+	{
+	    $formatted_value = str_replace(
+		    [self::FORMAT_SINGULAR, self::FORMAT_PLURAL, self::FORMAT_PLURAL_LOWERCASE],
+		    [$this->label_singular, $this->label_plural, strtolower( $this->label_plural )],
+		    $value
+		);
+	    $func = '__';
+	    $args = [$formatted_value];
+		if ( isset( $this->contexts[$key] ) ) {
+			$args[] = str_replace( self::FORMAT_NAME, static::NAME, $this->contexts[$key] );
+			$func = '_x';
+		}
+		$value = call_user_func_array( $func, $args );
 	}
 }

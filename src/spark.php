@@ -11,4 +11,4 @@ if ( !file_exists( $vendor_dir . '/autoload.php' ) )
     $vendor_dir = dirname( dirname( $vendor_dir ) );
 require_once $vendor_dir . '/autoload.php';
 
-add_action( 'muplugins_loaded', 'Spark\\Container\\Container::build' );
+add_action( 'muplugins_loaded', 'spark' );

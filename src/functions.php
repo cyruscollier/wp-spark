@@ -9,6 +9,7 @@ use Spark\Container\Container;
  */
 
 define( 'SPARK_PATH', dirname( __DIR__ ) );
+define( 'SPARK_TEXT_DOMAIN', 'spark' );
 
 function spark( $name = null )
 {
