@@ -4,6 +4,8 @@ namespace Spark\Model;
 
 use Spark\Query\QueryBuilder\PostTypeQueryBuilder;
 use Spark\Query\SubQuery;
+use Spark\Query\QueryBuilder;
+use DI\FactoryInterface;
 
 /**
  * Use in Model classes if using active record pattern
@@ -28,11 +30,22 @@ use Spark\Query\SubQuery;
  */
 trait ActiveRecord {
     
-    public function query()
+    /**
+     * @param FactoryInterface $Factory|null
+     * 
+     * @return QueryBuilder
+     */
+    public function query( FactoryInterface $Factory = null )
     {
-        if ( $this instanceof PostType )
-            return new PostTypeQueryBuilder( get_class( $this ) );
-        return $this->getDefaultQueryBuilder();
+        if ( !$Factory ) $Factory = spark();
+        foreach ( $this->getQueryBuilderMap() as $model_class => $query_builder_class ) {
+            if ( $this instanceof $model_class )
+                return $Factory->make( 
+                    $query_builder_class, 
+                    ['model_class' => get_class( $this )] 
+                );
+        }
+        throw new \RuntimeException( 'Active Record trait used on class without a QueryBuilder' );
     }
     
     public function __call( $method, $arguments )
@@ -45,8 +58,10 @@ trait ActiveRecord {
         return call_user_func_array( [new static, $method], $arguments );
     }
     
-    protected function getDefaultQueryBuilder()
+    protected function getQueryBuilderMap()
     {
-        throw new \RuntimeException( 'Active Record trait used on invalid class' );
+        return [
+            PostType::class => PostTypeQueryBuilder::class
+        ];
     }
 }
