@@ -3,6 +3,7 @@
 namespace Spark\Extension\Admin;
 
 use Spark\Extension\Extension;
+use Spark\Support\View;
 
 /**
  * Adds an admin page
@@ -10,7 +11,7 @@ use Spark\Extension\Extension;
  * @author Cyrus
  *
  */
-abstract class Page implements Extension
+abstract class Page implements Extension, View
 {
 
     protected $page_title;
@@ -28,7 +29,7 @@ abstract class Page implements Extension
             $hook = $this->registerPage();
             if ( $hook ) {
                 add_action( 'load-' . $hook, function() {
-                    $this->prepareView();
+                    $this->prepare();
                 } );
                 $this->hook = $hook;
             }
@@ -44,11 +45,8 @@ abstract class Page implements Extension
         global $admin_page_hooks;
         return isset( $this->menu_slug );
     }
-    
-    protected function prepareView() {}
-    
-    abstract protected function renderView();
-    
+     
+    public function cleanup() {}
 }
 
 ?>

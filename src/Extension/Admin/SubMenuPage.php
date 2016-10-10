@@ -14,7 +14,7 @@ abstract class SubMenuPage extends Page
             $this->menu_title, 
             $this->capability, 
             $this->menu_slug,
-            function() { $this->renderView(); }
+            [$this, 'render']
         );
     }
     

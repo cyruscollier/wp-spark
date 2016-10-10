@@ -2,7 +2,9 @@
 
 namespace Spark\Extension\Theme;
 
-abstract class Shortcode implements Extension
+use Spark\Support\View;
+
+abstract class Shortcode implements Extension, View
 {
     const TAG = null;
     
@@ -16,7 +18,7 @@ abstract class Shortcode implements Extension
     
     public function register()
     {
-        add_shortcode( static::TAG, [$this, 'render'] );
+        add_shortcode( static::TAG, [$this, 'renderShortcode'] );
     }
     
     public function isRegistered()
@@ -29,18 +31,26 @@ abstract class Shortcode implements Extension
         remove_shortcode( static::TAG );
     }
     
-    public function render( $args, $content = '' )
+    public function renderShortcode( $arguments, $content = '' )
     {
-        $this->arguments = shortcode_atts( $this->arguments_defaults, $atts );
-        $this->content = $content;
-        ob_start();
-        $this->shortcodeView();
+        $this->prepare( compact( 'arguments', 'content' ) );
+        $this->render();
+        return $this->cleanup();
+    }
+    
+    public function cleanup() {
         $content = ob_get_clean();
         $return_content = !empty( $content ) ? $content : $this->content;
         $this->arguments = null;
         $this->content = null;
         return $return_content;
     }
+
     
-    abstract protected function shortcodeView();
+    public function prepare( $arguments ) {
+        $this->arguments = shortcode_atts( $this->arguments_defaults, $arguments['arguments'] );
+        $this->content = $content;
+        ob_start();
+    }
+
 }

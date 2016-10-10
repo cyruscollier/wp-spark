@@ -3,6 +3,7 @@
 namespace Spark\Extension\Theme;
 
 use Spark\Extension\Extension;
+use Spark\Support\View;
 
 /**
  * Extension wrapper for built-in widget class
@@ -10,7 +11,7 @@ use Spark\Extension\Extension;
  * @author cyruscollier
  *
  */
-abstract class Widget extends \WP_Widget implements Extension
+abstract class Widget extends \WP_Widget implements Extension, View
 {
     protected $arguments;
     
@@ -38,14 +39,23 @@ abstract class Widget extends \WP_Widget implements Extension
         }
     }
     
-    public function widget( $args, $instance )
+    public function widget( $arguments, $instance )
     {
-        $this->arguments = $args;
+        $this->prepare( compact( 'arguments', 'instance' ) );
+        $this->render();
+        $this->cleanup();
+    }
+    
+    public function prepare( $_arguments )
+    {
+        extract( $_arguments );
+        $this->arguments = $arguments;
         $this->instance = $instance;
-        $this->renderView();
+    }
+    
+    public function cleanup()
+    {
         $this->arguments = null;
         $this->instance = null;
     }
-    
-    abstract protected function renderView();
 }

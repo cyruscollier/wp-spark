@@ -16,7 +16,7 @@ abstract class MenuPage extends Page
             $this->menu_title, 
             $this->capability, 
             $this->menu_slug,
-            function() { $this->renderView(); },
+            [$this, 'render'],
             $this->icon_url,
             $this->menu_position
         );

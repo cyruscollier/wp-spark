@@ -10,11 +10,11 @@ namespace Spark\Extension;
  */
 interface Extension
 {
-    public function getType();
+    function getType();
     
-    public function register();
+    function register();
     
-    public function isRegistered();
+    function isRegistered();
     
-    public function deregister();
+    function deregister();
 }

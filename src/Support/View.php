@@ -1,10 +1,10 @@
 <?php
 
-namespace Spark\Extension;
+namespace Spark\Support;
 
 interface View
 {
-    function prepare();
+    function prepare( $arguments );
     
     function render();
     
