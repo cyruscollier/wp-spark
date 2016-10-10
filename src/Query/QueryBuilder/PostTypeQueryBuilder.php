@@ -2,9 +2,9 @@
 
 namespace Spark\Query\QueryBuilder;
 
-use Spark\Model\Model;
+use Spark\Model\Entity;
 use Spark\Model\PostType;
-use Spark\Model\ModelCollection;
+use Spark\Model\EntityCollection;
 use Spark\Query\SubQuery;
 use Spark\Query\QueryBuilder;
 
@@ -146,7 +146,7 @@ class PostTypeQueryBuilder extends QueryBuilderWithMetadata
      * Immediately return one matching record
      * 
      * @param array $params
-     * @return Model|false
+     * @return Entity|false
      */
     public function getOne( $params = [] )
     {
@@ -159,7 +159,7 @@ class PostTypeQueryBuilder extends QueryBuilderWithMetadata
     /**
      * Get single post if id provided or collection using stored parameters
      * 
-     * @return ModelCollection
+     * @return EntityCollection
      */
     public function get( $id = false )
     {
@@ -182,7 +182,7 @@ class PostTypeQueryBuilder extends QueryBuilderWithMetadata
     /**
      * Execute query and return collection of found records
      * 
-     * @return ModelCollection
+     * @return EntityCollection
      */
     public function getIterator()
     {
@@ -212,7 +212,7 @@ class PostTypeQueryBuilder extends QueryBuilderWithMetadata
     
     protected function getPosts()
     {
-        $this->previousCollection = new ModelCollection();
+        $this->previousCollection = new EntityCollection();
         $post_type = $this->model_class;
         $posts = get_posts( $this->parameters );
         $post_ids = array_map( function( $p ) { return $p->ID; }, $posts );

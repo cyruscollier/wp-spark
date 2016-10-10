@@ -8,7 +8,7 @@ namespace Spark\Model;
  * @author cyruscollier
  *
  */
-abstract class Taxonomy extends ModelWithMetadata
+abstract class Taxonomy extends EntityWithMetadata
 {
     
     /**

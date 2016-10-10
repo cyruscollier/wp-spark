@@ -12,7 +12,7 @@ use Spark\Model\Values\PostMetaField;
  * @author cyruscollier
  *
  */
-abstract class PostType extends ModelWithMetadata
+abstract class PostType extends EntityWithMetadata
 {
     
     /**

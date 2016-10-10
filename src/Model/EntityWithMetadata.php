@@ -10,7 +10,7 @@ use Spark\Model\Values\MetadataField;
  * @author cyruscollier
  *
  */
-abstract class ModelWithMetadata extends Model
+abstract class EntityWithMetadata extends Entity
 {
     
     /**

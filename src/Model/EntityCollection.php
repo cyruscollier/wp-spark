@@ -5,17 +5,17 @@ namespace Spark\Model;
 use Spark\Support\Collection;
 
 /**
- * Iterator for set of Model instances
+ * Iterator for set of Model Entity instances
  * 
  * @author cyruscollier
  *
  */
-class ModelCollection implements Collection
+class EntityCollection implements Collection
 {
     /**
-     * Array of Model instances
+     * Array of Entity instances
      * 
-     * @var Model[]
+     * @var Entity[]
      */
     protected $items = [];
     
@@ -27,7 +27,7 @@ class ModelCollection implements Collection
     protected $model_class;
     
     /**
-     * Constructor takes array of Model instances
+     * Constructor takes array of Entity instances
      * 
      * @param array $items
      */
@@ -39,17 +39,17 @@ class ModelCollection implements Collection
     }
     
     /**
-     * Append a Model instance to the collection
+     * Append an Entity instance to the collection
      * 
-     * @param Model $Object
+     * @param Entity $Object
      * @return $this
      */
-    public function add( Model $Object )
+    public function add( Entity $Object )
     {
         if ( empty( $this->items ) ) {
             $this->model_class = get_class( $Object );
         }
-        $this->checkValidModel( $Object );
+        $this->checkValidEntity( $Object );
         $this->items[] = $Object;
         return $this;
     }
@@ -57,10 +57,10 @@ class ModelCollection implements Collection
 
     /**
      * 
-     * @param Model $Object
+     * @param Entity $Object
      * @return $this
      */
-    public function remove( Model $Object )
+    public function remove( Entity $Object )
     {
         foreach ( $this->items as $index => $item ) {
             if ( $item === $Object ) {
@@ -85,7 +85,7 @@ class ModelCollection implements Collection
      * ArrayAccess $array[$i]
      * 
      * @param int $offset
-     * @return Model
+     * @return Entity
      */
     public function offsetGet( $offset ) 
     {
@@ -100,8 +100,8 @@ class ModelCollection implements Collection
      */
     public function offsetSet( $offset, $value )
     {
-        if ( !( $value instanceof Model ) )
-            throw new \InvalidArgumentException( 'ModelCollection must only contain Model instances' );
+        if ( !( $value instanceof Entity ) )
+            throw new \InvalidArgumentException( 'EntityCollection must only contain Entity instances' );
         if ( is_null( $offset ) ) {
             $this->add( $value );
         } else {
@@ -130,7 +130,7 @@ class ModelCollection implements Collection
     }
     
     /**
-     * Model instance count in collection
+     * Entity instance count in collection
      * 
      * @param int $mode
      * @return int
@@ -139,11 +139,11 @@ class ModelCollection implements Collection
         return count( $this->items );
     }
     
-    protected function checkValidModel( Model $model )
+    protected function checkValidEntity( Entity $model )
     {
         if ( !( $model instanceof $this->model_class ) ) {
             throw new \InvalidArgumentException(
-                'ModelCollection items must all be the same Model class'
+                'EntityCollection items must all be the same Entity class'
             );
         }
     }

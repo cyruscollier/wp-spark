@@ -8,7 +8,7 @@ namespace Spark\Model;
  * @author cyruscollier
  *
  */
-abstract class Model
+abstract class Entity
 {
     protected $unique_key = 'id';
     

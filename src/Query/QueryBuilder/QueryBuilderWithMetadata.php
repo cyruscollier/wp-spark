@@ -5,7 +5,7 @@ namespace Spark\Query\QueryBuilder;
 use Spark\Query\QueryBuilder;
 use Spark\Model\Metadata;
 use Spark\Model\MetadataCollection;
-use Spark\Model\ModelWithMetadata;
+use Spark\Model\EntityWithMetadata;
 
 /**
  * Base class for all types of query builder that support metadata
@@ -28,7 +28,7 @@ abstract class QueryBuilderWithMetadata implements QueryBuilder
      * 
      * @var string
      */
-    protected $base_model_class = ModelWithMetadata::class;
+    protected $base_model_class = EntityWithMetadata::class;
     
     /**
      * List of parameters for get_posts()
@@ -92,7 +92,7 @@ abstract class QueryBuilderWithMetadata implements QueryBuilder
         return $metadata;
     }
     
-    protected function createMetadata( ModelWithMetadata $model, $key, $value_raw )
+    protected function createMetadata( EntityWithMetadata $model, $key, $value_raw )
     {
         if ( is_array( $value_raw ) ) {
             $metadata = new MetadataCollection();
@@ -105,7 +105,7 @@ abstract class QueryBuilderWithMetadata implements QueryBuilder
     }    
     
     /**
-     * @return ModelWithMetadata
+     * @return EntityWithMetadata
      */
     protected function createModel()
     {

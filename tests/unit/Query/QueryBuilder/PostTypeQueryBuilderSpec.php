@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Spark\Model\PostType\Post;
 use Spark\Model\PostType\Page;
 use Spark\Query\SubQuery;
-use Spark\Model\ModelCollection;
+use Spark\Model\EntityCollection;
 
 class PostTypeQueryBuilderSpec extends ObjectBehavior
 {
@@ -124,7 +124,7 @@ class PostTypeQueryBuilderSpec extends ObjectBehavior
             456 => ['meta_key1' => '3', 'meta_key2' => '4']
         ]);
         $this->where(['category_name' => 'video']);
-        $this->get()->shouldBeAnInstanceOf(ModelCollection::class);
+        $this->get()->shouldBeAnInstanceOf(EntityCollection::class);
         $this->get()->shouldHaveCount(2);
         $this->getIterator()->shouldBeAnInstanceOf(\ArrayIterator::class);
         $this->getIterator()->shouldHaveCount(2);

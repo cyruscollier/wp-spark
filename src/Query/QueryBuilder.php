@@ -2,8 +2,8 @@
 
 namespace Spark\Query;
 
-use Spark\Model\Model;
-use Spark\Model\ModelCollection;
+use Spark\Model\Entity;
+use Spark\Model\EntityCollection;
 
 /**
  * Fluent interface for building query parameters
@@ -98,7 +98,7 @@ interface QueryBuilder extends \IteratorAggregate
      * Immediately return one matching record
      *
      * @param array $params
-     * @return Model|false
+     * @return Entity|false
      */
     public function getOne( $params = [] );
     
@@ -106,7 +106,7 @@ interface QueryBuilder extends \IteratorAggregate
      * Execute query and return colleciton of found records
      * 
      * @param mixed $id
-     * @return ModelCollection
+     * @return EntityCollection
      */
     public function get( $id = false );
     
@@ -120,7 +120,7 @@ interface QueryBuilder extends \IteratorAggregate
     /**
      * Execute query and return colleciton of found records
      * 
-     * @return ModelCollection
+     * @return EntityCollection
      */
     public function getIterator();
     

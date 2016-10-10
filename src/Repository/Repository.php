@@ -2,7 +2,7 @@
 
 namespace Spark\Repository;
 
-use Spark\Model\ModelCollection;
+use Spark\Model\EntityCollection;
 
 /**
  * Defines basic methods for a model repository
@@ -33,7 +33,7 @@ interface Repository
      * Get all Model instances matching query parameters
      * 
      * @param array $params
-     * @return ModelCollection
+     * @return EntityCollection
      */
     public function find( $params = [] );
     

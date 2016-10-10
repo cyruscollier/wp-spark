@@ -7,14 +7,14 @@ use Prophecy\Argument;
 use Spark\Model\PostType\Post;
 use Spark\Model\Taxonomy\Category;
 
-class ModelCollectionSpec extends ObjectBehavior
+class EntityCollectionSpec extends ObjectBehavior
 {
     protected $post1;
     protected $post2;
     
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Model\ModelCollection');
+        $this->shouldHaveType('Spark\Model\EntityCollection');
     }
     
     function let()
