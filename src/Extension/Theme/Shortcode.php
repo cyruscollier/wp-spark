@@ -38,19 +38,18 @@ abstract class Shortcode implements Extension, View
         return $this->cleanup();
     }
     
+    public function prepare( $arguments ) {
+        $this->arguments = shortcode_atts( $this->arguments_defaults, $arguments['arguments'] );
+        $this->content = $content;
+        ob_start();
+    }
+    
     public function cleanup() {
         $content = ob_get_clean();
         $return_content = !empty( $content ) ? $content : $this->content;
         $this->arguments = null;
         $this->content = null;
         return $return_content;
-    }
-
-    
-    public function prepare( $arguments ) {
-        $this->arguments = shortcode_atts( $this->arguments_defaults, $arguments['arguments'] );
-        $this->content = $content;
-        ob_start();
     }
 
 }
