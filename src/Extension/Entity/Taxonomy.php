@@ -1,6 +1,6 @@
 <?php 
 
-namespace Spark\Extension\Custom;
+namespace Spark\Extension\Entity;
 
 /**
  * Register a custom Taxonomy
@@ -8,7 +8,7 @@ namespace Spark\Extension\Custom;
  * @author cyruscollier
  *
  */
-abstract class Taxonomy extends Custom {
+abstract class Taxonomy extends Entity {
 	
 	protected $post_types = [];
 	
@@ -26,7 +26,7 @@ abstract class Taxonomy extends Custom {
 	];
 		
 	protected function registerCustom( $config ) {
-		register_taxonomy( static::NAME, $this->post_types, $config );
+		return register_taxonomy( static::NAME, $this->post_types, $config );
 	}
 	
 	public function getType() { return 'CustomTaxonomy'; }

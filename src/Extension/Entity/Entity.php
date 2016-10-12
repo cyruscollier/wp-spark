@@ -1,6 +1,6 @@
 <?php 
 
-namespace Spark\Extension\Custom;
+namespace Spark\Extension\Entity;
 
 use Spark\Extension\Extension;
 
@@ -52,10 +52,13 @@ abstract class Entity implements Extension {
 	
 	public function register()
 	{
-	    add_action( 'init', function() {
-	        $config = $this->loadConfig();
-	        $this->registerCustom( $config );
-	    }, 1 );
+	    return add_action( 'init', [$this, 'init'], 1 );
+	}
+	
+	public function init()
+	{
+	    $config = $this->loadConfig();
+	    return $this->registerCustom( $config );
 	}
 	
 	abstract protected function registerCustom( $config );
@@ -87,6 +90,6 @@ abstract class Entity implements Extension {
 			$args[] = str_replace( self::FORMAT_NAME, static::NAME, $this->contexts[$key] );
 			$func = '_x';
 		}
-		$value = call_user_func_array( $func, $args );
+		$value = function_exists( $func ) ? call_user_func_array( $func, $args ) : $formatted_value;
 	}
 }
