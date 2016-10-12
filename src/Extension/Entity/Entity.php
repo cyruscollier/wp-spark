@@ -10,7 +10,7 @@ use Spark\Extension\Extension;
  * @author cyruscollier
  *
  */
-abstract class Custom implements Extension {
+abstract class Entity implements Extension {
 	
 	const NAME = null;
 	const FORMAT_NAME = '@n';

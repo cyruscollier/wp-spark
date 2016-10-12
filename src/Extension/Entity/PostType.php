@@ -8,7 +8,7 @@ namespace Spark\Extension\Custom;
  * @author cyruscollier
  *
  */
-abstract class CustomPostType extends Custom {
+abstract class PostType extends Custom {
 	
 	protected $labels_defaults = [
         'add_new'             => 'Add New',

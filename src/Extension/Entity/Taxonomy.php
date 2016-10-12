@@ -8,7 +8,7 @@ namespace Spark\Extension\Custom;
  * @author cyruscollier
  *
  */
-abstract class CustomTaxonomy extends Custom {
+abstract class Taxonomy extends Custom {
 	
 	protected $post_types = [];
 	
