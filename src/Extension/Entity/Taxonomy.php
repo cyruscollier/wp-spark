@@ -25,7 +25,7 @@ abstract class Taxonomy extends Entity {
 		'singular_name'       => 'taxonomy singular name',    
 	];
 		
-	protected function registerCustom( $config ) {
+	protected function registerEntity( $config ) {
 		return register_taxonomy( static::NAME, $this->post_types, $config );
 	}
 	
@@ -39,8 +39,10 @@ abstract class Taxonomy extends Entity {
 	public function deregister()
 	{
 	    global $wp_taxonomies;
-	    if ( isset( $wp_taxonomies[self::NAME] ) ) {
-	        unset( $wp_taxonomies[self::NAME] );
+	    if ( isset( $wp_taxonomies[static::NAME] ) ) {
+	        unset( $wp_taxonomies[static::NAME] );
+	        return true;
 	    }
+	    return false;
 	}
 }

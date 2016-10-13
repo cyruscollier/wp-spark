@@ -4,6 +4,7 @@ define('WP_PATH', 'vendor/wordpress-dev/src/');
 define('WP_CONTENT_DIR', WP_PATH . '/wp-content/');
 
 require_once WP_PATH . 'wp-includes/class-wp-post.php';
+require_once WP_PATH . 'wp-includes/class-wp-post-type.php';
 
 /* Mocked WP functions used in domain objects */
 function apply_filters($tag, $value) { return $value; }

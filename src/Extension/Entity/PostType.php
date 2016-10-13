@@ -30,13 +30,12 @@ abstract class PostType extends Entity {
 		'menu_position'       => 5
 	];
 	
-	protected function registerCustom( $config )
+	protected function registerEntity( $config )
 	{
 		return register_post_type( static::NAME, $config );
 	}	
 	
 	public function getType() { return 'CustomPostType'; }
-	
 	
 	public function isRegistered()
 	{
@@ -48,6 +47,8 @@ abstract class PostType extends Entity {
 	    global $wp_post_types;
 	    if ( isset( $wp_post_types[static::NAME] ) ) {
 	       unset( $wp_post_types[static::NAME] );
+	       return true;
 	    }
+	    return false;
 	}
 }

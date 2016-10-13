@@ -52,9 +52,12 @@ abstract class Entity implements Extension {
 	
 	public function register()
 	{
-	    return add_action( 'init', function() {
-	        $this->registerCustom( $this->getConfig() );
-	    }, 1 );
+	    return add_action( 'init', [$this, 'init'], 1 );
+	}
+	
+	public function init()
+	{
+	    return $this->registerEntity( $this->getConfig() );
 	}
 	
 	public function getLabels()
@@ -81,7 +84,7 @@ abstract class Entity implements Extension {
 		return $config;
 	}
 	
-	abstract protected function registerCustom( $config );
+	abstract protected function registerEntity( $config );
 	
 	protected function formatLabel( &$value, $key )
 	{

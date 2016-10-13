@@ -71,7 +71,7 @@ class EntityTest extends Entity
     
     function deregister() { return true; }
     
-    protected function registerCustom( $config )
+    protected function registerEntity( $config )
     {
         return $config;
     }
