@@ -52,30 +52,36 @@ abstract class Entity implements Extension {
 	
 	public function register()
 	{
-	    return add_action( 'init', [$this, 'init'], 1 );
+	    return add_action( 'init', function() {
+	        $this->registerCustom( $this->getConfig() );
+	    }, 1 );
 	}
 	
-	public function init()
+	public function getLabels()
 	{
-	    $config = $this->loadConfig();
-	    return $this->registerCustom( $config );
+	    $labels = array_merge( $this->labels_defaults_shared, $this->labels_defaults, $this->labels );
+	    array_walk( $labels, [$this, 'formatLabel'] );
+	    return $labels;
+	}
+	
+	public function getRewrite()
+	{
+	    $rewrite = array_merge( $this->rewrite_defaults, $this->rewrite );
+	    if ( isset( $this->slug ) ) {
+	        $rewrite['slug'] = $this->slug;
+	    }
+	    return $rewrite;
+	}
+	
+	public function getConfig()
+	{		
+		$config = array_merge( $this->config_defaults, $this->config );
+		$config['labels'] = $this->getLabels();
+		$config['rewrite'] = $this->getRewrite();
+		return $config;
 	}
 	
 	abstract protected function registerCustom( $config );
-	
-	protected function loadConfig()
-	{
-		$labels = array_merge( $this->labels_defaults_shared, $this->labels_defaults, $this->labels );
-		array_walk( $labels, [$this, 'formatLabel'] );
-		$rewrite = array_merge( $this->rewrite_defaults, $this->rewrite );
-		if ( isset( $rewrite['slug'] ) ) {
-		    $rewrite['slug'] = str_replace( self::FORMAT_SLUG, $this->slug, $rewrite['slug'] );
-		}
-		$config = array_merge( $this->config_defaults, $this->config );
-		$config['labels'] = $labels;
-		$config['rewrite'] = $rewrite;
-		return $config;
-	}
 	
 	protected function formatLabel( &$value, $key )
 	{
