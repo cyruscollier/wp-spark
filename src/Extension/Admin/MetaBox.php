@@ -3,8 +3,9 @@
 namespace Spark\Extension\Admin;
 
 use Spark\Support\View;
+use Spark\Extension\Extension;
 
-abstract class Metabox implements Extension, View
+abstract class MetaBox implements Extension, View
 {
     protected $post_type;
     

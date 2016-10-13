@@ -4,6 +4,7 @@ namespace Spark\Extension\Theme;
 
 use Spark\Extension\Extension;
 use Spark\Support\View;
+use WP_Widget;
 
 /**
  * Extension wrapper for built-in widget class
@@ -11,7 +12,7 @@ use Spark\Support\View;
  * @author cyruscollier
  *
  */
-abstract class Widget extends \WP_Widget implements Extension, View
+abstract class Widget extends WP_Widget implements Extension, View
 {
     protected $arguments;
     

@@ -3,6 +3,7 @@
 namespace Spark\Extension\Theme;
 
 use Spark\Support\View;
+use Spark\Extension\Extension;
 
 abstract class Shortcode implements Extension, View
 {
@@ -19,16 +20,21 @@ abstract class Shortcode implements Extension, View
     public function register()
     {
         add_shortcode( static::TAG, [$this, 'renderShortcode'] );
+        return true;
     }
     
     public function isRegistered()
     {
-        shortcode_exists( static::TAG );
+        return shortcode_exists( static::TAG );
     }
     
     public function deregister()
     {
-        remove_shortcode( static::TAG );
+        if ( $this->isRegistered() ) {
+            remove_shortcode( static::TAG );
+            return true;
+        }
+        return false;
     }
     
     public function renderShortcode( $arguments, $content = '' )
