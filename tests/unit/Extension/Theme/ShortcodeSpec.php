@@ -24,10 +24,16 @@ class ShortcodeSpec extends ObjectBehavior
         $this->register()->shouldReturn(true);
     }
     
-    function it_checks_if_shortcode_is_registered($functions)
+    function it_checks_if_shortcode_is_registered_true($functions)
     {
         $functions->shortcode_exists('test')->willReturn(true);
         $this->isRegistered()->shouldReturn(true);
+    }
+    
+    function it_checks_if_shortcode_is_registered_false($functions)
+    {
+        $functions->shortcode_exists('test')->willReturn(false);
+        $this->isRegistered()->shouldReturn(false);
     }
     
     function it_deregisters_the_shortcode($functions)
@@ -35,6 +41,13 @@ class ShortcodeSpec extends ObjectBehavior
         $functions->shortcode_exists('test')->willReturn(true);
         $functions->remove_shortcode('test')->shouldBeCalled();
         $this->deregister()->shouldReturn(true);
+    }
+    
+    function it_prevents_deregistering_an_unregistered_shortcode($functions)
+    {
+        $functions->shortcode_exists('test')->willReturn(false);
+        $functions->remove_shortcode('test')->shouldNotBeCalled();
+        $this->deregister()->shouldReturn(false);
     }
 }
 

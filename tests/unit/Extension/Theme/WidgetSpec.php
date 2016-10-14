@@ -47,6 +47,15 @@ class WidgetSpec extends ObjectBehavior
         $this->deregister()->shouldReturn(true);
     }
     
+    function it_prevents_deregistering_an_unregistered_widget($functions)
+    {
+        global $wp_widget_factory;
+        $instance = $this->getWrappedObject();
+        $GLOBALS['wp_widget_factory'] = (object) ['widgets' => []];
+        $functions->unregister_widget( $instance )->shouldNotBeCalled();
+        $this->deregister()->shouldReturn(false);
+    }
+    
     
 }
 
