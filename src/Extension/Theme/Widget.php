@@ -5,15 +5,13 @@ namespace Spark\Extension\Theme;
 use Spark\Extension\Extension;
 use Spark\Support\View;
 
-if ( class_exists( 'WP_Widget' ) ) { class WidgetBase extends \WP_Widget {} } else { class WidgetBase {} }
-
 /**
  * Extension wrapper for built-in widget class
  * 
  * @author cyruscollier
  *
  */
-abstract class Widget extends WidgetBase implements Extension, View
+abstract class Widget extends \WP_Widget implements Extension, View
 {
     protected $arguments;
     
