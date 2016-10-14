@@ -35,9 +35,6 @@ class ShortcodeSpec extends ObjectBehavior
         $functions->shortcode_exists('test')->willReturn(true);
         $functions->remove_shortcode('test')->shouldBeCalled();
         $this->deregister()->shouldReturn(true);
-//         $functions->shortcode_exists('test')->willReturn(false);
-//         $functions->remove_shortcode('test')->shouldNotBeCalled();
-//         $this->deregister()->shouldReturn(false);
     }
 }
 

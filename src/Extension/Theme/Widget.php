@@ -21,9 +21,12 @@ abstract class Widget extends \WP_Widget implements Extension, View
     
     public function register()
     {
-        add_action( 'widgets_init', function() {
-            register_widget( $this );
-        } );
+        return add_action( 'widgets_init', [$this, 'init'] );
+    }
+    
+    public function init()
+    {
+        register_widget( $this );
     }
     
     public function isRegistered()
@@ -36,7 +39,9 @@ abstract class Widget extends \WP_Widget implements Extension, View
     {
         if ( $this->isRegistered() ) {
             unregister_widget( $this );
+            return true;
         }
+        return false;
     }
     
     public function widget( $arguments, $instance )
