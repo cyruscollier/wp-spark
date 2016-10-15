@@ -32,7 +32,7 @@ abstract class PostType extends Entity {
 	
 	protected function registerEntity( $config )
 	{
-		return register_post_type( static::NAME, $config );
+        return register_post_type( static::NAME, $config );
 	}	
 	
 	public function getType() { return 'CustomPostType'; }

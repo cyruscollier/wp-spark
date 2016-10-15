@@ -26,7 +26,10 @@ abstract class Taxonomy extends Entity {
 	];
 		
 	protected function registerEntity( $config ) {
-		return register_taxonomy( static::NAME, $this->post_types, $config );
+	    global $wp_taxonomies;
+		register_taxonomy( static::NAME, $this->post_types, $config );
+		register_taxonomy_for_object_type( static::NAME, $this->post_types );
+		return get_taxonomy(static::NAME);
 	}
 	
 	public function getType() { return 'CustomTaxonomy'; }

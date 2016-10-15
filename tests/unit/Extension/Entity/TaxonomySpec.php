@@ -22,7 +22,10 @@ class TaxonomySpec extends ObjectBehavior
     {
         $taxonomy = new \stdClass();
         $functions->register_taxonomy('test', ['test_postype'], Argument::type('array'))
-                  ->willReturn($taxonomy);
+                  ->shouldBeCalled();
+        $functions->register_taxonomy_for_object_type('test', ['test_postype'])
+                  ->shouldBeCalled();
+        $functions->get_taxonomy('test')->willReturn($taxonomy);
         $this->init()->shouldReturn($taxonomy);
     }
     
