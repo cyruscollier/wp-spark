@@ -125,7 +125,7 @@ abstract class PostType extends EntityWithMetadata
         $Post->status = new Values\PostStatus( $post->post_status );
         $Post->published_date = new Values\PostDate( $post->post_date, $post->post_date_gmt );
         $Post->modified_date = new Values\PostModifiedDate( $post->post_modified, $post->post_modified_gmt ); 
-        $Post->slug = $post->post_name;
+        $Post->slug = new Values\Slug( $post->post_name );
         $Post->_wp_post = $post;
         foreach ( $all_metadata as $metadata ) {
             $Post->setMetadata( $metadata );
@@ -161,6 +161,11 @@ abstract class PostType extends EntityWithMetadata
     protected function setModifiedDate( Values\PostModifiedDate $modified_date )
     {
         $this->modified_date = $modified_date;
+    }
+    
+    protected function setSlug( Values\Slug $slug )
+    {
+        $this->slug = $slug;
     }
     
     public function __get( $name )
