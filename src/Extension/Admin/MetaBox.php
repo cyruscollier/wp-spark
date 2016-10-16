@@ -23,60 +23,43 @@ abstract class MetaBox implements Extension, View
     
     public function register()
     {
-        $callback = function( $arg ) {
-            if ( is_string( $arg ) && post_type_exists( $arg ) ) {
-                $this->post_type = $arg;
-            }
-            add_meta_box( 
-                $this->id, 
-                $this->title, 
-                [$this, 'renderMetabox'], 
-                $this->screen,
-                $this->context,
-                $this->priority
-            );
-        };
-        if ( isset( $this->post_type ) ) {
-            add_action( 'add_meta_boxes_' . $this->post_type, $callback );
-        } else {
-            add_action( 'add_meta_boxes', $callback );
+        $action = 'add_meta_boxes';
+        if ( isset( $this->post_type ) ) $action .= "_{$this->post_type}";
+        return add_action( $action, [$this, 'init'] );
+    }
+    
+    public function init( $arg = null ) {
+        if ( is_string( $arg ) && post_type_exists( $arg ) ) {
+            $this->post_type = $arg;
         }
+        $this->screen = $this->getScreen( $this->screen );
+        add_meta_box( 
+            $this->id, 
+            $this->title, 
+            [$this, 'renderMetabox'], 
+            $this->screen,
+            $this->context,
+            $this->priority
+        );
+        return true;
     }
     
     public function isRegistered()
     {
         global $wp_meta_boxes;
-
-    	if ( empty( $screen ) ) {
-    		$screen = get_current_screen();
-    	} elseif ( is_string( $screen ) ) {
-    		$screen = convert_to_screen( $screen );
-    	} elseif ( is_array( $screen ) ) {
-    		foreach ( $screen as $single_screen ) {
-    			remove_meta_box( $id, $single_screen, $context );
-    		}
+    	$screens = is_array( $this->screen ) ? $this->screen : [$this->screen];
+    	foreach ( $screens as $screen) {
+    	    if ( is_object( $screen ) ) $screen = $screen->id;
+    	    if ( !empty( $wp_meta_boxes[$screen][$this->context][$this->priority][$this->id] ) )
+	            return true;
     	}
-
-    	if ( ! isset( $screen->id ) ) {
-    		return;
-    	}
-    
-    	$page = $screen->id;
-    
-    	if ( !isset($wp_meta_boxes) )
-    		$wp_meta_boxes = array();
-    	if ( !isset($wp_meta_boxes[$page]) )
-    		$wp_meta_boxes[$page] = array();
-    	if ( !isset($wp_meta_boxes[$page][$context]) )
-    		$wp_meta_boxes[$page][$context] = array();
-    
-    	foreach ( array('high', 'core', 'default', 'low') as $priority )
-    		$wp_meta_boxes[$page][$context][$priority][$id] = false;
+    	return false;
     }
     
     public function deregister()
     {
         remove_meta_box( $this->id, $this->screen, $this->context );
+        return true;
     }
     
     public function renderMetabox( $post )
@@ -91,5 +74,13 @@ abstract class MetaBox implements Extension, View
     }
     
     public function cleanup() {}
+        
+    protected function getScreen( $screen = null )
+    {
+        if ( is_array( $screen ) ) {
+            return array_map( [$this, 'getScreen'], $screen );
+        }
+        return $screen ? convert_to_screen( $screen ) : get_current_screen();
+    }
 
 }
