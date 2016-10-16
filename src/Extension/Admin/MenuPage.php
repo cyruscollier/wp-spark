@@ -24,6 +24,6 @@ abstract class MenuPage extends Page
     
     public function deregister()
     {
-        remove_menu_page( $this->menu_slug );
+        return (bool) remove_menu_page( $this->menu_slug );
     }
 }

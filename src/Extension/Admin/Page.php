@@ -25,15 +25,17 @@ abstract class Page implements Extension, View
     protected $hook = '';
         
     public function register() {
-        add_action( 'admin_menu', function() {
-            $hook = $this->registerPage();
-            if ( $hook ) {
-                add_action( 'load-' . $hook, function() {
-                    $this->prepare();
-                } );
-                $this->hook = $hook;
-            }
-        } );
+        return add_action( 'admin_menu', [$this, 'init'] );
+    }
+    
+    public function init()
+    {
+        $hook = $this->registerPage();
+        if ( $hook ) {
+            add_action( 'load-' . $hook, [$this, 'prepare'] );
+            $this->hook = $hook;
+        }
+        return $hook;
     }
 
     abstract protected function registerPage();
@@ -42,8 +44,7 @@ abstract class Page implements Extension, View
         
     public function isRegistered()
     {
-        global $admin_page_hooks;
-        return isset( $this->menu_slug );
+        return isset( $GLOBALS['admin_page_hooks'][$this->menu_slug] );
     }
      
     public function cleanup() {}

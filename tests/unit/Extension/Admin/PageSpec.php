@@ -17,11 +17,25 @@ class PageSpec extends ObjectBehavior
     {
         $this->beAnInstanceOf(PageTest::class);
     }
+    
+    function it_registers_the_admin_menu_action($functions) {
+        $functions->add_action('admin_menu', Argument::type('callable'))->willReturn(true);
+        $this->register()->shouldReturn(true);
+    }
+    
+    function it_checks_if_page_is_registered()
+    {
+        $this->isRegistered()->shouldBe(false);
+        $GLOBALS['admin_page_hooks']['test'] = 'test';
+        $this->isRegistered()->shouldBe(true);
+    }
 }
 
 class PageTest extends Page
 {
 
+    protected $menu_slug = 'test';
+    
     public function deregister()
     {
         return true;
@@ -39,6 +53,6 @@ class PageTest extends Page
     
     protected function registerPage()
     {
-        return true;
+        return 'test';
     }
 }
