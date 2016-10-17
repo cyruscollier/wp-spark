@@ -14,7 +14,7 @@ abstract class ScheduledEvent implements Extension, Command
     
     protected $singular = false;
     
-    protected $recurrance;
+    protected $recurrance = 'daily';
     
     protected $args = [];
 
@@ -23,17 +23,17 @@ abstract class ScheduledEvent implements Extension, Command
     public function register()
     {
         add_action( $this->getHook(), [$this, 'execute'] );
-        if ( $this->auto_schedule )
-            $this->schedule();
+        return $this->auto_schedule ? $this->schedule() : true;
     }
         
     public function isRegistered()
     {
-        return $this->isScheduled();
+        return has_action( $this->getHook(), [$this, 'execute'] );
     }
     
     public function deregister()
     {
+        remove_action( $this->getHook(), [$this, 'execute'] );
         return $this->unschedule();
     }
     
@@ -63,7 +63,7 @@ abstract class ScheduledEvent implements Extension, Command
         return true;
     }
     
-    public function getNextScheduled()
+    protected function getNextScheduled()
     {
         return wp_next_scheduled( $this->getHook(), $this->args );
     }
@@ -71,7 +71,10 @@ abstract class ScheduledEvent implements Extension, Command
     protected function getHook()
     {
         if ( !isset( $this->hook ) ) {
-            $this->hook = strtolower( str_replace( '\\', '_', get_class( $this ) ) );
+            $class_pieces = explode( '\\', get_class( $this ) );
+            $hook = end( $class_pieces );
+            if ( count( $class_pieces ) > 1 ) $hook = reset( $class_pieces ) . $hook;
+            $this->hook = spark_to_snake_case( $hook );
         }
         return $this->hook;
     }
