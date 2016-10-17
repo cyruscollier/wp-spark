@@ -88,8 +88,7 @@ abstract class Entity
      */
     protected function getMethodFromProperty( $property, $prefix )
     {
-        $property = ucwords( str_replace( '_', ' ', $property ) );
-        $method = $prefix . str_replace( ' ', '', $property );
+        $method = $prefix . spark_to_pascal_case( $property );
         return method_exists( $this, $method ) ? $method : false;
     }
     
