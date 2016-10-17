@@ -1,5 +1,7 @@
 # Spark
 
+[![Build Status](https://travis-ci.org/cyruscollier/wp-spark.svg?branch=master)](https://travis-ci.org/cyruscollier/wp-spark)
+
 ### The object-oriented API you wish WordPress had.
 
 Do you love developing on WordPress? Do you excel at building complex themes, custom plugins and large-scale applications that leverage the best and most popular CMS on the planet? Do you also get frustrated with WordPress's APIs and codebase, and really wished its PHP codebase and APIs were:
@@ -31,9 +33,9 @@ Spark provides straight-forward entities and value objects to represent internal
 use Spark\Model\PostType;
 use Spark\Model\PostType\Post;
 
-$post_id = 123;
+global $post;
 
-$Post = new Post($id); //instantiate a post with ID 123
+$Post = Post::createFromPost($post); //instantiate a Spark Post instance from a regualr WP_Post instance
 
 echo $Post->title; // returns a PostTitle value object that automaticaly uses apply_filters('post_title')
 
