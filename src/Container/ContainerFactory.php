@@ -3,7 +3,7 @@
 namespace Spark\Container;
 
 use DI\ContainerBuilder;
-use DI\Container;
+use DI\Container as DIContainer;
 
 /**
  * Creates an instance of DI Container with definitions
@@ -27,7 +27,7 @@ class ContainerFactory
     }
     
     /**
-     * @return Container
+     * @return DIContainer
      */
     public function create()
     {
