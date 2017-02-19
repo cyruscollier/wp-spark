@@ -16,10 +16,7 @@
         "php-di/php-di": "^5.4"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.1",
-        "cyruscollier/phpspec-php-mock": "dev-master",
-        "wordpress-dev": "4.5",
-        "phpunit/phpunit": "^5.5"
+        "cyruscollier/wp-test": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -27,20 +24,6 @@
         },
         "files": ["src/functions.php"]
     },
-    "repositories": [
-		{
-		    "type": "package",
-		    "package": {
-				"name": "wordpress-dev",
-				"version": "4.5",
-				"source" : {
-					"url"  : "git://develop.git.wordpress.org/",
-					"type" : "git",
-					"reference": "master"
-				}
-		    }
-		}
-    ],
     "config": {
         "secure-http": false
     }

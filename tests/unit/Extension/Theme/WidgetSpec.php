@@ -59,7 +59,7 @@ class WidgetSpec extends ObjectBehavior
     
 }
 
-require_once 'tests/unit/stubs.php';
+//require_once 'tests/unit/stubs.php';
 
 class WidgetTest extends Widget
 {

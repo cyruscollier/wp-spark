@@ -1,7 +1,9 @@
 <?php
 
-/* Path to the WordPress codebase you'd like to test. Add a backslash in the end. */
-define( 'ABSPATH', dirname( __FILE__ ) . '/src/' );
+/* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
+define( 'ABSPATH', dirname( __FILE__ ) . '/vendor/cyruscollier/wordpress-develop/src/' );
+
+define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/vendor/cyruscollier/wordpress-develop/src/wp-content' );
 
 // Test with multisite enabled.
 // Alternatively, use the tests/phpunit/multisite.xml configuration file.
@@ -23,7 +25,7 @@ define( 'WP_DEBUG', true );
 // These tests will DROP ALL TABLES in the database with the prefix named below.
 // DO NOT use a production database or one that is shared with something else.
 
-define( 'DB_NAME', 'spark_integration_tests' );
+define( 'DB_NAME', 'wordpress_develop' );
 define( 'DB_USER', 'root' );
 define( 'DB_PASSWORD', '' );
 define( 'DB_HOST', 'localhost' );
