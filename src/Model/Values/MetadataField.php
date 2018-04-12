@@ -46,39 +46,19 @@ abstract class MetadataField implements Metadata
         return $this->value;
     }
     
-    public function getIndex()
-    {
-        $value = $this->previous ? $this->previous : $this->value;
-        return md5( maybe_serialize( $value ) );
-    }
-    
     public function __toString()
     {
         return (string) $this->getValue();
     }
     
-    public function toCollection()
+    public function update( $value )
     {
-        return new MetadataCollection( [$this] );
-    }
-
-    public function isCollection()
-    {
-        return false;
-    }
-    
-    public function updateValue( $value )
-    {
+        if ( $value instanceof static ) {
+            $value = $value->getValue();
+        }
         $field = new static( $this->key, $value );
         $field->previous = $this->value;
         return $field;
-    }
-    
-    public function update( Metadata $metadata )
-    {
-        return $metadata->isCollection() ?
-            $this->toCollection()->update( $metadata ) :
-            $this->updateValue( $metadata->getValue() );
     }
 
 }

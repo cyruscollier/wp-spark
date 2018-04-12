@@ -26,20 +26,10 @@ interface Metadata
     public function getValue();
     
     /**
-     * @param Metadata $metadata
+     * @param mixed $value
      * @return Metadata
      */
-    public function update( Metadata $metadata );
-    
-    /**
-     * @return MetadataCollection
-     */
-    public function toCollection();
-    
-    /**
-     * @return boolean
-     */
-    public function isCollection();
+    public function update( $value );
     
     public function __toString();
     
