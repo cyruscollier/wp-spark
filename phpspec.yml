@@ -8,4 +8,4 @@ suites:
 bootstrap: vendor/cyruscollier/wp-test/bootstrap/unit.php
 
 extensions:
-    - PhpSpec\PhpMock\Extension\PhpMockExtension
+    PhpSpec\PhpMock\Extension\PhpMockExtension: ~

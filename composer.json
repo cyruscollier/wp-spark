@@ -16,7 +16,8 @@
         "php-di/php-di": "^5.4"
     },
     "require-dev": {
-        "cyruscollier/wp-test": "dev-master"
+        "cyruscollier/wp-test": "^1.0",
+        "cyruscollier/wordpress-develop": "@dev"
     },
     "autoload": {
         "psr-4": {
@@ -27,5 +28,4 @@
     "config": {
         "secure-http": false
     }
-    
 }
