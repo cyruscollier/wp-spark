@@ -1,6 +1,6 @@
 <?php
 
-namespace Spark\Support\Module;
+namespace Spark\Module;
 
 use Spark\Extension\ExtensionManager;
 use DI\Container;
