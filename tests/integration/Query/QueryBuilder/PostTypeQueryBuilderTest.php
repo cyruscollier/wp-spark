@@ -2,7 +2,7 @@
 
 namespace integration\Spark\Query\QueryBuilder;
 
-use Spark\Support\Test\TestCase;
+use WPTest\Test\TestCase;
 
 class PostTypeQueryBuilderTest extends TestCase
 {
