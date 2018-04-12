@@ -94,13 +94,6 @@ abstract class QueryBuilderWithMetadata implements QueryBuilder
     
     protected function createMetadata( EntityWithMetadata $model, $key, $value_raw )
     {
-        if ( is_array( $value_raw ) ) {
-            $metadata = new MetadataCollection();
-            foreach ( $value_raw as $value ){
-                $metadata->add( $model->createMetadataField( $key, $value ) );
-            }
-            return $metadata;
-        }
         return $model->createMetadataField( $key, $value_raw );
     }    
     

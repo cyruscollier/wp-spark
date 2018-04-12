@@ -11,7 +11,7 @@ use Spark\Model\Metadata;
  * @author cyruscollier
  *
  */
-abstract class MetadataField implements Metadata
+abstract class MetadataField
 {
     
     /**

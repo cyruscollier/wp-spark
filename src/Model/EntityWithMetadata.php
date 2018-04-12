@@ -14,11 +14,11 @@ abstract class EntityWithMetadata extends Entity
 {
     
     /**
-     * @var Metadata[]
+     * @var MetadataField[]
      */
     protected $_metadata = [];
 
-    public function setMetadata( Metadata $metadata )
+    public function setMetadata( MetadataField $metadata )
     {
         $key = $metadata->getKey();
         $this->_metadata[$key] = isset( $this->_metadata[$key] ) ?
@@ -39,7 +39,7 @@ abstract class EntityWithMetadata extends Entity
         if ( false !== parent::__set( $name, $value ) ) {
             return;
         }
-        if ( !( $value instanceof Metadata ) ) {
+        if ( !( $value instanceof MetadataField ) ) {
             $value = $this->createMetadataField( $name, $value );
         }
         $this->setMetadata( $value );
