@@ -11,10 +11,16 @@ php:
   - 7.0
   - hhvm
 
+services:
+  - mysql
+
 matrix:
   fast_finish: true
   allow_failures:
     - php: hhvm
+
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS wordpress_develop;'
 
 install:
   - composer update
