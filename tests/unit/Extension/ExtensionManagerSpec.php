@@ -57,11 +57,10 @@ class ExtensionManagerSpec extends ObjectBehavior
     }
     
     function it_fails_to_register_a_non_extension_type(
-        ContainerInterface $Container,
-        Post $Post
+        ContainerInterface $Container
     )
     {
-        $Container->get('post')->willReturn($Post);
+        $Container->get('post')->willReturn(new Post());
         $this->shouldThrow(\InvalidArgumentException::class)->duringRegisterExtensions(['post']);
     }
     
@@ -102,11 +101,10 @@ class ExtensionManagerSpec extends ObjectBehavior
     }
     
     function it_fails_to_deregister_a_non_extension_type(
-        ContainerInterface $Container,
-        Post $Post
+        ContainerInterface $Container
     )
     {
-        $Container->get('post')->willReturn($Post);
+        $Container->get('post')->willReturn(new Post());
         $this->shouldThrow(\InvalidArgumentException::class)->duringDeregisterExtensions(['post']);
     }
 }

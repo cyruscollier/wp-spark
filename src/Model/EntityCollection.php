@@ -10,7 +10,7 @@ use Spark\Support\Collection;
  * @author cyruscollier
  *
  */
-class EntityCollection implements Collection
+final class EntityCollection implements Collection
 {
     /**
      * Array of Entity instances
