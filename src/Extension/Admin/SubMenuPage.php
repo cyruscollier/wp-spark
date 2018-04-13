@@ -20,6 +20,6 @@ abstract class SubMenuPage extends Page
     
     public function deregister()
     {
-        return (bool) remove_submenu_page( $this->menu_slug );
+        return (bool) remove_submenu_page( $this->parent_slug, $this->menu_slug );
     }
 }

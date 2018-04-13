@@ -29,7 +29,7 @@ class SubMenuPageSpec extends ObjectBehavior
     
     function it_deregisters_the_submenu_page($functions)
     {
-        $functions->remove_submenu_page('test')->willReturn(['item']);
+        $functions->remove_submenu_page('test_parent', 'test')->willReturn(['item']);
         $this->deregister()->shouldReturn(true);
     }
 }

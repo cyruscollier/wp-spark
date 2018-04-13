@@ -18,6 +18,8 @@ abstract class MetaBox implements Extension, View
     protected $context = 'advanced';
     
     protected $priority = 'default';
+
+    protected $post;
     
     public function getType() { return 'Metabox'; }
     
@@ -65,8 +67,9 @@ abstract class MetaBox implements Extension, View
     public function renderMetabox( $post )
     {
         $this->prepare( $post );
-        $this->render();
+        $output = $this->render();
         $this->cleanup();
+        return $output;
     }
     
     public function prepare( $post ) {

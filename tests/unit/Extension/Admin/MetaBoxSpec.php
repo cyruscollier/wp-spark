@@ -27,9 +27,32 @@ class MetaBoxSpec extends ObjectBehavior
     function it_registers_the_meta_box($functions)
     {
         $functions->add_meta_box(
-            'test', 'Test', Argument::type('callable'), 'post', 'advanced', 'default'
+            'test', 'Test', Argument::type('callable'), 'post_screen', 'advanced', 'default'
         )->willReturn(true);
-        $functions->convert_to_screen('post')->willReturn('post');
+        $functions->convert_to_screen('post')->willReturn('post_screen');
+        $this->init()->shouldReturn(true);
+    }
+
+    function it_registers_the_meta_box_in_a_post_type_screen($functions)
+    {
+        $functions->add_meta_box(
+            'test', 'Test', Argument::type('callable'), 'post_screen', 'advanced', 'default'
+        )->willReturn(true);
+        $functions->convert_to_screen('post')->willReturn('post_screen');
+        $functions->post_type_exists('post')->willReturn(true);
+        $this->init('post')->shouldReturn(true);
+    }
+
+    function it_registers_the_meta_box_for_multiple_screens($functions)
+    {
+        $this->screen = ['post', 'page'];
+        $functions->add_meta_box(
+            'test', 'Test', Argument::type('callable'), ['post_screen', 'page_screen'], 'advanced', 'default'
+        )->willReturn(true);
+        $functions->convert_to_screen(Argument::type('string'))
+            ->will(function($args) {
+                return $args[0] == 'post' ? 'post_screen' : 'page_screen';
+            });
         $this->init()->shouldReturn(true);
     }
     
@@ -46,6 +69,13 @@ class MetaBoxSpec extends ObjectBehavior
         $functions->remove_meta_box('test', 'post', 'advanced')->shouldBeCalled();
         $this->deregister()->shouldReturn(true);
     }
+
+    function it_renders_the_metabox()
+    {
+        $post = new \WP_Post((object)['ID' => 1]);
+        $this->renderMetabox($post)
+             ->shouldReturn('some test content for post: 1');
+    }
     
 }
 
@@ -55,10 +85,10 @@ class MetaBoxTest extends MetaBox
     
     protected $title = 'Test';
     
-    protected $screen = 'post';
+    public $screen = 'post';
     
     public function render()
     {
-        return 'some test content';
+        return 'some test content for post: ' . $this->post->ID;
     }
 }
