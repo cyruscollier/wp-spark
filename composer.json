@@ -17,7 +17,8 @@
     },
     "require-dev": {
         "cyruscollier/wp-test": "dev-master",
-        "cyruscollier/wordpress-develop": "@dev"
+        "cyruscollier/wordpress-develop": "@dev",
+        "leanphp/phpspec-code-coverage": "^4.1.2"
     },
     "autoload": {
         "psr-4": {

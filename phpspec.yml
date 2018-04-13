@@ -9,3 +9,8 @@ bootstrap: vendor/cyruscollier/wp-test/bootstrap/unit.php
 
 extensions:
     PhpSpec\PhpMock\Extension\PhpMockExtension: ~
+    LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+        format:
+          - clover
+        output:
+            clover: tests/coverage.xml
