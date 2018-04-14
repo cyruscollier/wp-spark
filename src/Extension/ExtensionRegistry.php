@@ -3,8 +3,9 @@
 namespace Spark\Extension;
 
 use Interop\Container\ContainerInterface;
+use Spark\Support\Registry;
 
-class ExtensionManager
+final class ExtensionRegistry implements Registry
 {
     
     /**
@@ -23,7 +24,7 @@ class ExtensionManager
         $this->Container = $Container;
     }
     
-    public function registerExtensions( array $extensions_classes )
+    public function register(array $extensions_classes ): array
     {
         $registered_extensions = [];
         foreach ( $extensions_classes as $extension_class ) {
@@ -37,7 +38,7 @@ class ExtensionManager
         return $registered_extensions;
     }
     
-    public function deregisterExtensions( array $extension_classes )
+    public function deregister(array $extension_classes ): array
     {
         $deregistered_extensions = [];
         foreach ( $extension_classes as $extension_class ) {
@@ -51,7 +52,7 @@ class ExtensionManager
         return $deregistered_extensions;
     }
     
-    protected function getExtensionInstance( $extension_class)
+    protected function getExtensionInstance($extension_class)
     {
         $Extension = $this->Container->get( $extension_class );
         if ( !( $Extension instanceof Extension ) )

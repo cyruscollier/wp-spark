@@ -2,7 +2,7 @@
 
 namespace Spark\Module;
 
-use Spark\Extension\ExtensionManager;
+use Spark\Extension\ExtensionRegistry;
 use DI\Container;
 
 abstract class Module
@@ -13,18 +13,23 @@ abstract class Module
     protected $Container;
     
     /**
-     * @var ExtensionManager
+     * @var ExtensionRegistry
      */
-    protected $ExtensionManager;
+    protected $Extensions;
     
     protected $load_action;
     
     protected $extensions = [];
-    
+
+    /**
+     * Module constructor.
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
     public function __construct()
     {
         $this->Container = spark();
-        $this->ExtensionManager = $this->Container->get( ExtensionManager::class );
+        $this->Extensions = $this->Container->get( ExtensionRegistry::class );
         add_action( $this->load_action, [$this, 'registerExtensions'], 1 );
         add_action( $this->load_action, [$this, 'load'] );
         add_action( 'init', [$this, 'init'] );
@@ -32,7 +37,7 @@ abstract class Module
     
     public function registerExtensions()
     {
-        $this->ExtensionManager->registerExtensions( $this->extensions );
+        $this->Extensions->register( $this->extensions );
     }
     
     public abstract function load();

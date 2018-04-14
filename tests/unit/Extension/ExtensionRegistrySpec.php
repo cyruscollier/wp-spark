@@ -8,11 +8,11 @@ use Interop\Container\ContainerInterface;
 use Spark\Extension\Extension;
 use Spark\Model\PostType\Post;
 
-class ExtensionManagerSpec extends ObjectBehavior
+class ExtensionRegistrySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Extension\ExtensionManager');
+        $this->shouldHaveType('Spark\Extension\ExtensionRegistry');
     }
     
     function let(
@@ -37,7 +37,7 @@ class ExtensionManagerSpec extends ObjectBehavior
         $Container->get('extension2')->willReturn($Extension2);
         $this->it_expects_extension_register($Extension1);
         $this->it_expects_extension_register($Extension2);
-        $this->registerExtensions(['extension1', 'extension2'])
+        $this->register(['extension1', 'extension2'])
              ->shouldReturn([$Extension1, $Extension2]);
     }
     
@@ -52,7 +52,7 @@ class ExtensionManagerSpec extends ObjectBehavior
         $this->it_expects_extension_register($Extension1);
         $Extension2->isRegistered()->willReturn(true);
         $Extension2->register()->shouldNotBeCalled();
-        $this->registerExtensions(['extension1', 'extension2'])
+        $this->register(['extension1', 'extension2'])
              ->shouldReturn([$Extension1]);
     }
     
@@ -61,7 +61,7 @@ class ExtensionManagerSpec extends ObjectBehavior
     )
     {
         $Container->get('post')->willReturn(new Post());
-        $this->shouldThrow(\InvalidArgumentException::class)->duringRegisterExtensions(['post']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringRegister(['post']);
     }
     
     function it_deregisters_one_or_more_extensions(
@@ -74,10 +74,10 @@ class ExtensionManagerSpec extends ObjectBehavior
         $Container->get('extension2')->willReturn($Extension2);
         $this->it_expects_extension_register($Extension1);
         $this->it_expects_extension_register($Extension2);
-        $this->registerExtensions(['extension1', 'extension2']);
+        $this->register(['extension1', 'extension2']);
         $this->it_expects_extension_deregister($Extension1);
         $this->it_expects_extension_deregister($Extension2);
-        $this->deregisterExtensions(['extension1', 'extension2'])
+        $this->deregister(['extension1', 'extension2'])
              ->shouldReturn([$Extension1, $Extension2]);
     }
     
@@ -92,7 +92,7 @@ class ExtensionManagerSpec extends ObjectBehavior
         $this->it_expects_extension_deregister($Extension1);
         $Extension2->isRegistered()->willReturn(false);
         $Extension2->deregister()->shouldNotBeCalled();
-        $this->deregisterExtensions(['extension1', 'extension2'])
+        $this->deregister(['extension1', 'extension2'])
              ->shouldReturn([$Extension1]);
     }
     
@@ -101,7 +101,7 @@ class ExtensionManagerSpec extends ObjectBehavior
     )
     {
         $Container->get('post')->willReturn(new Post());
-        $this->shouldThrow(\InvalidArgumentException::class)->duringDeregisterExtensions(['post']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringDeregister(['post']);
     }
 
     private function it_expects_extension_register(Extension $Extension)
