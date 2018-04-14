@@ -17,9 +17,10 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->shouldHaveType(PostTypeRepository::class);
     }
 
-    function let(PostTypeQueryBuilder $Query, PostFactory $Factory)
+    function let(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $this->beConstructedWith($Query, $Factory);
+        $functions->get_permalink(Argument::type('int'))->willReturn('http://test.com/post');
     }
 
     function it_gets_one_post_with_id(PostFactory $Factory, $functions)

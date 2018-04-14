@@ -2,9 +2,11 @@
 
 namespace Spark\Support\Entity;
 
+use Spark\Model\Values\Permalink;
+
 interface HasPermalink
 {
-    function getPermalink();
+    function getPermalink(): Permalink;
 
-    function setPermalink();
+    function setPermalink(Permalink $permalink);
 }

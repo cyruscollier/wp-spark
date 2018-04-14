@@ -2,6 +2,7 @@
 
 namespace Spark\Repository;
 
+use Spark\Model\Values\Permalink;
 use Spark\Support\Entity\PostFactory;
 use Spark\Model\EntityCollection;
 use Spark\Model\PostType;
@@ -111,7 +112,9 @@ class PostTypeRepository implements Repository
         $metadata = array_map(function($m) {
             return $m[0];
         }, $raw_metadata);
-        return $this->Factory->createFromWPPost($post, $metadata);
+        $Post = $this->Factory->createFromWPPost($post, $metadata);
+        $Post->setPermalink(new Permalink(get_permalink($post->ID)));
+        return $Post;
     }
 
     protected function getPosts()

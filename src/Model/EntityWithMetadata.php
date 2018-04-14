@@ -3,16 +3,21 @@
 namespace Spark\Model;
 
 use Spark\Model\Values\MetadataField;
+use Spark\Model\Values\Permalink;
+use Spark\Support\Entity\HasPermalink;
 
 /**
  * Models that support metadata fields
  * 
  * @author cyruscollier
  *
+ * @property
+ *
  */
-abstract class EntityWithMetadata extends Entity
+abstract class EntityWithMetadata extends Entity implements HasPermalink
 {
-    
+    protected $permalink;
+
     /**
      * @var MetadataField[]
      */
@@ -25,7 +30,17 @@ abstract class EntityWithMetadata extends Entity
             $this->_metadata[$key]->update( $metadata ) :
             $metadata;
     }
-    
+
+    function getPermalink(): Permalink
+    {
+        $this->permalink;
+    }
+
+    function setPermalink(Permalink $permalink)
+    {
+        $this->permalink = $permalink;
+    }
+
     public function __get( $name )
     {
         if ( $value = parent::__get( $name ) )
