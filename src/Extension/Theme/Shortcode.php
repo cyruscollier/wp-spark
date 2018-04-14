@@ -3,7 +3,7 @@
 namespace Spark\Extension\Theme;
 
 use Spark\Support\View;
-use Spark\Extension\Extension;
+use Spark\Support\Extension\Extension;
 
 abstract class Shortcode implements Extension, View
 {

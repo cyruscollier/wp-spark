@@ -2,7 +2,7 @@
 
 namespace Spark\Extension\RegisterEntity;
 
-use Spark\Extension\Extension;
+use Spark\Support\Extension\Extension;
 
 /**
  * Abstract Base class for registering custom post types and taxonomies

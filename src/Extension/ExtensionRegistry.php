@@ -2,8 +2,9 @@
 
 namespace Spark\Extension;
 
-use Interop\Container\ContainerInterface;
-use Spark\Support\Registry;
+use Psr\Container\ContainerInterface;
+use Spark\Support\Extension\Extension;
+use Spark\Support\Extension\ExtensionRegistry as Registry;
 
 final class ExtensionRegistry implements Registry
 {
@@ -51,12 +52,6 @@ final class ExtensionRegistry implements Registry
         }
         return $deregistered_extensions;
     }
-
-    function get(string $identifier)
-    {
-        return $this->extensions[$identifier] ?? false;
-    }
-
 
     protected function getExtensionInstance($extension_class)
     {

@@ -2,11 +2,11 @@
 
 namespace Spark\Module;
 
-use Spark\Extension\Extension;
-use Spark\Extension\ExtensionRegistry;
+use Spark\Support\Extension\Extension;
+use Spark\Support\Extension\ExtensionRegistry;
 use DI\Container;
 use Spark\Model\Entity;
-use Spark\Model\EntityRegistry;
+use Spark\Support\Entity\EntityRegistry;
 
 abstract class Module
 {

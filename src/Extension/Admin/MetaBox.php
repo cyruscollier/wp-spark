@@ -3,7 +3,7 @@
 namespace Spark\Extension\Admin;
 
 use Spark\Support\View;
-use Spark\Extension\Extension;
+use Spark\Support\Extension\Extension;
 
 abstract class MetaBox implements Extension, View
 {

@@ -2,7 +2,7 @@
 
 namespace Spark\Extension\Admin;
 
-use Spark\Extension\Extension;
+use Spark\Support\Extension\Extension;
 use Spark\Support\View;
 
 /**

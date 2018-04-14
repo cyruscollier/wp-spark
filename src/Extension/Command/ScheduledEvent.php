@@ -2,7 +2,7 @@
 
 namespace Spark\Extension\Command;
 
-use Spark\Extension\Extension;
+use Spark\Support\Extension\Extension;
 use Spark\Support\Command;
 
 abstract class ScheduledEvent implements Extension, Command

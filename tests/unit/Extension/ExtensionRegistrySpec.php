@@ -4,8 +4,8 @@ namespace unit\Spark\Extension;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Interop\Container\ContainerInterface;
-use Spark\Extension\Extension;
+use Psr\Container\ContainerInterface;
+use Spark\Support\Extension\Extension;
 use Spark\Model\PostType\Post;
 
 class ExtensionRegistrySpec extends ObjectBehavior

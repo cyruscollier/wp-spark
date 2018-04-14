@@ -2,27 +2,16 @@
 
 namespace Spark\Model;
 
-use Interop\Container\ContainerInterface;
 use Spark\Support\Registry;
 
 final class EntityRegistry implements Registry
 {
     
     /**
-     * @var ContainerInterface
-     */
-    protected $Container;
-    
-    /**
      * Complete reference of registered entities
      * @var array
      */
     protected $entities = [];
-    
-    public function __construct( ContainerInterface $Container )
-    {
-        $this->Container = $Container;
-    }
     
     public function register(array $entity_classes ): array
     {
@@ -50,7 +39,7 @@ final class EntityRegistry implements Registry
         return $deregistered_entities;
     }
 
-    function get(string $identifier)
+    public function get(string $identifier)
     {
         return $this->entities[$identifier] ?? false;
     }

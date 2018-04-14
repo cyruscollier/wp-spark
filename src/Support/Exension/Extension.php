@@ -1,6 +1,6 @@
 <?php
 
-namespace Spark\Extension;
+namespace Spark\Support\Extension;
 
 /**
  * Defines an extension for WordPress that can be registered and unregistered

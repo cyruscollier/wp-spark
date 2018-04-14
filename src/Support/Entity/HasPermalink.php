@@ -1,6 +1,6 @@
 <?php
 
-namespace Spark\Support;
+namespace Spark\Support\Entity;
 
 interface HasPermalink
 {

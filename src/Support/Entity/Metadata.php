@@ -1,6 +1,6 @@
 <?php 
 
-namespace Spark\Model;
+namespace Spark\Support\Entity;
 
 /**
  * Defines properties of metadata
