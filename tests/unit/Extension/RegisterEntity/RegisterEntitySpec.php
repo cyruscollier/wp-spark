@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\Spark\Extension\Entity;
+namespace unit\Spark\Extension\RegisterEntity;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

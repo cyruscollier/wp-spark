@@ -26,7 +26,7 @@ abstract class MetadataField
     
     /**
      * Previous set value, used to match when persisting
-     * @var unknown
+     * @var mixed
      */
     protected $previous;
     

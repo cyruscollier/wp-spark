@@ -20,7 +20,7 @@ abstract class Taxonomy extends EntityWithMetadata
      */
     const TAXONOMY = null;
 
-    public function getRegistryKey()
+    public static function getRegistryKey()
     {
         return static::TAXONOMY;
     }

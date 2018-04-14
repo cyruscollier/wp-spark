@@ -1,10 +1,10 @@
 <?php
 
-namespace unit\Spark\Extension\Entity;
+namespace unit\Spark\Extension\RegisterEntity;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Spark\Extension\RegisterEntity\PostType;
+use Spark\Extension\RegisterEntity\RegisterPostType;
 
 class RegisterPostTypeSpec extends ObjectBehavior
 {
@@ -40,7 +40,7 @@ class RegisterPostTypeSpec extends ObjectBehavior
     
 }
 
-class PostTypeTest extends PostType
+class PostTypeTest extends RegisterPostType
 {
     const NAME = 'test';
 }

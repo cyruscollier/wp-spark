@@ -12,13 +12,13 @@ abstract class Entity
 {
     protected $unique_key = 'id';
 
-    public function getRegistryKey()
+    public static function getRegistryKey()
     {
         return 'entity';
     }
     
     /**
-     * Return unique identifier for model, used in ModelCollection
+     * Return unique identifier for entity, used in EntityCollection
      * 
      * @return string
      */

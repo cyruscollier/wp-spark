@@ -2,11 +2,9 @@
 
 namespace Spark\Support\Entity;
 
-use Spark\Model\Entity;
+use Spark\Support\Factory;
 
-interface EntityFactory
+interface EntityFactory extends Factory
 {
     function __construct(EntityRegistry $Registry);
-
-    function create($data): Entity;
 }

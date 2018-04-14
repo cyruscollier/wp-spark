@@ -33,12 +33,18 @@ class PostDate extends DateTimeImmutable
      * @var string
      */
     protected $filter_gmt = 'get_post_time';
-    
-    
-    public function __construct( $post_date, $post_date_gmt )
+
+    /**
+     * @param $post_date
+     * @param $post_date_gmt
+     * @throws \Exception
+     * @return PostDate
+     */
+    public static function createWithGTM( $post_date, $post_date_gmt)
     {
-        parent::__construct( $post_date );
-        $this->post_date_gmt = new DateTimeImmutable( $post_date_gmt );
+        $date = new static($post_date);
+        $date->post_date_gmt = new DateTimeImmutable( $post_date_gmt );
+        return $date;
     }
     
     public function defaultFormat()
@@ -62,9 +68,13 @@ class PostDate extends DateTimeImmutable
      * Applies gmt filter to formatted gmt date
      * 
      * @param string $format
+     * @return string
      */
     public function formatGMT( $format )
     {
+        if (!isset($this->post_date_gmt)) {
+            return null;
+        }
         $date = $this->post_date_gmt->format( $format );
         return apply_filters( $this->filter_gmt, $date, $format );
     }

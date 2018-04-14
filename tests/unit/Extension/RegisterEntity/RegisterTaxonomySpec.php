@@ -1,10 +1,10 @@
 <?php
 
-namespace unit\Spark\Extension\Entity;
+namespace unit\Spark\Extension\RegisterEntity;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Spark\Extension\RegisterEntity\Taxonomy;
+use Spark\Extension\RegisterEntity\RegisterTaxonomy;
 
 class RegisterTaxonomySpec extends ObjectBehavior
 {
@@ -43,7 +43,7 @@ class RegisterTaxonomySpec extends ObjectBehavior
     }
 }
 
-class TaxonomyTest extends Taxonomy
+class TaxonomyTest extends RegisterTaxonomy
 {
     const NAME = 'test';
     

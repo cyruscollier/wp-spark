@@ -29,6 +29,13 @@ class PostSpec extends ObjectBehavior
     {
         $this->getId()->shouldReturn(123);
     }
+
+
+
+    function it_gets_the_registry_key()
+    {
+        $this->getId()->shouldReturn(123);
+    }
     
     function it_gets_a_property()
     {

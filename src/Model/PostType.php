@@ -11,6 +11,18 @@ use Spark\Model\Values\PostMetaField;
  * 
  * @author cyruscollier
  *
+ * @property int $id
+ * @property int $parent_id
+ * @property int $author_id;
+ * @property Values\PostTitle $title
+ * @property Values\PostContent $content
+ * @property Values\PostExcerpt $excerpt
+ * @property Values\PostStatus $status
+ * @property Values\PostDate $published_date
+ * @property Values\PostModifiedDate $modified_date
+ * @property Values\Slug $slug
+ * @property WP_Post $wp_post
+ *
  */
 abstract class PostType extends EntityWithMetadata
 {
@@ -99,11 +111,11 @@ abstract class PostType extends EntityWithMetadata
     protected $status;
     
     /**
-     * Original WP_Post instance, hidden
+     * Original WP_Post instance
      * 
      * @var WP_Post
      */
-    protected $_wp_post;
+    protected $wp_post;
     
     /**
      * 
@@ -133,42 +145,42 @@ abstract class PostType extends EntityWithMetadata
         return $Post;
     }
     
-    protected function setTitle( Values\PostTitle $title )
+    public function setTitle( Values\PostTitle $title )
     {
         $this->title = $title;
     }
-    
-    protected function setContent( Values\PostContent $content )
+
+    public function setContent( Values\PostContent $content )
     {
         $this->content = $content;
     }
-    
-    protected function setExcerpt( Values\PostExcerpt $excerpt )
+
+    public function setExcerpt( Values\PostExcerpt $excerpt )
     {
         $this->excerpt = $excerpt;
     }
-    
-    protected function setStatus( Values\PostStatus $status )
+
+    public function setStatus( Values\PostStatus $status )
     {
         $this->status = $status;
     }
-    
-    protected function setPublishedDate( Values\PostDate $published_date )
+
+    public function setPublishedDate( Values\PostDate $published_date )
     {
         $this->published_date = $published_date;
     }
-    
-    protected function setModifiedDate( Values\PostModifiedDate $modified_date )
+
+    public function setModifiedDate( Values\PostModifiedDate $modified_date )
     {
         $this->modified_date = $modified_date;
     }
-    
-    protected function setSlug( Values\Slug $slug )
+
+    public function setSlug( Values\Slug $slug )
     {
         $this->slug = $slug;
     }
 
-    public function getRegistryKey()
+    public static function getRegistryKey()
     {
         return static::POST_TYPE;
     }

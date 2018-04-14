@@ -1,6 +1,6 @@
 <?php
 
-namespace Spark\Support\Entity;
+namespace Spark\Support;
 
 interface Factory
 {

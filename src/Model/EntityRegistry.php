@@ -17,10 +17,11 @@ final class EntityRegistry implements Registry
     {
         $registered_entities = [];
         foreach ( $registered_entities as $entity_class ) {
-            $Entity = $this->getEntityInstance( $entity_class );
-            if (!isset($this->entities[$Entity->getRegistryKey()])) {
-                $this->entities[$Entity->getRegistryKey()] = $Entity;
-                $registered_entities[] = $Entity;
+            $this->checkType( $entity_class );
+            $key = $entity_class::getRegistryKey();
+            if (!isset($this->entities[$key])) {
+                $this->entities[$key] = $entity_class;
+                $registered_entities[] = $entity_class;
             }
         }
         return $registered_entities;
@@ -30,10 +31,11 @@ final class EntityRegistry implements Registry
     {
         $deregistered_entities = [];
         foreach ( $entity_classes as $entity_class ) {
-            $Entity = $this->getEntityInstance( $entity_class );
-            if (isset($this->entities[$Entity->getRegistryKey()])) {
-                unset($this->entities[$Entity->getRegistryKey()]);
-                $deregistered_entities[] = $Entity;
+            $this->checkType( $entity_class );
+            $key = $entity_class::getRegistryKey();
+            if (isset($this->entities[$key])) {
+                unset($this->entities[$key]);
+                $deregistered_entities[] = $entity_class;
             }
         }
         return $deregistered_entities;
@@ -47,14 +49,11 @@ final class EntityRegistry implements Registry
 
     /**
      * @param $entity_class
-     * @return Entity
      */
-    protected function getEntityInstance($entity_class)
+    protected function checkType($entity_class)
     {
-        $Entity = new $entity_class;
-        if (! $Entity instanceof Entity)
+        if (!is_a($entity_class, Entity::class, true))
             throw new \InvalidArgumentException('Not a valid Entity class: ' . $entity_class );
-        return $Entity;
     }
     
 }
