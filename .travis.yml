@@ -24,6 +24,7 @@ before_install:
 
 install:
   - composer update
+  - composer dumpautoload -o
   
 script:
   - vendor/bin/phpspec run
