@@ -17,12 +17,6 @@ class PostModifiedDate extends PostDate
      * @var string
      */
     protected $filter = 'get_the_modified_date';
-    
-    /**
-     * Name used for date filter when getting GMT time
-     *
-     * @var string
-     */
-    protected $filter_gmt = 'get_post_modified_time';    
+
     
 }

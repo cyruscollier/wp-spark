@@ -47,8 +47,8 @@ final class PostFactory implements Factory
             'excerpt' => get_the_excerpt( $post ),
             'status' => $post->post_status,
             'slug' => $post->post_name,
-            'published_date' => Values\PostDate::createWithGTM($post->post_date, $post->post_date_gmt),
-            'modified_date' => Values\PostModifiedDate::createWithGTM($post->post_modified, $post->post_modified_gmt),
+            'published_date' => $post->post_date,
+            'modified_date' => $post->post_modified,
         ];
         $Post = $this->create($data);
         $Post->wp_post = $post;
