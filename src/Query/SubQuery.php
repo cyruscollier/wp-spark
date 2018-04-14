@@ -9,7 +9,7 @@ namespace Spark\Query;
  * @author cyruscollier
  *
  */
-abstract class SubQuery
+abstract class SubQuery implements \Spark\Support\Query\SubQuery
 {
 
     /**
@@ -24,7 +24,7 @@ abstract class SubQuery
      * @param string $relation
      * @return array
      */
-    public function build( $relation = 'AND' )
+    public function build( $relation = 'AND' ): array
     {
         $filtered_query = array_filter( $this->query, [$this, 'hasClauseValue'] );
         if ( count( $filtered_query ) > 1 ) $filtered_query['relation'] = $relation;
@@ -55,22 +55,6 @@ abstract class SubQuery
         if ( is_array( $value ) ) $value = array_filter( $value, function($v) { return isset($v); } );
         return isset( $value );
     }
-    
-    /**
-     * Adds clause
-     * 
-     * @param string $key
-     * @param mixed $value
-     * @return $this
-     */
-    abstract function add( $key, $value );
-    
-    /**
-     * Name of query key to user for this subquery
-     * 
-     * @return string
-     */
-    abstract function getQueryKey();
     
     /**
      * Gets value inside of clause

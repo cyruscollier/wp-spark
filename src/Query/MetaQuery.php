@@ -1,8 +1,6 @@
 <?php
 
-namespace Spark\Query\SubQuery;
-
-use Spark\Query\SubQuery;
+namespace Spark\Query;
 
 /**
  * Builds query clauses for 'meta_query' variable of WP_Query

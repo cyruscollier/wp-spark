@@ -1,127 +1,76 @@
-<?php 
+<?php
 
 namespace Spark\Query;
 
-use Spark\Model\Entity;
-use Spark\Model\EntityCollection;
+use Spark\Support\Query\SubQuery;
 
-/**
- * Fluent interface for building query parameters
- * 
- * @author cyruscollier
- *
- */
-interface QueryBuilder extends \IteratorAggregate
+abstract class QueryBuilder implements \Spark\Support\Query\QueryBuilder
 {
-    
-    /**
-     * Constructor binds instance to a model class
-     * 
-     * @param string $model_class
-     * @throws \InvalidArgumentException if argument is not the correct model class
-     */
-    public function __construct( $model_class );
-    
-    /**
-     * Clears parameters and previous Colleciton, rebinds to a model class
-     *
-     * @param string $model_class
-     * @return $this
-     * @throws \InvalidArgumentException if argument is not the correct model class
-     */
-    public function reset( $model_class );
-    
-    /**
-     * All records
-     * 
-     * @return $this
-     */
-    public function findAll();
-    
-    /**
-     * Limit to one record
-     * 
-     * @return $this
-     */
-    public function findOne();
-    
-    /**
-     * Filter records by provided parameters
-     * 
-     * @param array $params
-     * @return $this
-     */
-    public function where( $params );
-    
+    protected $parameters = [];
+
+    public function reset() {
+        $this->parameters = [];
+        return $this;
+    }
+
+    public function one()
+    {
+        return $this->limit(1);
+    }
+
+    public function where($params)
+    {
+        $this->parameters = array_merge($this->parameters, $params);
+        return $this;
+    }
+
     /**
      * Set order and order by parameters (SQL style)
-     * 
-     * @param string $order_by
+     *
+     * @param string|array $order_bys
      * @return $this
      */
-    public function orderBy( $order_by );
-    
-    /**
-     * Limit number of found records
-     * 
-     * @param int $limit
-     * @return $this
-     */
-    public function limit( $limit );
-    
-    /**
-     * Specify page count
-     * 
-     * @param int $page
-     * @return $this
-     */
-    public function page( $page );
-    
+    public function orderBy( $order_bys )
+    {
+        if ( !isset( $this->parameters['orderby'] ) ) $this->parameters['orderby'] = [];
+        if ( !isset( $this->parameters['order'] ) ) $this->parameters['order'] = [];
+        if ( !is_array( $order_bys ) ) $order_bys = explode( ',', $order_bys );
+        foreach ( $order_bys as $order_by ) {
+            $parts = explode( ' ', trim( $order_by ) );
+            $this->parameters['orderby'][] = $parts[0];
+            $this->parameters['order'][] = isset( $parts[1] ) ? $parts[1] : 'DESC';
+        }
+        return $this;
+    }
+
     /**
      * Offset found records
-     * 
+     *
      * @param int $offset
      * @return $this
      */
-    public function offset( $offset );
-    
-    /**
-     * Add structured subquery object
-     * 
-     * @param SubQuery $RelatedQuery
-     * @return $this
-     */
-    public function withQuery( SubQuery $RelatedQuery );
-    
+    public function offset( $offset )
+    {
+        $this->parameters['offset'] = (int) $offset;
+        return $this;
+    }
 
     /**
-     * Immediately return one matching record
+     * Add structured subquery object
      *
-     * @param array $params
-     * @return Entity|false
+     * @param SubQuery $SubQuery
+     *
+     * @return $this
      */
-    public function getOne( $params = [] );
-    
-    /**
-     * Execute query and return colleciton of found records
-     * 
-     * @param mixed $id
-     * @return EntityCollection
-     */
-    public function get( $id = false );
-    
-    /**
-     * All sotred parameters
-     * 
-     * @return array
-     */
-    public function getParameters();
-    
-    /**
-     * Execute query and return colleciton of found records
-     * 
-     * @return EntityCollection
-     */
-    public function getIterator();
-    
+    public function withSubQuery(SubQuery $SubQuery)
+    {
+        $key = $SubQuery->getQueryKey();
+        $this->parameters[$key] = $SubQuery->build();
+        return $this;
+    }
+
+    public function build(): array
+    {
+        return $this->parameters;
+    }
 }
