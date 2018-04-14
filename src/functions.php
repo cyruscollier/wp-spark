@@ -14,27 +14,39 @@ define( 'SPARK_TEXT_DOMAIN', 'spark' );
 /**
  * @param string $name
  * @return \DI\Container|mixed
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws \Exception
  */
 function spark( $name = '' )
 {
     static $container;
     if ( !$container ) {
-        $ContainerFactory = new \Spark\Container\ContainerFactory();
-        $container = $ContainerFactory->create();
+        try {
+            $ContainerFactory = new \Spark\Container\ContainerFactory();
+            $container = $ContainerFactory->create();
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return null;
+        }
     }
-    return $name ? $container->get( $name ) : $container;
+    if (empty($name)) {
+        return $container;
+    }
+    try {
+        return $container->get($name);
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        return null;
+    }
 }
 
-function spark_filter( $tag, $value )
+function spark_filter(string $tag, $value )
 {
     $args = func_get_args();
     $args[0] = 'spark_' . $args[0];
     return call_user_func_array( 'apply_filters', $args );
 }
 
-function spark_action( $tag )
+function spark_action(string $tag)
 {
     $args = func_get_args();
     $args[0] = 'spark_' . $args[0];

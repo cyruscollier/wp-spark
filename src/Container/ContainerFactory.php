@@ -25,9 +25,10 @@ class ContainerFactory
             WP_CONTENT_DIR . 'spark-container-config.php'
         ];
     }
-    
+
     /**
      * @return DIContainer
+     * @throws \Exception
      */
     public function create()
     {
