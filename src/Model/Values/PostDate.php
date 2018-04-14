@@ -2,7 +2,7 @@
 
 namespace Spark\Model\Values;
 
-use DateTimeImmutable, DateTimeInterface;
+use Cake\Chronos\Chronos;
 
 /**
  * DateTime class for post date properties
@@ -10,7 +10,7 @@ use DateTimeImmutable, DateTimeInterface;
  * @author cyruscollier
  *
  */
-class PostDate extends DateTimeImmutable 
+class PostDate extends Chronos
 {
     /**
      * Name used for date filter
