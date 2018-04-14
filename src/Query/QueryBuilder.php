@@ -71,6 +71,8 @@ abstract class QueryBuilder implements \Spark\Support\Query\QueryBuilder
 
     public function build(): array
     {
-        return $this->parameters;
+        $parameters = $this->parameters;
+        $this->reset();
+        return $parameters;
     }
 }

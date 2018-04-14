@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\Spark\Query\SubQuery;
+namespace unit\Spark\Query;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class MetaQuerySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Query\SubQuery\MetaQuery');
+        $this->shouldHaveType('Spark\Query\MetaQuery');
     }
     
     function it_is_a_meta_query()

@@ -1,9 +1,10 @@
 <?php 
 
-namespace Spark\Support\Repository;
+namespace Spark\Support\Entity;
 
 use Spark\Model\Entity;
 use Spark\Model\EntityCollection;
+use Spark\Support\Repository;
 
 /**
  * Defines basic methods for an Entity repository

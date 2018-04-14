@@ -2,13 +2,13 @@
 
 namespace Spark\Repository;
 
-use Spark\Factory\PostFactory;
+use Spark\Support\Entity\PostFactory;
 use Spark\Model\EntityCollection;
 use Spark\Model\PostType;
 use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
 use Spark\Support\Query\PostTypeQueryBuilder;
-use Spark\Support\Repository\PostTypeRepository as Repository;
+use Spark\Support\Entity\PostTypeRepository as Repository;
 
 class PostTypeRepository implements Repository
 {
@@ -47,7 +47,8 @@ class PostTypeRepository implements Repository
     function findOne(array $params = []): PostType
     {
         $this->Query->one();
-        return $this->getPosts();
+        $Collection = $this->getPosts();
+        return $Collection[0];
     }
 
     function findByAuthor(int $author_id): EntityCollection
@@ -106,7 +107,11 @@ class PostTypeRepository implements Repository
      */
     protected function getPost(\WP_Post $post)
     {
-        return $this->Factory->createFromWPPost($post, get_post_custom($post->ID));
+        $raw_metadata = get_post_meta($post->ID);
+        $metadata = array_map(function($m) {
+            return $m[0];
+        }, $raw_metadata);
+        return $this->Factory->createFromWPPost($post, $metadata);
     }
 
     protected function getPosts()
@@ -115,7 +120,6 @@ class PostTypeRepository implements Repository
             $this->Query->withPostType($post_type);
         }
         $posts = get_posts($this->Query->build());
-        $this->Query->reset();
         $Collection = new EntityCollection();
         foreach ($posts as $post) {
             try {

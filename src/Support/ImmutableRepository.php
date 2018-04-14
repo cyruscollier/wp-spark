@@ -1,6 +1,6 @@
 <?php 
 
-namespace Spark\Support\Repository;
+namespace Spark\Support;
 
 interface ImmutableRepository
 {
