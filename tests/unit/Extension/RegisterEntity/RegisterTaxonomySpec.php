@@ -4,13 +4,13 @@ namespace unit\Spark\Extension\Entity;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Spark\Extension\Entity\Taxonomy;
+use Spark\Extension\RegisterEntity\Taxonomy;
 
-class TaxonomySpec extends ObjectBehavior
+class RegisterTaxonomySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Extension\Entity\Taxonomy');
+        $this->shouldHaveType('Spark\Extension\RegisterEntity\RegisterTaxonomy');
     }
         
     function let()

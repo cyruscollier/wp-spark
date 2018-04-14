@@ -4,18 +4,18 @@ namespace unit\Spark\Extension\Entity;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Spark\Extension\Entity\Entity;
+use Spark\Extension\RegisterEntity\RegisterEntity;
 
-class EntitySpec extends ObjectBehavior
+class RegisterEntitySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Extension\Entity\Entity');
+        $this->shouldHaveType('Spark\Extension\RegisterEntity\RegisterEntity');
     }
         
     function let()
     {
-        $this->beAnInstanceOf(EntityTest::class);
+        $this->beAnInstanceOf(RegisterEntityTest::class);
     }    
     
     function it_registers_the_init_action( $functions ) {
@@ -48,7 +48,7 @@ class EntitySpec extends ObjectBehavior
     }
 }
 
-class EntityTest extends Entity
+class RegisterEntityTest extends RegisterEntity
 {
     const NAME = 'test';
     

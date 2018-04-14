@@ -1,6 +1,6 @@
 <?php 
 
-namespace Spark\Extension\Entity;
+namespace Spark\Extension\RegisterEntity;
 
 /**
  * Register a custom Taxonomy
@@ -8,7 +8,7 @@ namespace Spark\Extension\Entity;
  * @author cyruscollier
  *
  */
-abstract class Taxonomy extends Entity {
+abstract class RegisterTaxonomy extends RegisterEntity {
 	
 	protected $post_types = [];
 	

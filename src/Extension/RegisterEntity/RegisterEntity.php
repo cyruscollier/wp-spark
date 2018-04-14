@@ -1,6 +1,6 @@
 <?php 
 
-namespace Spark\Extension\Entity;
+namespace Spark\Extension\RegisterEntity;
 
 use Spark\Extension\Extension;
 
@@ -10,7 +10,7 @@ use Spark\Extension\Extension;
  * @author cyruscollier
  *
  */
-abstract class Entity implements Extension {
+abstract class RegisterEntity implements Extension {
 	
 	const NAME = null;
 	const FORMAT_NAME = '@n';

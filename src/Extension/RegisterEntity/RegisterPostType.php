@@ -1,6 +1,6 @@
 <?php 
 
-namespace Spark\Extension\Entity;
+namespace Spark\Extension\RegisterEntity;
 
 /**
  * Register a custom Post Type
@@ -8,7 +8,7 @@ namespace Spark\Extension\Entity;
  * @author cyruscollier
  *
  */
-abstract class PostType extends Entity {
+abstract class RegisterPostType extends RegisterEntity {
 	
 	protected $labels_defaults = [
         'add_new'             => 'Add New',
