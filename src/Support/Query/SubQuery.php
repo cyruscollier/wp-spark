@@ -11,13 +11,27 @@ namespace Spark\Support\Query;
  */
 interface SubQuery
 {
-    
+    /**
+     * QueryBuilder constructor.
+     * @param string $relation
+     */
+    function __construct($relation = 'AND');
+
+    /**
+     * @param string $relation
+     *
+     * @return $this
+     */
+    function setRelation($relation = 'AND');
+
     /**
      * Assembles clauses and prepares it for query assignment
-     * 
+     *
+     * @param bool $filtered
+     *
      * @return array
      */
-    public function build(): array;
+    public function build($filtered = true): array;
     
     /**
      * Adds clause
@@ -34,6 +48,13 @@ interface SubQuery
      * @return string
      */
     function getQueryKey();
+
+    /**
+     * @param SubQuery $Subquery
+     *
+     * @return $this
+     */
+    function addSubQuery(SubQuery $Subquery);
 
     
     

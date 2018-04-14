@@ -2,6 +2,8 @@
 
 namespace Spark\Query;
 
+use Spark\Support\Query\SubQuery as SubQueryInterface;
+
 /**
  * Base class for building query parameter sets for WP_Query::set()
  * Child classes built based on current WP_Query API
@@ -9,7 +11,7 @@ namespace Spark\Query;
  * @author cyruscollier
  *
  */
-abstract class SubQuery implements \Spark\Support\Query\SubQuery
+abstract class SubQuery implements SubQueryInterface
 {
 
     /**
@@ -17,18 +19,46 @@ abstract class SubQuery implements \Spark\Support\Query\SubQuery
      * @var array
      */
     private $query = [];
-    
-    /**
-     * Assembles clauses and prepares it for query assignment
-     * 
-     * @param string $relation
-     * @return array
-     */
-    public function build( $relation = 'AND' ): array
+
+    private $relation = 'AND';
+
+    public function __construct($relation = 'AND')
     {
-        $filtered_query = array_filter( $this->query, [$this, 'hasClauseValue'] );
-        if ( count( $filtered_query ) > 1 ) $filtered_query['relation'] = $relation;
-        return $filtered_query;
+        $this->setRelation($relation);
+    }
+
+    public function setRelation($relation = 'AND')
+    {
+        $this->relation = in_array($relation, ['OR', 'AND']) ? $relation : 'AND';
+    }
+
+    /**
+     * @param SubQueryInterface $Subquery
+     * @return static
+     */
+    public function addSubQuery(SubQueryInterface $Subquery)
+    {
+        if (! $Subquery instanceof static) {
+            throw new \InvalidArgumentException('SubQuery subclass mismatch for sub-query');
+        }
+        return $this->addClause($Subquery->build(false));
+    }
+
+    public function build($filtered = true): array
+    {
+        $query = $this->query;
+        if ($filtered) {
+            $query = array_filter($query, [$this, 'hasClauseValue']);
+        }
+        //if only one subquery, promote to base query
+        if (count($query) == 1 && $this->isBuiltSubQuery($query[0])) {
+            $query = $query[0];
+        }
+        //add relation for multiple
+        if (count($query) > 1 && !isset($query['relation'])) {
+            $query['relation'] = $this->relation;
+        }
+        return $query;
     }
     
     /**
@@ -42,18 +72,20 @@ abstract class SubQuery implements \Spark\Support\Query\SubQuery
         $this->query[] = $clause;
         return $this;
     }
-    
-    /**
-     * Checks if clause has empty value
-     * 
-     * @param array $clause
-     * @return bool
-     */
-    protected function hasClauseValue( array $clause )
+
+    protected function hasClauseValue( $clause )
     {
+        if ($this->isBuiltSubQuery($clause)) {
+            return true;
+        }
         $value = $this->getClauseValue( $clause );
-        if ( is_array( $value ) ) $value = array_filter( $value, function($v) { return isset($v); } );
-        return isset( $value );
+        if ( is_array( $value ) ) $value = array_filter( $value );
+        return $value !== '';
+    }
+
+    protected function isBuiltSubQuery($clause)
+    {
+        return !empty($clause['relation']);
     }
     
     /**

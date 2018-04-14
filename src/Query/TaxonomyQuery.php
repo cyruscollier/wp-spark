@@ -46,6 +46,14 @@ class TaxonomyQuery extends SubQuery
     {
         return $clause['terms'];
     }
-    
+
+
+    function addWithEmpty($taxonomy, $terms, $operator = 'IN', $field = 'slug')
+    {
+        $subquery = new static('OR');
+        $subquery->add($taxonomy, $terms, $operator = 'IN', $field)
+            ->add($taxonomy, [], $operator = 'NOT EXISTS');
+        return $this->addSubQuery($subquery);
+    }
     
 }

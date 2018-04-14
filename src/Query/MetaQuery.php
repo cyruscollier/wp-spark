@@ -8,7 +8,7 @@ namespace Spark\Query;
  * @author cyruscollier
  *
  */
-class MetaQuery extends SubQuery
+class MetaQuery extends SubQuery implements \Spark\Support\Query\MetaQuery
 {
 
     /**
@@ -53,9 +53,31 @@ class MetaQuery extends SubQuery
      * 
      * @param array $clause
      * @return mixed
-     */    
-     protected function getClauseValue( array $clause )
-     {
+     */
+    protected function getClauseValue( array $clause )
+    {
         return $clause['value'];
-     }
+    }
+
+
+    function addWithEmpty($key, $value, $compare = '=', $type = 'CHAR')
+    {
+        $subquery = new static('OR');
+        $subquery->add($key, $value, $compare, $type)
+            ->add($key, '');
+        return $this->addSubQuery($subquery);
+    }
+
+    /**
+     * @param $key
+     * @param $lower_value
+     * @param $upper_value
+     * @return static
+     */
+    function addRangeWithEmpty( $key, $lower_value, $upper_value ) {
+        $subquery = new static('OR');
+        $subquery->addRange($key, $lower_value, $upper_value)
+            ->add($key, '0', '=', 'NUMERIC');
+        return $this->addSubQuery($subquery);
+    }
 }

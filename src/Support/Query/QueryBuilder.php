@@ -10,7 +10,6 @@ namespace Spark\Support\Query;
  */
 interface QueryBuilder
 {
-    
     /**
      * Clears parameters
      *
@@ -82,5 +81,4 @@ interface QueryBuilder
      * @return array
      */
     function build(): array;
-    
 }
