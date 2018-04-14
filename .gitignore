@@ -5,4 +5,4 @@
 /composer.lock
 /.idea/
 .DS_Store
-tests/coverage.xml
+tests/*-coverage.xml

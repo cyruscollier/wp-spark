@@ -1,0 +1,19 @@
+suites:
+    spark:
+        namespace: Spark
+        psr4_prefix: Spark
+        spec_prefix: unit
+        spec_path: tests
+
+bootstrap: vendor/cyruscollier/wp-test/bootstrap/unit.php
+
+extensions:
+    PhpSpec\PhpMock\Extension\PhpMockExtension: ~
+    LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+        format:
+          - clover
+        output:
+            clover: tests/unit-coverage.xml
+        blacklist_files:
+          - src/functions.php
+          - src/spark.php
