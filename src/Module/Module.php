@@ -2,8 +2,11 @@
 
 namespace Spark\Module;
 
+use Spark\Extension\Extension;
 use Spark\Extension\ExtensionRegistry;
 use DI\Container;
+use Spark\Model\Entity;
+use Spark\Model\EntityRegistry;
 
 abstract class Module
 {
@@ -15,11 +18,24 @@ abstract class Module
     /**
      * @var ExtensionRegistry
      */
-    protected $Extensions;
+    protected $ExtensionRegistry;
+
+    /**
+     * @var EntityRegistry
+     */
+    protected $EntityRegistry;
     
     protected $load_action;
-    
+
+    /**
+     * @var Extension[]
+     */
     protected $extensions = [];
+
+    /**
+     * @var Entity[]
+     */
+    protected $entities = [];
 
     /**
      * Module constructor.
@@ -29,15 +45,22 @@ abstract class Module
     public function __construct()
     {
         $this->Container = spark();
-        $this->Extensions = $this->Container->get( ExtensionRegistry::class );
+        $this->ExtensionRegistry = $this->Container->get( ExtensionRegistry::class );
+        $this->EntityRegistry = $this->Container->get( EntityRegistry::class );
         add_action( $this->load_action, [$this, 'registerExtensions'], 1 );
+        add_action( $this->load_action, [$this, 'registerEntities'], 1 );
         add_action( $this->load_action, [$this, 'load'] );
         add_action( 'init', [$this, 'init'] );
     }
     
     public function registerExtensions()
     {
-        $this->Extensions->register( $this->extensions );
+        $this->ExtensionRegistry->register( $this->extensions );
+    }
+
+    public function registerEntities()
+    {
+        $this->EntityRegistry->register( $this->entities );
     }
     
     public abstract function load();

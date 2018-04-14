@@ -167,7 +167,12 @@ abstract class PostType extends EntityWithMetadata
     {
         $this->slug = $slug;
     }
-    
+
+    public function getRegistryKey()
+    {
+        return static::POST_TYPE;
+    }
+
     public function __get( $name )
     {
         if ( $value = parent::__get( $name ) )

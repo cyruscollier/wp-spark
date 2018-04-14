@@ -19,6 +19,11 @@ abstract class Taxonomy extends EntityWithMetadata
      * @var string
      */
     const TAXONOMY = null;
+
+    public function getRegistryKey()
+    {
+        return static::TAXONOMY;
+    }
     
     /**
      * @param string $key

@@ -12,5 +12,7 @@ interface Registry
     function register( array $classes ): array;
     
     function deregister( array $classes ): array;
+
+    function get(string $identifier);
     
 }

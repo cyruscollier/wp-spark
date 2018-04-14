@@ -11,6 +11,11 @@ namespace Spark\Model;
 abstract class Entity
 {
     protected $unique_key = 'id';
+
+    public function getRegistryKey()
+    {
+        return 'entity';
+    }
     
     /**
      * Return unique identifier for model, used in ModelCollection
@@ -36,6 +41,7 @@ abstract class Entity
      * Check isset() on non-hidden property
      * 
      * @param string $name
+     * @return bool
      */
     public function __isset( $name )
     {
@@ -63,6 +69,7 @@ abstract class Entity
      * 
      * @param string $name
      * @param mixed $value
+     * @return bool
      */
     public function __set( $name, $value )
     {
@@ -96,6 +103,7 @@ abstract class Entity
      * "Hidden" properties begin with an underscore
      * 
      * @param string $name
+     * @return bool
      */
     protected function isHiddenProperty( $name )
     {

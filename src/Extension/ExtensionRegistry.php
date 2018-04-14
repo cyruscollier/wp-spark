@@ -51,7 +51,13 @@ final class ExtensionRegistry implements Registry
         }
         return $deregistered_extensions;
     }
-    
+
+    function get(string $identifier)
+    {
+        return $this->extensions[$identifier] ?? false;
+    }
+
+
     protected function getExtensionInstance($extension_class)
     {
         $Extension = $this->Container->get( $extension_class );
