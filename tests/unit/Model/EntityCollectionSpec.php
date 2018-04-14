@@ -33,6 +33,12 @@ class EntityCollectionSpec extends ObjectBehavior
         $this->offsetSet(null, $post4);
         $this->offsetGet(2)->shouldReturn($post4);
     }
+
+    function it_prevents_invalid_offset_setting()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->duringOffsetSet(null, new \stdClass());
+        $this->shouldThrow(\InvalidArgumentException::class)->duringOffsetSet('key', new Post());
+    }
     
     function it_unsets_an_item_by_offset()
     {
@@ -55,6 +61,14 @@ class EntityCollectionSpec extends ObjectBehavior
         $this->remove($this->post2)->shouldReturn($this->getWrappedObject());
         $this->offsetExists(1)->shouldBe(false);
         $this->shouldHaveCount(1);
+    }
+
+    function it_counts_the_items()
+    {
+        $this->count()->shouldReturn(2);
+        $post3 = new Post;
+        $this->add($post3);
+        $this->count()->shouldReturn(3);
     }
     
     function it_return_an_iterator()

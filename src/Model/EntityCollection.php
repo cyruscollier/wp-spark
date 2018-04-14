@@ -18,6 +18,8 @@ final class EntityCollection implements Collection
      * @var Entity[]
      */
     protected $items = [];
+
+    protected $hash_map = [];
     
     /**
      * Bound class for all instances inside collection
@@ -51,6 +53,7 @@ final class EntityCollection implements Collection
         }
         $this->checkValidEntity( $Object );
         $this->items[] = $Object;
+        $this->hash_map[$this->getEntityHash($Object)] = count($this->items) - 1;
         return $this;
     }
     
@@ -62,11 +65,13 @@ final class EntityCollection implements Collection
      */
     public function remove( Entity $Object )
     {
-        foreach ( $this->items as $index => $item ) {
-            if ( $item === $Object ) {
-                $this->offsetUnset( $index );
-            }
+        $hash = $this->getEntityHash($Object);
+        $index = $this->hash_map[$hash] ?? false;
+        if ($index) {
+            $this->offsetUnset($index);
+            unset($this->hash_map[$hash]);
         }
+
         return $this;
     }
     
@@ -102,10 +107,17 @@ final class EntityCollection implements Collection
     {
         if ( !( $value instanceof Entity ) )
             throw new \InvalidArgumentException( 'EntityCollection must only contain Entity instances' );
+        if ( !(is_int($offset) || is_null($offset)) )
+            throw new \InvalidArgumentException( 'EntityCollection must use numeric keys' );
         if ( is_null( $offset ) ) {
             $this->add( $value );
         } else {
+            if ($this->offsetExists($offset)) {
+                $Object = $this->offsetGet($offset);
+                unset($this->hash_map[$this->getEntityHash($Object)]);
+            }
             $this->items[$offset] = $value;
+            $this->hash_map[$this->getEntityHash($value)] = $offset;
         }
     }
     
@@ -115,7 +127,9 @@ final class EntityCollection implements Collection
      * @param int $offset
      */
     public function offsetUnset( $offset ) {
-        unset( $this->items[$offset] );
+        $Object = $this->offsetGet($offset);
+        unset($this->items[$offset]);
+        unset($this->hash_map[$this->getEntityHash($Object)]);
     }  
     
     /**
@@ -146,6 +160,11 @@ final class EntityCollection implements Collection
                 'EntityCollection items must all be the same Entity class'
             );
         }
+    }
+
+    protected function getEntityHash( Entity $Object )
+    {
+        return md5($Object->getId());
     }
     
 }
