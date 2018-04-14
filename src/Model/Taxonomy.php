@@ -2,6 +2,8 @@
 
 namespace Spark\Model;
 
+use Spark\Model\Values\TermMetaField;
+
 /**
  * Base class for all taxonomies
  * 
@@ -21,7 +23,7 @@ abstract class Taxonomy extends EntityWithMetadata
     /**
      * @param string $key
      * @param mixed $value
-     * @return MetadataField
+     * @return Values\MetadataField
      */
     public function createMetadataField( $key, $value )
     {

@@ -49,6 +49,14 @@ class ShortcodeSpec extends ObjectBehavior
         $functions->remove_shortcode('test')->shouldNotBeCalled();
         $this->deregister()->shouldReturn(false);
     }
+
+    function it_renders_the_shortcode($functions)
+    {
+        $arguments = ['post' => 1];
+        $functions->shortcode_atts([], $arguments)->willReturn($arguments);
+        $this->renderShortcode($arguments, 'passed content')
+             ->shouldReturn('some test content for post: 1, passed content');
+    }
 }
 
 class ShortcodeTest extends Shortcode
@@ -57,6 +65,6 @@ class ShortcodeTest extends Shortcode
     
     public function render()
     {
-        return 'some test content';
+        echo 'some test content for post: ' . $this->arguments['post'] . ', ' . $this->content;
     }
 }

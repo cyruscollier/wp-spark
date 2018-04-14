@@ -89,6 +89,6 @@ class MetaBoxTest extends MetaBox
     
     public function render()
     {
-        return 'some test content for post: ' . $this->post->ID;
+        echo 'some test content for post: ' . $this->post->ID;
     }
 }

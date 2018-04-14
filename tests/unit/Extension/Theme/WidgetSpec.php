@@ -55,16 +55,20 @@ class WidgetSpec extends ObjectBehavior
         $functions->unregister_widget( $instance )->shouldNotBeCalled();
         $this->deregister()->shouldReturn(false);
     }
+
+    function it_renders_a_widget($functions)
+    {
+        $this->widget(['key' => 'value'], false )
+             ->shouldReturn('some test content');
+    }
     
     
 }
-
-//require_once 'tests/unit/stubs.php';
 
 class WidgetTest extends Widget
 {
     public function render()
     {
-        return 'some test content';
+        echo 'some test content';
     }
 }

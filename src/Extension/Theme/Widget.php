@@ -48,19 +48,25 @@ abstract class Widget extends \WP_Widget implements Extension, View
     {
         $this->prepare( compact( 'arguments', 'instance' ) );
         $this->render();
-        $this->cleanup();
+        $output = $this->cleanup();
+        if (is_array($instance)) {
+            echo $output;
+        }
+        return $output;
     }
     
-    public function prepare( $_arguments )
+    public function prepare( $arguments )
     {
-        extract( $_arguments );
-        $this->arguments = $arguments;
-        $this->instance = $instance;
+        $this->arguments = $arguments['arguments'];
+        $this->instance = $arguments['instance'];
+        ob_start();
     }
     
     public function cleanup()
     {
+        $output = ob_get_clean();
         $this->arguments = null;
         $this->instance = null;
+        return $output;
     }
 }

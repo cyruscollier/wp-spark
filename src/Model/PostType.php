@@ -179,7 +179,7 @@ abstract class PostType extends EntityWithMetadata
     /**
      * @param string $key
      * @param mixed $value
-     * @return MetadataField
+     * @return Values\MetadataField
      */
     public function createMetadataField( $key, $value )
     {

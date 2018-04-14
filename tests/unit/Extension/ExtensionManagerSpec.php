@@ -15,9 +15,16 @@ class ExtensionManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Spark\Extension\ExtensionManager');
     }
     
-    function let(ContainerInterface $Container)
+    function let(
+        ContainerInterface $Container,
+        Extension $Extension1,
+        Extension $Extension2
+    )
     {
         $this->beConstructedWith($Container);
+
+        $Extension1->getType()->willReturn('type1');
+        $Extension2->getType()->willReturn('type2');
     }
     
     function it_registers_one_or_more_extensions(
@@ -27,13 +34,9 @@ class ExtensionManagerSpec extends ObjectBehavior
     )
     {
         $Container->get('extension1')->willReturn($Extension1);
-        $Extension1->isRegistered()->willReturn(false);
-        $Extension1->register()->shouldBeCalled();
-        $Extension1->getType()->willReturn('type1');
         $Container->get('extension2')->willReturn($Extension2);
-        $Extension2->isRegistered()->willReturn(false);
-        $Extension2->register()->shouldBeCalled();
-        $Extension2->getType()->willReturn('type2');
+        $this->it_expects_extension_register($Extension1);
+        $this->it_expects_extension_register($Extension2);
         $this->registerExtensions(['extension1', 'extension2'])
              ->shouldReturn([$Extension1, $Extension2]);
     }
@@ -45,13 +48,10 @@ class ExtensionManagerSpec extends ObjectBehavior
     )
     {
         $Container->get('extension1')->willReturn($Extension1);
-        $Extension1->isRegistered()->willReturn(false);
-        $Extension1->register()->shouldBeCalled();
-        $Extension1->getType()->willReturn('type1');
         $Container->get('extension2')->willReturn($Extension2);
+        $this->it_expects_extension_register($Extension1);
         $Extension2->isRegistered()->willReturn(true);
         $Extension2->register()->shouldNotBeCalled();
-        $Extension2->getType()->willReturn('type1');
         $this->registerExtensions(['extension1', 'extension2'])
              ->shouldReturn([$Extension1]);
     }
@@ -71,13 +71,12 @@ class ExtensionManagerSpec extends ObjectBehavior
     )
     {
         $Container->get('extension1')->willReturn($Extension1);
-        $Extension1->isRegistered()->willReturn(true);
-        $Extension1->deregister()->shouldBeCalled();
-        $Extension1->getType()->willReturn('type1');
         $Container->get('extension2')->willReturn($Extension2);
-        $Extension2->isRegistered()->willReturn(true);
-        $Extension2->deregister()->shouldBeCalled();
-        $Extension2->getType()->willReturn('type2');
+        $this->it_expects_extension_register($Extension1);
+        $this->it_expects_extension_register($Extension2);
+        $this->registerExtensions(['extension1', 'extension2']);
+        $this->it_expects_extension_deregister($Extension1);
+        $this->it_expects_extension_deregister($Extension2);
         $this->deregisterExtensions(['extension1', 'extension2'])
              ->shouldReturn([$Extension1, $Extension2]);
     }
@@ -89,13 +88,10 @@ class ExtensionManagerSpec extends ObjectBehavior
     )
     {
         $Container->get('extension1')->willReturn($Extension1);
-        $Extension1->isRegistered()->willReturn(true);
-        $Extension1->deregister()->shouldBeCalled();
-        $Extension1->getType()->willReturn('type1');
         $Container->get('extension2')->willReturn($Extension2);
+        $this->it_expects_extension_deregister($Extension1);
         $Extension2->isRegistered()->willReturn(false);
         $Extension2->deregister()->shouldNotBeCalled();
-        $Extension2->getType()->willReturn('type1');
         $this->deregisterExtensions(['extension1', 'extension2'])
              ->shouldReturn([$Extension1]);
     }
@@ -106,5 +102,17 @@ class ExtensionManagerSpec extends ObjectBehavior
     {
         $Container->get('post')->willReturn(new Post());
         $this->shouldThrow(\InvalidArgumentException::class)->duringDeregisterExtensions(['post']);
+    }
+
+    private function it_expects_extension_register(Extension $Extension)
+    {
+        $Extension->isRegistered()->willReturn(false);
+        $Extension->register()->shouldBeCalled();
+    }
+
+    private function it_expects_extension_deregister(Extension $Extension)
+    {
+        $Extension->isRegistered()->willReturn(true);
+        $Extension->deregister()->shouldBeCalled();
     }
 }

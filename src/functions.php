@@ -11,9 +11,19 @@ use Spark\Container\Container;
 define( 'SPARK_PATH', dirname( __DIR__ ) );
 define( 'SPARK_TEXT_DOMAIN', 'spark' );
 
-function spark( $name = null )
+/**
+ * @param string $name
+ * @return \DI\Container|mixed
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
+ */
+function spark( $name = '' )
 {
-    $container = Container::getInstance();
+    static $container;
+    if ( !$container ) {
+        $ContainerFactory = new \Spark\Container\ContainerFactory();
+        $container = $ContainerFactory->create();
+    }
     return $name ? $container->get( $name ) : $container;
 }
 

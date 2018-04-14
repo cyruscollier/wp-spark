@@ -64,19 +64,25 @@ abstract class MetaBox implements Extension, View
         return true;
     }
     
-    public function renderMetabox( $post )
+    public function renderMetabox( $post, $echo = false )
     {
         $this->prepare( $post );
-        $output = $this->render();
-        $this->cleanup();
+        $this->render();
+        $output = $this->cleanup();
+        if ($echo !== false) {
+            echo $output;
+        }
         return $output;
     }
     
     public function prepare( $post ) {
         $this->post = $post;
+        ob_start();
     }
     
-    public function cleanup() {}
+    public function cleanup() {
+        return ob_get_clean();
+    }
         
     protected function getScreen( $screen = null )
     {

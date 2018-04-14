@@ -46,7 +46,7 @@ abstract class Shortcode implements Extension, View
     
     public function prepare( $arguments ) {
         $this->arguments = shortcode_atts( $this->arguments_defaults, $arguments['arguments'] );
-        $this->content = $content;
+        $this->content = $arguments['content'];
         ob_start();
     }
     
