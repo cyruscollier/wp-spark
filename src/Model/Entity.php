@@ -12,6 +12,11 @@ abstract class Entity
 {
     protected $unique_key = 'id';
 
+    public function __construct($id = null)
+    {
+        $this->{$this->getIdProperty()} = $id;
+    }
+
     public static function getRegistryKey()
     {
         return 'entity';

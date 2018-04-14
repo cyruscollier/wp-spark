@@ -39,32 +39,61 @@ class PostStatus extends FilteredValue {
         }
         parent::__construct( $status );
     }
+
+    public static function published()
+    {
+        return new static(static::STATUS_PUBLISH);
+    }
+
+    public static function future()
+    {
+        return new static(static::STATUS_FUTURE);
+    }
+
+    public static function draft()
+    {
+        return new static(static::STATUS_DRAFT);
+    }
+
+    public static function pending()
+    {
+        return new static(static::STATUS_PENDING);
+    }
+
+    public static function private()
+    {
+        return new static(static::STATUS_PRIVATE);
+    }
+
+    public static function trashed()
+    {
+        return new static(static::STATUS_TRASH);
+    }
     
-    function isPublished() {
+    public function isPublished() {
         return $this->value == self::STATUS_PUBLISH;
     }
     
-    function isFuture() {
+    public function isFuture() {
         return $this->value == self::STATUS_FUTURE;
     }
     
-    function isDraft() {
+    public function isDraft() {
         return $this->value == self::STATUS_DRAFT;
     }
     
-    function isPending() {
+    public function isPending() {
         return $this->value == self::STATUS_PENDING;
     }
     
-    function isPrivate() {
+    public function isPrivate() {
         return $this->value == self::STATUS_PRIVATE;
     }
-    
-    function isTrashed() {
+    public function isTrashed() {
         return $this->value == self::STATUS_TRASH;
     }
     
-    static function getAllStatuses()
+    public static function getAllStatuses()
     {
         $core_statuses = isset( $GLOBALS['wp_post_statuses'] ) ? $GLOBALS['wp_post_statuses'] : [];
         return array_merge( self::$core_statuses, array_keys( $core_statuses ) );

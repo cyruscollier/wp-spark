@@ -117,34 +117,6 @@ abstract class PostType extends EntityWithMetadata
      */
     protected $wp_post;
     
-    /**
-     * 
-     * @param WP_Post $post
-     * @param Metadata[] $all_metadata
-     * @throws \InvalidArgumentException
-     */
-    static function createFromPost( WP_Post $post, $all_metadata = [] )
-    {
-        if ( $post->post_type != static::POST_TYPE )
-            throw new \InvalidArgumentException( 'Post type mismatch.' );
-        $Post = new static;
-        $Post->id = (int) $post->ID;
-        $Post->parent_id = (int) $post->post_parent;
-        $Post->author_id = (int) $post->post_author;
-        $Post->title = new Values\PostTitle( $post->post_title );
-        $Post->content = new Values\PostContent( $post->post_content );
-        $Post->excerpt = new Values\PostExcerpt( get_the_excerpt( $post ) );
-        $Post->status = new Values\PostStatus( $post->post_status );
-        $Post->published_date = new Values\PostDate( $post->post_date, $post->post_date_gmt );
-        $Post->modified_date = new Values\PostModifiedDate( $post->post_modified, $post->post_modified_gmt ); 
-        $Post->slug = new Values\Slug( $post->post_name );
-        $Post->_wp_post = $post;
-        foreach ( $all_metadata as $metadata ) {
-            $Post->setMetadata( $metadata );
-        }
-        return $Post;
-    }
-    
     public function setTitle( Values\PostTitle $title )
     {
         $this->title = $title;
@@ -189,8 +161,8 @@ abstract class PostType extends EntityWithMetadata
     {
         if ( $value = parent::__get( $name ) )
             return $value;
-        if ( property_exists( $this->_wp_post, $name ) )
-            return $this->_wp_post->$name;
+        if ( isset($this->wp_post) && property_exists( $this->wp_post, $name ) )
+            return $this->wp_post->$name;
     }
     
     /**

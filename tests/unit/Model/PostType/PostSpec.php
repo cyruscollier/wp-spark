@@ -17,12 +17,10 @@ class PostSpec extends ObjectBehavior
     
     function let()
     {
-        $post_arr = [
-            'ID' => 123, 'post_type' => 'post', 'post_status' => 'publish',
-        ];
-        $post = new \WP_Post((object)$post_arr);
-        $metadata = [new PostMetaField( 'meta_key1', '1' ), new PostMetaField( 'meta_key2', '2' )];
-        $this->beConstructedThrough('createFromPost', [$post, $metadata]);
+        $this->beConstructedWith(123);
+        $this->setStatus(PostStatus::published());
+        $this->setMetadata(new PostMetaField( 'meta_key1', '1' ));
+        $this->setMetadata(new PostMetaField( 'meta_key2', '2' ));
     }
     
     function it_gets_the_unique_id()
@@ -30,25 +28,22 @@ class PostSpec extends ObjectBehavior
         $this->getId()->shouldReturn(123);
     }
 
-
-
     function it_gets_the_registry_key()
     {
-        $this->getId()->shouldReturn(123);
+        $this::getRegistryKey()->shouldReturn('post');
     }
     
     function it_gets_a_property()
     {
-        $post_status = new PostStatus('publish');
+        $post_status = PostStatus::published();
         $this->__get('status')->shouldBeLike($post_status);
-        $this->__get('menu_order')->shouldReturn(0);
         $field = new PostMetaField('meta_key1', '1');
         $this->__get('meta_key1')->shouldBeLike($field);
     }
     
     function it_sets_a_property()
     {
-        $post_status = new PostStatus('draft');
+        $post_status = PostStatus::draft();
         $this->__set('status', $post_status);
         $this->__get('status')->shouldReturn($post_status);
         $field = new PostMetaField('something_random', 'abc');
