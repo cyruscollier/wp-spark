@@ -43,42 +43,35 @@ final class EntityCollection implements Collection
     /**
      * Append an Entity instance to the collection
      * 
-     * @param Entity $Object
+     * @param $object
      * @return $this
      */
-    public function add( Entity $Object )
+    public function add( $object )
     {
-        if ( empty( $this->items ) ) {
-            $this->model_class = get_class( $Object );
-        }
-        $this->checkValidEntity( $Object );
-        $this->items[] = $Object;
-        $this->hash_map[$this->getEntityHash($Object)] = count($this->items) - 1;
-        return $this;
+        $this->checkValidEntity($object);
+        $this->items[] = $object;
+        $this->hash_map[$this->getEntityHash($object)] = count($this->items) - 1;
     }
     
 
     /**
-     * 
-     * @param Entity $Object
-     * @return $this
+     * @param $object
      */
-    public function remove( Entity $Object )
+    public function remove($object)
     {
-        $hash = $this->getEntityHash($Object);
+        $this->checkValidEntity($object);
+        $hash = $this->getEntityHash($object);
         $index = $this->hash_map[$hash] ?? false;
         if ($index) {
             $this->offsetUnset($index);
             unset($this->hash_map[$hash]);
         }
-
-        return $this;
     }
     
     /**
      * ArrayAccess isset($array[$i])
      * 
-     * @param int $offest
+     * @param int $offset
      * @return boolean
      */
     public function offsetExists( $offset )
@@ -105,16 +98,15 @@ final class EntityCollection implements Collection
      */
     public function offsetSet( $offset, $value )
     {
-        if ( !( $value instanceof Entity ) )
-            throw new \InvalidArgumentException( 'EntityCollection must only contain Entity instances' );
+        $this->checkValidEntity($value);
         if ( !(is_int($offset) || is_null($offset)) )
             throw new \InvalidArgumentException( 'EntityCollection must use numeric keys' );
         if ( is_null( $offset ) ) {
             $this->add( $value );
         } else {
             if ($this->offsetExists($offset)) {
-                $Object = $this->offsetGet($offset);
-                unset($this->hash_map[$this->getEntityHash($Object)]);
+                $object = $this->offsetGet($offset);
+                unset($this->hash_map[$this->getEntityHash($object)]);
             }
             $this->items[$offset] = $value;
             $this->hash_map[$this->getEntityHash($value)] = $offset;
@@ -153,11 +145,11 @@ final class EntityCollection implements Collection
         return count( $this->items );
     }
     
-    protected function checkValidEntity( Entity $model )
+    protected function checkValidEntity( $object )
     {
-        if ( !( $model instanceof $this->model_class ) ) {
+        if ( !( $object instanceof Entity ) ) {
             throw new \InvalidArgumentException(
-                'EntityCollection items must all be the same Entity class'
+                'EntityCollection must only contain Entity instances'
             );
         }
     }

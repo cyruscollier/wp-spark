@@ -49,16 +49,16 @@ class EntityCollectionSpec extends ObjectBehavior
     function it_adds_an_item()
     {
         $post3 = new Post;
-        $this->add($post3)->shouldReturn($this->getWrappedObject());
+        $this->add($post3);
         $this->offsetExists(2)->shouldBe(true);
         $this->offsetGet(2)->shouldReturn($post3);
         $this->shouldHaveCount(3);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringAdd(new Category());
+        $this->shouldThrow(\InvalidArgumentException::class)->duringAdd(new \stdClass());
     }
     
     function it_removes_an_item()
     {
-        $this->remove($this->post2)->shouldReturn($this->getWrappedObject());
+        $this->remove($this->post2);
         $this->offsetExists(1)->shouldBe(false);
         $this->shouldHaveCount(1);
     }
