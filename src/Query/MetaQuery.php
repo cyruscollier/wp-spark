@@ -8,7 +8,7 @@ namespace Spark\Query;
  * @author cyruscollier
  *
  */
-class MetaQuery extends SubQuery implements \Spark\Support\Query\MetaQuery
+class MetaQuery extends SubQuery
 {
 
     /**
@@ -20,7 +20,7 @@ class MetaQuery extends SubQuery implements \Spark\Support\Query\MetaQuery
      * @param string $type
      * @return $this
      */
-    function add( $key, $value, $compare = '=', $type = 'CHAR' )
+    public function add( $key, $value, $compare = '=', $type = 'CHAR' )
     {
         return $this->addClause( compact( 'key', 'value', 'compare', 'type' ) );
     }
@@ -33,7 +33,7 @@ class MetaQuery extends SubQuery implements \Spark\Support\Query\MetaQuery
      * @param int $upper_value
      * @return $this
      */
-    function addRange( $key, $lower_value, $upper_value )
+    public function addRange( $key, $lower_value, $upper_value )
     {
         return $this->add( $key, [$lower_value, $upper_value], 'BETWEEN', 'NUMERIC' );
     }
@@ -43,7 +43,7 @@ class MetaQuery extends SubQuery implements \Spark\Support\Query\MetaQuery
      *
      * @return string
      */
-    function getQueryKey()
+    public function getQueryKey()
     {
         return 'meta_query';
     }
@@ -59,25 +59,4 @@ class MetaQuery extends SubQuery implements \Spark\Support\Query\MetaQuery
         return $clause['value'];
     }
 
-
-    function addWithEmpty($key, $value, $compare = '=', $type = 'CHAR')
-    {
-        $subquery = new static('OR');
-        $subquery->add($key, $value, $compare, $type)
-            ->add($key, '');
-        return $this->addSubQuery($subquery);
-    }
-
-    /**
-     * @param $key
-     * @param $lower_value
-     * @param $upper_value
-     * @return static
-     */
-    function addRangeWithEmpty( $key, $lower_value, $upper_value ) {
-        $subquery = new static('OR');
-        $subquery->addRange($key, $lower_value, $upper_value)
-            ->add($key, '0', '=', 'NUMERIC');
-        return $this->addSubQuery($subquery);
-    }
 }

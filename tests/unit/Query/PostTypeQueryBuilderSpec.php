@@ -21,6 +21,12 @@ class PostTypeQueryBuilderSpec extends ObjectBehavior
         $this->reset()->shouldReturn($this->getWrappedObject());
         $this->build()->shouldReturn([]);
     }
+
+    function it_filters_by_a_post_type()
+    {
+        $this->withPostType('post')->shouldReturn($this->getWrappedObject());
+        $this->build()->shouldReturn(['post_type' => 'post']);
+    }
     
     function it_filters_query_to_find_all_records()
     {

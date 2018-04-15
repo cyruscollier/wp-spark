@@ -20,7 +20,7 @@ class TaxonomyQuery extends SubQuery
      * @param string $field
      * @return $this
      */
-    function add( $taxonomy, $terms, $operator = 'IN', $field = 'slug' )
+    public function add( $taxonomy, $terms, $operator = 'IN', $field = 'slug' )
     {
         if ( !is_array( $terms ) ) $terms = [$terms];
         return $this->addClause( compact( 'taxonomy', 'terms', 'operator', 'field' ) );
@@ -31,7 +31,7 @@ class TaxonomyQuery extends SubQuery
      *
      * @return string
      */
-    function getQueryKey()
+    public function getQueryKey()
     {
         return 'tax_query';
     }
@@ -46,14 +46,4 @@ class TaxonomyQuery extends SubQuery
     {
         return $clause['terms'];
     }
-
-
-    function addWithEmpty($taxonomy, $terms, $operator = 'IN', $field = 'slug')
-    {
-        $subquery = new static('OR');
-        $subquery->add($taxonomy, $terms, $operator = 'IN', $field)
-            ->add($taxonomy, [], $operator = 'NOT EXISTS');
-        return $this->addSubQuery($subquery);
-    }
-    
 }
