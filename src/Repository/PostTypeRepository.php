@@ -3,6 +3,7 @@
 namespace Spark\Repository;
 
 use Spark\Model\Values\Permalink;
+use Spark\Query\DateQuery;
 use Spark\Support\Entity\PostFactory;
 use Spark\Model\EntityCollection;
 use Spark\Model\PostType;
@@ -31,7 +32,8 @@ class PostTypeRepository implements Repository
 
     function findAll(): EntityCollection
     {
-        // TODO: Implement findAll() method.
+        $this->Query->all();
+        return $this->getPosts();
     }
 
     /**
@@ -66,28 +68,19 @@ class PostTypeRepository implements Repository
 
     function findPublishedOn(PostDate $date): EntityCollection
     {
-        /* TODO: Make and use DateQuery */
-        $this->Query->where(['date_query' => [
-            ['year' => $date->year, 'month' => $date->month, 'day' => $date->day]
-        ]]);
+        $this->Query->withSubQuery((new DateQuery())->add($date));
         return $this->getPosts();
     }
 
     function findPublishedBefore(PostDate $date): EntityCollection
     {
-        /* TODO: Make and use DateQuery */
-        $this->Query->where(['date_query' => [
-            ['before' => $date->toDateTimeString()]
-        ]]);
+        $this->Query->withSubQuery((new DateQuery())->addBefore($date));
         return $this->getPosts();
     }
 
     function findPublishedAfter(PostDate $date): EntityCollection
     {
-        /* TODO: Make and use DateQuery */
-        $this->Query->where(['date_query' => [
-            ['after' => $date->toDateTimeString()]
-        ]]);
+        $this->Query->withSubQuery((new DateQuery())->addAfter($date));
         return $this->getPosts();
     }
 
