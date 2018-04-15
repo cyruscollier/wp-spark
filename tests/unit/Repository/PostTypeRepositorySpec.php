@@ -90,7 +90,8 @@ class PostTypeRepositorySpec extends ObjectBehavior
             'compare' => '=',
             'column' => 'post_date'
         ]]];
-        $Query->withSubQuery(Argument::type(DateQuery::class))->shouldBeCalled();
+        $DateQuery = new DateQuery();
+        $Query->withSubQuery($DateQuery->add('2018-04-15'))->shouldBeCalled();
         $Query->build()->willReturn($params);
         $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
         $Date = new PostDate('2018-04-15');

@@ -33,7 +33,9 @@ class PostFactorySpec extends ObjectBehavior
         $post_arr = [
             'ID' => 123,
             'post_type' => 'post',
-            'status' => 'publish'
+            'status' => 'publish',
+            'post_date' => '2018-04-15 00:00:00',
+            'post_modified' => '2018-04-15 00:00:00'
         ];
         $post = new \WP_Post((object)$post_arr);
         $Registry->getByKey('post')->willReturn(Post::class);
@@ -44,8 +46,11 @@ class PostFactorySpec extends ObjectBehavior
         $Post->excerpt = new Values\PostExcerpt('');
         $Post->slug = new Values\Slug('');
         $Post->status = Values\PostStatus::published();
+        $Post->published_date = new Values\PostDate('2018-04-15 00:00:00');
+        $Post->modified_date = new Values\PostModifiedDate('2018-04-15 00:00:00');
         $Post->wp_post = $post;
-        $this->createFromWPPost($post, [])->shouldBeLike($Post);
+        $Post->setMetadata(new Values\PostMetaField('key','value'));
+        $this->createFromWPPost($post, ['key' => 'value'])->shouldBeLike($Post);
     }
 
     function it_guards_against_unregistered_post_classes(

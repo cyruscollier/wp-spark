@@ -60,8 +60,8 @@ final class PostFactory implements Factory
         }
         $Post = $this->create($data);
         $Post->wp_post = $post;
-        foreach ( $metadata as $field ) {
-            $Post->setMetadata( $field );
+        foreach ( $metadata as $key => $value) {
+            $Post->setMetadata(new Values\PostMetaField($key, $value));
         }
         return $Post;
     }
