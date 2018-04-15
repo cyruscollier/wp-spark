@@ -14,7 +14,6 @@ define( 'SPARK_TEXT_DOMAIN', 'spark' );
 /**
  * @param string $name
  * @return \DI\Container|mixed
- * @throws \Exception
  */
 function spark( $name = '' )
 {

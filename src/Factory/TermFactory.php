@@ -19,11 +19,13 @@ final class TermFactory implements Factory
     }
 
 
-    public function create($data): Taxonomy {
+    public function create($data): Taxonomy
+    {
 
     }
 
-    function createFromWPTerm(\WP_Term $term, array $metadata = []): Taxonomy {
+    function createFromWPTerm(\WP_Term $term, array $metadata = []): Taxonomy
+    {
 
     }
 }

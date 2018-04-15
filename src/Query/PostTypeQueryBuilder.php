@@ -2,8 +2,6 @@
 
 namespace Spark\Query;
 
-use Spark\Support\Query\SubQuery;
-
 /**
  * Query Builder for all post types
  * 

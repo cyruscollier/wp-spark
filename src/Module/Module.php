@@ -2,6 +2,7 @@
 
 namespace Spark\Module;
 
+use Psr\Container\ContainerInterface;
 use Spark\Support\Extension\Extension;
 use Spark\Support\Extension\ExtensionRegistry;
 use DI\Container;
@@ -39,18 +40,19 @@ abstract class Module
 
     /**
      * Module constructor.
+     * @param ContainerInterface|null $Container
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
      */
-    public function __construct()
+    public function __construct(ContainerInterface $Container = null)
     {
-        $this->Container = spark();
+        $this->Container = $Container ?: spark();
         $this->ExtensionRegistry = $this->Container->get( ExtensionRegistry::class );
         $this->EntityRegistry = $this->Container->get( EntityRegistry::class );
         add_action( $this->load_action, [$this, 'registerExtensions'], 1 );
         add_action( $this->load_action, [$this, 'registerEntities'], 1 );
-        add_action( $this->load_action, [$this, 'load'] );
-        add_action( 'init', [$this, 'init'] );
+        add_action( $this->load_action, [$this, 'load'], 10 );
+        add_action( 'init', [$this, 'init'], 10 );
     }
     
     public function registerExtensions()

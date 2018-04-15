@@ -80,12 +80,14 @@ abstract class Entity
     {
         if ( $setter = $this->getMethodFromProperty( $name, 'set' ) ) {
             call_user_func( [$this, $setter], $value );
+            return null;
         }
         if ( 
             property_exists( $this, $name ) && 
             !( $this->isHiddenProperty( $name ) || $name == $this->getIdProperty() ) 
         ) {
             $this->$name = $value;
+            return null;
         }
         return false;
     }
