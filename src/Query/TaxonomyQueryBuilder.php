@@ -13,7 +13,7 @@ class TaxonomyQueryBuilder extends QueryBuilder implements \Spark\Support\Query\
 
     public function all()
     {
-        $this->parameters['hide_empty'] = true;
+        $this->parameters['hide_empty'] = false;
         return $this;
     }
     

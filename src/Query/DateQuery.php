@@ -12,6 +12,9 @@ use Spark\Model\Values\PostDate;
  */
 class DateQuery extends SubQuery
 {
+    protected $query_key = 'date_query';
+    protected $clause_value_key = 'date';
+
     /**
      * Adds clause
      *
@@ -59,27 +62,6 @@ class DateQuery extends SubQuery
     {
         $after = $date->toDateTimeString();
         return $this->addClause( compact( 'after', 'inclusive', 'compare', 'column' ) );
-    }
-    
-    /**
-     * Name of query key to user for this subquery
-     *
-     * @return string
-     */
-    function getQueryKey()
-    {
-        return 'date_query';
-    }
-    
-    /**
-     * Gets value inside of clause
-     *
-     * @param array $clause
-     * @return mixed
-     */
-    protected function getClauseValue( array $clause )
-    {
-        return $clause['date'];
     }
     
 }

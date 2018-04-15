@@ -10,6 +10,8 @@ namespace Spark\Query;
  */
 class MetaQuery extends SubQuery
 {
+    protected $query_key = 'meta_query';
+    protected $clause_value_key = 'value';
 
     /**
      * Adds clause
@@ -37,26 +39,4 @@ class MetaQuery extends SubQuery
     {
         return $this->add( $key, [$lower_value, $upper_value], 'BETWEEN', 'NUMERIC' );
     }
-    
-    /**
-     * Name of query key to user for this subquery
-     *
-     * @return string
-     */
-    public function getQueryKey()
-    {
-        return 'meta_query';
-    }
-    
-    /**
-     * Gets value inside of clause
-     * 
-     * @param array $clause
-     * @return mixed
-     */
-    protected function getClauseValue( array $clause )
-    {
-        return $clause['value'];
-    }
-
 }

@@ -22,6 +22,10 @@ abstract class SubQuery implements SubQueryInterface
 
     private $relation = 'AND';
 
+    protected $query_key = '';
+
+    protected $clause_value_key = '';
+
     public function __construct($relation = 'AND')
     {
         $this->setRelation($relation);
@@ -60,6 +64,16 @@ abstract class SubQuery implements SubQueryInterface
         }
         return $query;
     }
+
+    /**
+     * Name of query key to user for this subquery
+     *
+     * @return string
+     */
+    function getQueryKey()
+    {
+        return $this->query_key;
+    }
     
     /**
      * Adds clause to stack, used with public fluent wrapper methods
@@ -87,14 +101,16 @@ abstract class SubQuery implements SubQueryInterface
     {
         return !empty($clause['relation']);
     }
-    
+
     /**
      * Gets value inside of clause
-     * 
+     *
      * @param array $clause
      * @return mixed
      */
-    abstract protected function getClauseValue( array $clause );
-    
+    protected function getClauseValue( array $clause )
+    {
+        return $clause[$this->clause_value_key];
+    }
     
 }

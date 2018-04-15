@@ -10,6 +10,8 @@ namespace Spark\Query;
  */
 class TaxonomyQuery extends SubQuery
 {
+    protected $query_key = 'tax_query';
+    protected $clause_value_key = 'terms';
 
     /**
      * Adds clause
@@ -24,26 +26,5 @@ class TaxonomyQuery extends SubQuery
     {
         if ( !is_array( $terms ) ) $terms = [$terms];
         return $this->addClause( compact( 'taxonomy', 'terms', 'operator', 'field' ) );
-    }
-    
-    /**
-     * Name of query key to user for this subquery
-     *
-     * @return string
-     */
-    public function getQueryKey()
-    {
-        return 'tax_query';
-    }
-    
-    /**
-     * Gets value inside of clause
-     *
-     * @param array $clause
-     * @return mixed
-     */
-    protected function getClauseValue( array $clause )
-    {
-        return $clause['terms'];
     }
 }
