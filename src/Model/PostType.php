@@ -3,7 +3,6 @@
 namespace Spark\Model;
 
 use Spark\Model\Values;
-use WP_Post, WP_User;
 use Spark\Model\Values\PostMetaField;
 
 /**
@@ -21,7 +20,7 @@ use Spark\Model\Values\PostMetaField;
  * @property Values\PostDate $published_date
  * @property Values\PostModifiedDate $modified_date
  * @property Values\Slug $slug
- * @property WP_Post $wp_post
+ * @property \WP_Post $wp_post
  *
  */
 abstract class PostType extends EntityWithMetadata
@@ -55,13 +54,6 @@ abstract class PostType extends EntityWithMetadata
      * @var int
      */
     protected $author_id;
-    
-    /**
-     * Full author WP_User object
-     * 
-     * @var WP_User
-     */
-    protected $author;
     
     /**
      * Post publish date (and gmt)
@@ -115,7 +107,7 @@ abstract class PostType extends EntityWithMetadata
     /**
      * Original WP_Post instance
      * 
-     * @var WP_Post
+     * @var \WP_Post
      */
     protected $wp_post;
 

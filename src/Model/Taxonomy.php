@@ -9,6 +9,14 @@ use Spark\Model\Values;
  * 
  * @author cyruscollier
  *
+ * @property int $id
+ * @property int $parent_id
+ * @property int $post_count;
+ * @property Values\TermName $name
+ * @property Values\TermDescription $description
+ * @property Values\Slug $slug
+ * @property \WP_Term $wp_term
+ *
  */
 abstract class Taxonomy extends EntityWithMetadata
 {
@@ -72,10 +80,9 @@ abstract class Taxonomy extends EntityWithMetadata
         return static::TAXONOMY;
     }
 
-
     public function setName( Values\TermName $name )
     {
-        $this->title = $this->addCompositeId($name);
+        $this->name = $this->addCompositeId($name);
     }
 
     public function setDescription( Values\TermDescription $description )

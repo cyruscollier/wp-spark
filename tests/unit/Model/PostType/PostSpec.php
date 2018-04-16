@@ -51,21 +51,10 @@ class PostSpec extends ObjectBehavior
         $this->__get('something_random')->shouldBeLike($field);
     }
     
-    function it_gets_the_metadata_type()
-    {
-        $this->getMetadataType()->shouldReturn('post');
-    }
-    
     function it_creates_a_metadata_field()
     {
         $field = new PostMetaField('some_key', 'some_value');
-        $this->createMetadataField('some_key', 'some_value')->shouldBeLike($field);
-    }
-    
-    function it_sets_a_metadata_field()
-    {
-        $field = new PostMetaField('some_key', 'some_value');
-        $this->setMetadata($field);
-        $this->__get('some_key')->shouldReturn($field);
+        $this->__set('some_key', 'some_value');
+        $this->__get('some_key')->shouldBeLike($field);
     }
 }
