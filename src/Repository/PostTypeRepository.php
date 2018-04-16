@@ -18,6 +18,8 @@ class PostTypeRepository implements Repository
 
     protected $Factory;
 
+    protected static $allowed_post_types = [];
+
     public function __construct(PostTypeQueryBuilder $Query, PostFactory $Factory)
     {
         $this->Query = $Query;
@@ -101,6 +103,10 @@ class PostTypeRepository implements Repository
      */
     protected function getPost(\WP_Post $post)
     {
+        $post_type = $this->getPostType();
+        if ($post_type && !in_array($post->post_type, $post_type)) {
+            throw new \InvalidArgumentException('Post does not match allowed post type(s)');
+        }
         $raw_metadata = get_post_meta($post->ID);
         $metadata = array_map(function($m) {
             return $m[0];
@@ -130,7 +136,7 @@ class PostTypeRepository implements Repository
 
     protected function getPostType()
     {
-        return false;
+        return static::$allowed_post_types ?? [];
     }
 
 }

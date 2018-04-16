@@ -17,3 +17,4 @@ extensions:
         blacklist_files:
           - src/functions.php
           - src/spark.php
+          - src/container-config.php
