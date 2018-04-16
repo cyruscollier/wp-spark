@@ -8,17 +8,12 @@ namespace Spark\Model\Values;
  * @author cyruscollier
  *
  */
-class PostTitle extends FilteredValue
+class TermDescription extends TermFilteredValue
 {
     /**
      * Name used for filter
      *
      * @var string
      */
-    protected $filter = 'the_title';
-
-    public function asSingleTitle()
-    {
-        return apply_filters('single_post_title', $this->value);
-    }
+    protected $filter = 'term_description';
 }

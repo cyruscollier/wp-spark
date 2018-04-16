@@ -2,7 +2,7 @@
 
 namespace Spark\Model;
 
-use Spark\Model\Values\TermMetaField;
+use Spark\Model\Values;
 
 /**
  * Base class for all taxonomies
@@ -20,18 +20,91 @@ abstract class Taxonomy extends EntityWithMetadata
      */
     const TAXONOMY = null;
 
+    protected static $metadata_type = Values\TermMetaField::class;
+
+    /**
+     * Term ID
+     *
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * Term's parent ID
+     *
+     * @var int
+     */
+    protected $parent_id;
+
+    /**
+     * Term's total post count
+     *
+     * @var int
+     */
+    protected $post_count;
+
+    /**
+     * Term Name
+     *
+     * @var Values\TermName
+     */
+    protected $name;
+
+    /**
+     * @var Values\TermDescription
+     */
+    protected $description;
+
+    /**
+     * @var Values\Slug
+     */
+    protected $slug;
+
+    /**
+     * Original WP_Term instance
+     *
+     * @var \WP_Term
+     */
+    protected $wp_term;
+
     public static function getRegistryKey()
     {
         return static::TAXONOMY;
     }
-    
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return Values\MetadataField
-     */
-    public function createMetadataField( $key, $value )
+
+
+    public function setName( Values\TermName $name )
     {
-        return new TermMetaField( $key, $value );
-    }  
+        $this->title = $this->addCompositeId($name);
+    }
+
+    public function setDescription( Values\TermDescription $description )
+    {
+        $this->description = $this->addCompositeId($description);
+    }
+
+    public function setSlug( Values\Slug $slug )
+    {
+        $this->slug = $slug;
+    }
+
+    public function getTaxonomy()
+    {
+        return static::TAXONOMY;
+    }
+
+    public function __get( $name )
+    {
+        if ( $value = parent::__get( $name ) )
+            return $value;
+        if ( isset($this->wp_term) && property_exists( $this->wp_term, $name ) )
+            return $this->wp_term->$name;
+    }
+
+    protected function addCompositeId(Values\TermFilteredValue $object)
+    {
+        $composite_id = new Values\TermCompositeId($this->id, $this->getTaxonomy());
+        return $object->addCompositeId($composite_id);
+    }
+
 }

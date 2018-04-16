@@ -18,6 +18,8 @@ abstract class EntityWithMetadata extends Entity implements HasPermalink
 {
     protected $permalink;
 
+    protected static $metadata_type = MetadataField::class;
+
     /**
      * @var MetadataField[]
      */
@@ -25,6 +27,7 @@ abstract class EntityWithMetadata extends Entity implements HasPermalink
 
     public function setMetadata( MetadataField $metadata )
     {
+        $this->checkMetadataType($metadata);
         $key = $metadata->getKey();
         $this->_metadata[$key] = isset( $this->_metadata[$key] ) ?
             $this->_metadata[$key]->update( $metadata ) :
@@ -60,9 +63,11 @@ abstract class EntityWithMetadata extends Entity implements HasPermalink
         $this->setMetadata( $value );
     }
     
-    public function getMetadataType()
+    protected function checkMetadataType(MetadataField $metadata)
     {
-        return $this->createMetadataField( '', '' )->getType();
+        if (! $metadata instanceof static::$metadata_type) {
+            throw new \InvalidArgumentException('Metadata object must be of type: ' . static::$metadata_type);
+        }
     }
 
     /**
@@ -70,6 +75,10 @@ abstract class EntityWithMetadata extends Entity implements HasPermalink
      * @param mixed $value
      * @return MetadataField
      */
-    public abstract function createMetadataField( $key, $value );
+    protected function createMetadataField( $key, $value )
+    {
+        $class = static::$metadata_type;
+        return new $class($key, $value);
+    }
     
 }

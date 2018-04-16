@@ -10,4 +10,9 @@ final class GenericPostType extends PostType
     {
         return false;
     }
+
+    public function getPostType()
+    {
+        return $this->wp_post->post_type;
+    }
 }

@@ -33,6 +33,8 @@ abstract class PostType extends EntityWithMetadata
      * @var string
      */
     const POST_TYPE = null;
+
+    protected static $metadata_type = PostMetaField::class;
     
     /**
      * Post ID
@@ -116,6 +118,11 @@ abstract class PostType extends EntityWithMetadata
      * @var WP_Post
      */
     protected $wp_post;
+
+    public static function getRegistryKey()
+    {
+        return static::POST_TYPE;
+    }
     
     public function setTitle( Values\PostTitle $title )
     {
@@ -152,7 +159,7 @@ abstract class PostType extends EntityWithMetadata
         $this->slug = $slug;
     }
 
-    public static function getRegistryKey()
+    public function getPostType()
     {
         return static::POST_TYPE;
     }
@@ -163,16 +170,6 @@ abstract class PostType extends EntityWithMetadata
             return $value;
         if ( isset($this->wp_post) && property_exists( $this->wp_post, $name ) )
             return $this->wp_post->$name;
-    }
-    
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return Values\MetadataField
-     */
-    public function createMetadataField( $key, $value )
-    {
-        return new PostMetaField( $key, $value );
     }
         
 }

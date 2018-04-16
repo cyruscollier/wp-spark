@@ -10,7 +10,7 @@ namespace Spark\Model;
  */
 abstract class Entity
 {
-    protected $unique_key = 'id';
+    protected static $unique_key = 'id';
 
     public function __construct($id = null)
     {
@@ -39,7 +39,7 @@ abstract class Entity
      */
     protected function getIdProperty()
     {
-        return $this->unique_key;
+        return static::$unique_key;
     }
     
     /**
