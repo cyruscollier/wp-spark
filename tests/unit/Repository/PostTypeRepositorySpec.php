@@ -12,6 +12,7 @@ use Spark\Repository\PostTypeRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Spark\Support\Query\PostTypeQueryBuilder;
+use Spark\Repository\PostType\PostRepository;
 
 class PostTypeRepositorySpec extends ObjectBehavior
 {
@@ -49,6 +50,34 @@ class PostTypeRepositorySpec extends ObjectBehavior
     {
         $params = ['category_name' => 'video'];
         $Query->where($params)->shouldBeCalled();
+        $Query->build()->willReturn($params);
+        $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
+        $this->find(['category_name' => 'video'])->shouldBeLike($Collection);
+    }
+
+    function it_guards_against_finding_one_by_id_not_matching_explicit_post_type(
+        PostTypeQueryBuilder $Query, PostFactory $Factory, $functions
+    ) {
+        $this->beAnInstanceOf(PostRepository::class);
+        $this->beConstructedWith($Query, $Factory);
+        $post = $this->it_sets_up_a_wp_post();
+        $post->post_type = 'some_other_post_type';
+        $functions->get_post(123)->willReturn($post);
+        $functions->reveal();
+        $this->shouldThrow(\InvalidArgumentException::class)
+             ->duringFindById(123);
+    }
+
+    function it_finds_posts_with_explicit_post_type(
+        PostTypeQueryBuilder $Query, PostFactory $Factory, $functions
+    ) {
+        $this->beAnInstanceOf(PostRepository::class);
+        $this->beConstructedWith($Query, $Factory);
+        $params = ['category_name' => 'video'];
+        $Query->where($params)->shouldBeCalled();
+        $params['post_type'] = 'post';
+        $Query->withPostType(['post'])->shouldBeCalled();
+
         $Query->build()->willReturn($params);
         $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
         $this->find(['category_name' => 'video'])->shouldBeLike($Collection);
@@ -153,3 +182,4 @@ class PostTypeRepositorySpec extends ObjectBehavior
         return new EntityCollection([$Post1, $Post2]);
     }
 }
+

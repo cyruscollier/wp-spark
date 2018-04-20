@@ -13,6 +13,7 @@ use Spark\Support\Entity\TermFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Spark\Support\Query\TaxonomyQueryBuilder;
+use Spark\Repository\Taxonomy\CategoryRepository;
 
 class TaxonomyRepositorySpec extends ObjectBehavior
 {
@@ -53,6 +54,33 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $Query->build()->willReturn($params);
         $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
         $this->find(['taxonomy' => 'category'])->shouldBeLike($Collection);
+    }
+
+    function it_guards_against_finding_one_by_id_not_matching_explicit_taxonomy(
+        TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions
+    ) {
+        $this->beAnInstanceOf(CategoryRepository::class);
+        $this->beConstructedWith($Query, $Factory);
+        $term = $this->it_sets_up_a_wp_term();
+        $term->taxonomy = 'some_other_taxonomy';
+        $functions->get_term(123, '')->willReturn($term);
+        $functions->reveal();
+        $this->shouldThrow(\InvalidArgumentException::class)
+             ->duringFindById(123);
+    }
+
+    function it_finds_terms_with_explicit_taxonomy(
+        TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions
+    ) {
+        $this->beAnInstanceOf(CategoryRepository::class);
+        $this->beConstructedWith($Query, $Factory);
+        $params = ['number' => 10];
+        $Query->withTaxonomy(['category'])->shouldBeCalled();
+        $Query->where($params)->shouldBeCalled();
+        $params['taxonomy'] = 'category';
+        $Query->build()->willReturn($params);
+        $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
+        $this->find(['number' => 10])->shouldBeLike($Collection);
     }
 
     function it_finds_all_terms(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)

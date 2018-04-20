@@ -4,7 +4,7 @@ namespace Spark\Support\Entity;
 
 use Spark\Model\Entity;
 use Spark\Model\EntityCollection;
-use Spark\Support\Repository;
+use Spark\Support\ImmutableRepository;
 
 /**
  * Defines basic methods for an Entity repository
@@ -12,7 +12,7 @@ use Spark\Support\Repository;
  * @author cyruscollier
  *
  */
-interface EntityRepository extends Repository
+interface EntityRepository extends ImmutableRepository
 {
     
     /**

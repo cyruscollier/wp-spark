@@ -86,15 +86,15 @@ class PostTypeRepository implements Repository
         return $this->getPosts();
     }
 
-    public function add($object)
-    {
-        // TODO: Implement add() method.
-    }
-
-    public function remove($object)
-    {
-        // TODO: Implement remove() method.
-    }
+//    public function add($object)
+//    {
+//        // TODO: Implement add() method.
+//    }
+//
+//    public function remove($object)
+//    {
+//        // TODO: Implement remove() method.
+//    }
 
     /**
      * @param \WP_Post $post
@@ -136,7 +136,7 @@ class PostTypeRepository implements Repository
 
     protected function getPostType()
     {
-        return static::$allowed_post_types ?? [];
+        return static::$allowed_post_types ? (array) static::$allowed_post_types : [];
     }
 
 }

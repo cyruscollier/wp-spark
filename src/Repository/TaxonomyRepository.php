@@ -73,15 +73,15 @@ class TaxonomyRepository implements Repository
     }
 
 
-    public function add($object)
-    {
-        // TODO: Implement add() method.
-    }
-
-    public function remove($object)
-    {
-        // TODO: Implement remove() method.
-    }
+//    public function add($object)
+//    {
+//        // TODO: Implement add() method.
+//    }
+//
+//    public function remove($object)
+//    {
+//        // TODO: Implement remove() method.
+//    }
 
     /**
      * @param \WP_Term $term
@@ -123,7 +123,7 @@ class TaxonomyRepository implements Repository
 
     protected function getTaxonomy()
     {
-        return static::$allowed_taxonomies ?? [];
+        return static::$allowed_taxonomies ? (array) static::$allowed_taxonomies : [];
     }
 
 }
