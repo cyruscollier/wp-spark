@@ -111,12 +111,8 @@ class TaxonomyRepository implements Repository
         $terms = get_terms($this->Query->build());
         $Collection = new EntityCollection();
         foreach ($terms as $term) {
-            try {
-                $Term = $this->getTerm($term);
-                $Collection->add($Term);
-            } catch (\Exception $e) {
-                error_log($e->getMessage());
-            }
+            $Term = $this->getTerm($term);
+            $Collection->add($Term);
         }
         return $Collection;
     }

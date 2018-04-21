@@ -124,12 +124,8 @@ class PostTypeRepository implements Repository
         $posts = get_posts($this->Query->build());
         $Collection = new EntityCollection();
         foreach ($posts as $post) {
-            try {
-                $Post = $this->getPost($post);
-                $Collection->add($Post);
-            } catch (\Exception $e) {
-                error_log($e->getMessage());
-            }
+            $Post = $this->getPost($post);
+            $Collection->add($Post);
         }
         return $Collection;
     }

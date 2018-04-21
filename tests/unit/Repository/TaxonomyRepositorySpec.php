@@ -7,6 +7,7 @@ use Spark\Model\PostType\Post;
 use Spark\Model\Taxonomy\Category;
 use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
+use Spark\Model\Values\TermCompositeId;
 use Spark\Query\DateQuery;
 use Spark\Repository\TaxonomyRepository;
 use Spark\Support\Entity\TermFactory;
@@ -34,6 +35,14 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $functions->get_term(123, '')->willReturn($term);
         $Term = $this->it_sets_up_one_term($term, $Factory, $functions);
         $this->findById(123)->shouldReturn($Term);
+    }
+
+    function it_find_one_term_by_term_composite_id(TermFactory $Factory, $functions)
+    {
+        $term = $this->it_sets_up_a_wp_term();
+        $functions->get_term(123, 'category')->willReturn($term);
+        $Term = $this->it_sets_up_one_term($term, $Factory, $functions);
+        $this->findById(new TermCompositeId(123, 'category'))->shouldReturn($Term);
     }
 
     function it_finds_one_term(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
@@ -90,6 +99,39 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $Query->build()->willReturn($params);
         $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
         $this->findAll()->shouldBeLike($Collection);
+    }
+
+    function it_finds_all_terms_in_a_taxonomy(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    {
+        $params = ['number' => -1];
+        $Query->all()->shouldBeCalled();
+        $Query->withTaxonomy('category')->shouldBeCalled();
+        $params['taxonomy'] = 'category';
+        $Query->build()->willReturn($params);
+        $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
+        $this->findAll('category')->shouldBeLike($Collection);
+    }
+
+    function it_finds_terms_assigned_to_a_post(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    {
+        $Post = new Post(123);
+        $params = ['object_ids' => [123]];
+        $Query->where($params)->shouldBeCalled();
+        $Query->build()->willReturn($params);
+        $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
+        $this->findForPost($Post)->shouldBeLike($Collection);
+    }
+
+    function it_finds_terms_in_a_taxonomy_assigned_to_a_post(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    {
+        $Post = new Post(123);
+        $params = ['object_ids' => [123]];
+        $Query->where($params)->shouldBeCalled();
+        $Query->withTaxonomy('category')->shouldBeCalled();
+        $params['taxonomy'] = 'category';
+        $Query->build()->willReturn($params);
+        $Collection = $this->it_sets_up_a_collection($params, $Factory, $functions);
+        $this->findForPost($Post, 'category')->shouldBeLike($Collection);
     }
 
     private function it_sets_up_a_wp_term($id = 123)
