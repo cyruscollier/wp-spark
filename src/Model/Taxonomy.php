@@ -18,7 +18,7 @@ use Spark\Model\Values;
  * @property \WP_Term $wp_term
  *
  */
-abstract class Taxonomy extends EntityWithMetadata
+class Taxonomy extends EntityWithMetadata
 {
     
     /**
@@ -77,7 +77,7 @@ abstract class Taxonomy extends EntityWithMetadata
 
     public static function getRegistryKey()
     {
-        return static::TAXONOMY;
+        return static::TAXONOMY ?: false;
     }
 
     public function setName( Values\TermName $name )
@@ -97,7 +97,7 @@ abstract class Taxonomy extends EntityWithMetadata
 
     public function getTaxonomy()
     {
-        return static::TAXONOMY;
+        return static::TAXONOMY ?: $this->wp_term->taxonomy;
     }
 
     public function __get( $name )
