@@ -118,6 +118,13 @@ class PostType extends EntityWithMetadata
      */
     protected $wp_post;
 
+    protected $_terms_reference;
+
+    /**
+     * @var EntityCollection
+     */
+    protected $terms;
+
     public static function getRegistryKey()
     {
         return static::POST_TYPE ?: false;
@@ -156,6 +163,30 @@ class PostType extends EntityWithMetadata
     public function setSlug( Values\Slug $slug )
     {
         $this->slug = $slug;
+    }
+
+    public function setTermsReference(callable $callback)
+    {
+        $this->_terms_reference = $callback;
+    }
+
+    public function getTerms(): EntityCollection
+    {
+        if (!isset($this->terms) && is_callable($this->_terms_reference)) {
+            $this->terms = call_user_func($this->_terms_reference);
+        }
+        return $this->terms;
+    }
+
+    public function getTermsForTaxonomy($taxonomy): EntityCollection
+    {
+        $terms = new EntityCollection();
+        foreach ($this->getTerms() as $term) {
+            if ($term->getTaxonomy() == $taxonomy) {
+                $terms->add($term);
+            }
+        }
+        return $terms;
     }
 
     public function getPostType()
