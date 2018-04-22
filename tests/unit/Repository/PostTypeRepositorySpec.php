@@ -11,6 +11,7 @@ use Spark\Support\Entity\PostFactory;
 use Spark\Repository\PostTypeRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Spark\Support\Entity\TaxonomyRepository;
 use Spark\Support\Query\PostTypeQueryBuilder;
 use Spark\Repository\PostType\PostRepository;
 
@@ -21,9 +22,9 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->shouldHaveType(PostTypeRepository::class);
     }
 
-    function let(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function let(PostTypeQueryBuilder $Query, PostFactory $Factory, TaxonomyRepository $Repository, $functions)
     {
-        $this->beConstructedWith($Query, $Factory);
+        $this->beConstructedWith($Query, $Factory, $Repository);
         $functions->get_permalink(Argument::type('int'))->willReturn('http://test.com/post');
     }
 
@@ -56,10 +57,10 @@ class PostTypeRepositorySpec extends ObjectBehavior
     }
 
     function it_guards_against_finding_one_by_id_not_matching_explicit_post_type(
-        PostTypeQueryBuilder $Query, PostFactory $Factory, $functions
+        PostTypeQueryBuilder $Query, PostFactory $Factory, TaxonomyRepository $Repository, $functions
     ) {
         $this->beAnInstanceOf(PostRepository::class);
-        $this->beConstructedWith($Query, $Factory);
+        $this->beConstructedWith($Query, $Factory, $Repository);
         $post = $this->it_sets_up_a_wp_post();
         $post->post_type = 'some_other_post_type';
         $functions->get_post(123)->willReturn($post);
@@ -69,10 +70,10 @@ class PostTypeRepositorySpec extends ObjectBehavior
     }
 
     function it_finds_posts_with_explicit_post_type(
-        PostTypeQueryBuilder $Query, PostFactory $Factory, $functions
+        PostTypeQueryBuilder $Query, PostFactory $Factory, TaxonomyRepository $Repository, $functions
     ) {
         $this->beAnInstanceOf(PostRepository::class);
-        $this->beConstructedWith($Query, $Factory);
+        $this->beConstructedWith($Query, $Factory, $Repository);
         $params = ['category_name' => 'video'];
         $Query->where($params)->shouldBeCalled();
         $params['post_type'] = 'post';

@@ -11,6 +11,7 @@ use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
 use Spark\Support\Query\PostTypeQueryBuilder;
 use Spark\Support\Entity\PostTypeRepository as Repository;
+use Spark\Support\Entity\TaxonomyRepository;
 
 class PostTypeRepository implements Repository
 {
@@ -18,12 +19,15 @@ class PostTypeRepository implements Repository
 
     protected $Factory;
 
+    protected $Repository;
+
     protected static $allowed_post_types = [];
 
-    public function __construct(PostTypeQueryBuilder $Query, PostFactory $Factory)
+    public function __construct(PostTypeQueryBuilder $Query, PostFactory $Factory, TaxonomyRepository $Repository)
     {
         $this->Query = $Query;
         $this->Factory = $Factory;
+        $this->Repository = $Repository;
     }
 
     function find(array $params = []): EntityCollection
@@ -113,6 +117,7 @@ class PostTypeRepository implements Repository
         }, $raw_metadata);
         $Post = $this->Factory->createFromWPPost($post, $metadata);
         $Post->setPermalink(new Permalink(get_permalink($post->ID)));
+        $Post->setTermsReference([$this->Repository, 'findForPost']);
         return $Post;
     }
 

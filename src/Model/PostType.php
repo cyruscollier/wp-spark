@@ -173,7 +173,8 @@ class PostType extends EntityWithMetadata
     public function getTerms(): EntityCollection
     {
         if (!isset($this->terms) && is_callable($this->_terms_reference)) {
-            $this->terms = call_user_func($this->_terms_reference);
+            $this->terms = call_user_func($this->_terms_reference, $this);
+            unset($this->_terms_reference);
         }
         return $this->terms;
     }
@@ -200,6 +201,7 @@ class PostType extends EntityWithMetadata
             return $value;
         if ( isset($this->wp_post) && property_exists( $this->wp_post, $name ) )
             return $this->wp_post->$name;
+        return null;
     }
 
 }

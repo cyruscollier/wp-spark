@@ -106,6 +106,7 @@ class Taxonomy extends EntityWithMetadata
             return $value;
         if ( isset($this->wp_term) && property_exists( $this->wp_term, $name ) )
             return $this->wp_term->$name;
+        return null;
     }
 
     protected function addCompositeId(Values\TermFilteredValue $object)

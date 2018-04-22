@@ -36,7 +36,7 @@ abstract class EntityWithMetadata extends Entity implements HasPermalink
 
     function getPermalink(): Permalink
     {
-        $this->permalink;
+        return $this->permalink;
     }
 
     function setPermalink(Permalink $permalink)
@@ -50,6 +50,7 @@ abstract class EntityWithMetadata extends Entity implements HasPermalink
             return $value;
         if ( array_key_exists( $name, $this->_metadata ) )
             return $this->_metadata[$name];
+        return null;
     }
     
     public function __set( $name, $value )
@@ -62,7 +63,19 @@ abstract class EntityWithMetadata extends Entity implements HasPermalink
         }
         $this->setMetadata( $value );
     }
-    
+
+    public function __isset($name)
+    {
+        if (parent::__isset($name)) {
+            return true;
+        }
+        if (isset($this->_metadata[$name])) {
+            $value = $this->_metadata[$name]->getValue();
+            return isset($value);
+        }
+        return false;
+    }
+
     protected function checkMetadataType(MetadataField $metadata)
     {
         if (! $metadata instanceof static::$metadata_type) {

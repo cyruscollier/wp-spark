@@ -53,6 +53,7 @@ abstract class Entity
         if ( property_exists( $this, $name ) && !$this->isHiddenProperty( $name ) ) {
             return isset( $this->$name );
         }
+        return false;
     }
     
     /**
