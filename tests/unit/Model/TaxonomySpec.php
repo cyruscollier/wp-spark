@@ -38,15 +38,16 @@ class TaxonomySpec extends ObjectBehavior
     function it_gets_the_taxonomy()
     {
         $this->getTaxonomy()->shouldReturn('category');
-        $this->__get('taxonomy')->shouldReturn('category');
     }
     
     function it_gets_a_property()
     {
+        $this->__get('meta_key0')->shouldBe(null);
         $name = (new TermName('term name'))->addCompositeId(new TermCompositeId(123, 'category'));
         $this->__get('name')->shouldBeLike($name);
         $field = new TermMetaField('meta_key1', '1');
         $this->__get('meta_key1')->shouldBeLike($field);
+        $this->__get('term_taxonomy_id')->shouldReturn(0);
     }
     
     function it_sets_a_property()

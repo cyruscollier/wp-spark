@@ -16,7 +16,7 @@ final class EntityRegistry implements Registry
     public function register(array $entity_classes ): array
     {
         $registered_entities = [];
-        foreach ( $registered_entities as $entity_class ) {
+        foreach ( $entity_classes as $entity_class ) {
             $this->checkType( $entity_class );
             $key = $entity_class::getRegistryKey();
             if (!isset($this->entities[$key])) {

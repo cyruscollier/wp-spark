@@ -31,4 +31,10 @@ class PostTitleSpec extends ObjectBehavior
         $this->getValue()->shouldReturn('<b>'.self::TITLE.'</b>');
         $this->__toString()->shouldReturn('<b>'.self::TITLE.'</b>');
     }
+
+    function it_gets_the_value_as_a_single_title($functions)
+    {
+        $functions->apply_filters('single_post_title', self::TITLE)->willReturn('<b>'.self::TITLE.'</b>');
+        $this->asSingleTitle()->shouldReturn('<b>'.self::TITLE.'</b>');
+    }
 }

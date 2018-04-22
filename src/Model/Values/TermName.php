@@ -2,13 +2,15 @@
 
 namespace Spark\Model\Values;
 
+use Spark\Support\Entity\SingleEntityTitle;
+
 /**
  * Filtered value object for post_title
  * 
  * @author cyruscollier
  *
  */
-class TermName extends TermFilteredValue
+class TermName extends TermFilteredValue implements SingleEntityTitle
 {
     protected static $taxonomy_filter_map = [
         'category' => 'cat',

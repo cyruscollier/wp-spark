@@ -1,6 +1,6 @@
 <?php 
 
-namespace Spark\Model\PostType;
+namespace Spark\Model\Taxonomy;
 
 use Spark\Model\Taxonomy;
 

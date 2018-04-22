@@ -2,13 +2,15 @@
 
 namespace Spark\Model\Values;
 
+use Spark\Support\Entity\SingleEntityTitle;
+
 /**
  * Filtered value object for post_title
  * 
  * @author cyruscollier
  *
  */
-class PostTitle extends FilteredValue
+class PostTitle extends FilteredValue implements SingleEntityTitle
 {
     /**
      * Name used for filter
