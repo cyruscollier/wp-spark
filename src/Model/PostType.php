@@ -192,7 +192,7 @@ class PostType extends EntityWithMetadata
 
     public function getPostType()
     {
-        return static::POST_TYPE ?: $this->wp_post->post_type;
+        return static::POST_TYPE ?: $this->wp_post->post_type ?? false;
     }
 
     public function __get( $name )

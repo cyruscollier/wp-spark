@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\Spark\Model\Taxonomy;
+namespace unit\Spark\Model;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -8,16 +8,18 @@ use Spark\Model\Values\TermCompositeId;
 use Spark\Model\Values\TermMetaField;
 use Spark\Model\Values\TermName;
 
-class CategorySpec extends ObjectBehavior
+class TaxonomySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Model\Taxonomy\Category');
+        $this->shouldHaveType('Spark\Model\Taxonomy');
     }
     
     function let()
     {
         $this->beConstructedWith(123);
+        $term = new \WP_Term((object)['name' => 'term name', 'taxonomy' => 'category']);
+        $this->__set('wp_term', $term);
         $this->setName(new TermName('term name'));
         $this->setMetadata(new TermMetaField( 'meta_key1', '1' ));
         $this->setMetadata(new TermMetaField( 'meta_key2', '2' ));
@@ -30,7 +32,13 @@ class CategorySpec extends ObjectBehavior
 
     function it_gets_the_registry_key()
     {
-        $this::getRegistryKey()->shouldReturn('category');
+        $this::getRegistryKey()->shouldReturn(false);
+    }
+
+    function it_gets_the_taxonomy()
+    {
+        $this->getTaxonomy()->shouldReturn('category');
+        $this->__get('taxonomy')->shouldReturn('category');
     }
     
     function it_gets_a_property()

@@ -17,10 +17,7 @@ abstract class Entity
         $this->{$this->getIdProperty()} = $id;
     }
 
-    public static function getRegistryKey()
-    {
-        return 'entity';
-    }
+    public abstract static function getRegistryKey();
     
     /**
      * Return unique identifier for entity, used in EntityCollection

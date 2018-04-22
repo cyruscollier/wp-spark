@@ -97,7 +97,7 @@ class Taxonomy extends EntityWithMetadata
 
     public function getTaxonomy()
     {
-        return static::TAXONOMY ?: $this->wp_term->taxonomy;
+        return static::TAXONOMY ?: $this->wp_term->taxonomy ?? false;
     }
 
     public function __get( $name )
