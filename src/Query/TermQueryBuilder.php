@@ -8,7 +8,7 @@ namespace Spark\Query;
  * @author ccollier
  *
  */
-class TaxonomyQueryBuilder extends QueryBuilder implements \Spark\Support\Query\TaxonomyQueryBuilder
+class TermQueryBuilder extends QueryBuilder implements \Spark\Support\Query\TermQueryBuilder
 {
 
     public function all()

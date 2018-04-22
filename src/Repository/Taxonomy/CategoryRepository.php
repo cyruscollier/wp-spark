@@ -2,9 +2,9 @@
 
 namespace Spark\Repository\Taxonomy;
 
-use Spark\Repository\TaxonomyRepository;
+use Spark\Repository\TermEntityRepository;
 
-final class CategoryRepository extends TaxonomyRepository
+final class CategoryRepository extends TermEntityRepository
 {
     protected static $allowed_taxonomies = 'category';
 }

@@ -9,21 +9,21 @@ use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
 use Spark\Model\Values\TermCompositeId;
 use Spark\Query\DateQuery;
-use Spark\Repository\TaxonomyRepository;
+use Spark\Repository\TermEntityRepository;
 use Spark\Support\Entity\TermFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Spark\Support\Query\TaxonomyQueryBuilder;
+use Spark\Support\Query\TermQueryBuilder;
 use Spark\Repository\Taxonomy\CategoryRepository;
 
-class TaxonomyRepositorySpec extends ObjectBehavior
+class TermEntityRepositorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(TaxonomyRepository::class);
+        $this->shouldHaveType(TermEntityRepository::class);
     }
 
-    function let(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    function let(TermQueryBuilder $Query, TermFactory $Factory, $functions)
     {
         $this->beConstructedWith($Query, $Factory);
         $functions->get_term_link(Argument::type('WP_Term'))->willReturn('http://test.com/taxonomy/term');
@@ -45,7 +45,7 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $this->findById(new TermCompositeId(123, 'category'))->shouldReturn($Term);
     }
 
-    function it_finds_one_term(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    function it_finds_one_term(TermQueryBuilder $Query, TermFactory $Factory, $functions)
     {
         $params = ['taxonomy' => 'category', 'number' => 1];
         $term = $this->it_sets_up_a_wp_term();
@@ -56,7 +56,7 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $this->findOne(['taxonomy' => 'category'])->shouldReturn($Term);
     }
 
-    function it_finds_multiple_terms(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    function it_finds_multiple_terms(TermQueryBuilder $Query, TermFactory $Factory, $functions)
     {
         $params = ['taxonomy' => 'category'];
         $Query->where($params)->shouldBeCalled();
@@ -66,7 +66,7 @@ class TaxonomyRepositorySpec extends ObjectBehavior
     }
 
     function it_guards_against_finding_one_by_id_not_matching_explicit_taxonomy(
-        TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions
+        TermQueryBuilder $Query, TermFactory $Factory, $functions
     ) {
         $this->beAnInstanceOf(CategoryRepository::class);
         $this->beConstructedWith($Query, $Factory);
@@ -79,7 +79,7 @@ class TaxonomyRepositorySpec extends ObjectBehavior
     }
 
     function it_finds_terms_with_explicit_taxonomy(
-        TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions
+        TermQueryBuilder $Query, TermFactory $Factory, $functions
     ) {
         $this->beAnInstanceOf(CategoryRepository::class);
         $this->beConstructedWith($Query, $Factory);
@@ -92,7 +92,7 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $this->find(['number' => 10])->shouldBeLike($Collection);
     }
 
-    function it_finds_all_terms(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    function it_finds_all_terms(TermQueryBuilder $Query, TermFactory $Factory, $functions)
     {
         $params = ['number' => -1];
         $Query->all()->shouldBeCalled();
@@ -101,7 +101,7 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $this->findAll()->shouldBeLike($Collection);
     }
 
-    function it_finds_all_terms_in_a_taxonomy(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    function it_finds_all_terms_in_a_taxonomy(TermQueryBuilder $Query, TermFactory $Factory, $functions)
     {
         $params = ['number' => -1];
         $Query->all()->shouldBeCalled();
@@ -112,7 +112,7 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $this->findAll('category')->shouldBeLike($Collection);
     }
 
-    function it_finds_terms_assigned_to_a_post(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    function it_finds_terms_assigned_to_a_post(TermQueryBuilder $Query, TermFactory $Factory, $functions)
     {
         $Post = new Post(123);
         $params = ['object_ids' => [123]];
@@ -122,7 +122,7 @@ class TaxonomyRepositorySpec extends ObjectBehavior
         $this->findForPost($Post)->shouldBeLike($Collection);
     }
 
-    function it_finds_terms_in_a_taxonomy_assigned_to_a_post(TaxonomyQueryBuilder $Query, TermFactory $Factory, $functions)
+    function it_finds_terms_in_a_taxonomy_assigned_to_a_post(TermQueryBuilder $Query, TermFactory $Factory, $functions)
     {
         $Post = new Post(123);
         $params = ['object_ids' => [123]];

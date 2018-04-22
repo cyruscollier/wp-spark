@@ -9,11 +9,11 @@ use Spark\Model\EntityCollection;
 use Spark\Model\PostType;
 use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
-use Spark\Support\Query\PostTypeQueryBuilder;
-use Spark\Support\Entity\PostTypeRepository as Repository;
-use Spark\Support\Entity\TaxonomyRepository;
+use Spark\Support\Query\PostQueryBuilder;
+use Spark\Support\Entity\PostEntityRepository as Repository;
+use Spark\Support\Entity\TermEntityRepository;
 
-class PostTypeRepository implements Repository
+class PostEntityRepository implements Repository
 {
     protected $Query;
 
@@ -23,7 +23,7 @@ class PostTypeRepository implements Repository
 
     protected static $allowed_post_types = [];
 
-    public function __construct(PostTypeQueryBuilder $Query, PostFactory $Factory, TaxonomyRepository $Repository)
+    public function __construct(PostQueryBuilder $Query, PostFactory $Factory, TermEntityRepository $Repository)
     {
         $this->Query = $Query;
         $this->Factory = $Factory;

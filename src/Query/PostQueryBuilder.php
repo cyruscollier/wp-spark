@@ -8,7 +8,7 @@ namespace Spark\Query;
  * @author ccollier
  *
  */
-final class PostTypeQueryBuilder extends QueryBuilder implements \Spark\Support\Query\PostTypeQueryBuilder
+final class PostQueryBuilder extends QueryBuilder implements \Spark\Support\Query\PostQueryBuilder
 {
 
     public function all()

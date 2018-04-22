@@ -2,7 +2,7 @@
 
 namespace Spark\Support\Query;
 
-interface PostTypeQueryBuilder extends QueryBuilder
+interface PostQueryBuilder extends QueryBuilder
 {
     /**
      * @param $post_type

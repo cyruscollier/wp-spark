@@ -2,9 +2,9 @@
 
 namespace Spark\Repository\PostType;
 
-use Spark\Repository\PostTypeRepository;
+use Spark\Repository\PostEntityRepository;
 
-final class PageRepository extends PostTypeRepository
+final class PageRepository extends PostEntityRepository
 {
     protected static $allowed_post_types = 'page';
 }

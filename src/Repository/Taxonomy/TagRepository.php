@@ -2,9 +2,9 @@
 
 namespace Spark\Repository\Taxonomy;
 
-use Spark\Repository\TaxonomyRepository;
+use Spark\Repository\TermEntityRepository;
 
-final class TagRepository extends TaxonomyRepository
+final class TagRepository extends TermEntityRepository
 {
     protected static $allowed_taxonomies = 'post_tag';
 }

@@ -8,10 +8,10 @@ use Spark\Model\Values\TermCompositeId;
 use Spark\Support\Entity\TermFactory;
 use Spark\Model\EntityCollection;
 use Spark\Model\PostType;
-use Spark\Support\Query\TaxonomyQueryBuilder;
-use Spark\Support\Entity\TaxonomyRepository as Repository;
+use Spark\Support\Query\TermQueryBuilder;
+use Spark\Support\Entity\TermEntityRepository as Repository;
 
-class TaxonomyRepository implements Repository
+class TermEntityRepository implements Repository
 {
     protected $Query;
 
@@ -19,7 +19,7 @@ class TaxonomyRepository implements Repository
 
     protected static $allowed_taxonomies = [];
 
-    public function __construct(TaxonomyQueryBuilder $Query, TermFactory $Factory)
+    public function __construct(TermQueryBuilder $Query, TermFactory $Factory)
     {
         $this->Query = $Query;
         $this->Factory = $Factory;

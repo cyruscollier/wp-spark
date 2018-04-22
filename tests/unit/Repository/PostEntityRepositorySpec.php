@@ -8,21 +8,21 @@ use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
 use Spark\Query\DateQuery;
 use Spark\Support\Entity\PostFactory;
-use Spark\Repository\PostTypeRepository;
+use Spark\Repository\PostEntityRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Spark\Support\Entity\TaxonomyRepository;
-use Spark\Support\Query\PostTypeQueryBuilder;
+use Spark\Support\Entity\TermEntityRepository;
+use Spark\Support\Query\PostQueryBuilder;
 use Spark\Repository\PostType\PostRepository;
 
-class PostTypeRepositorySpec extends ObjectBehavior
+class PostEntityRepositorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(PostTypeRepository::class);
+        $this->shouldHaveType(PostEntityRepository::class);
     }
 
-    function let(PostTypeQueryBuilder $Query, PostFactory $Factory, TaxonomyRepository $Repository, $functions)
+    function let(PostQueryBuilder $Query, PostFactory $Factory, TermEntityRepository $Repository, $functions)
     {
         $this->beConstructedWith($Query, $Factory, $Repository);
         $functions->get_permalink(Argument::type('int'))->willReturn('http://test.com/post');
@@ -36,7 +36,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->findById(123)->shouldReturn($Post);
     }
 
-    function it_finds_one_post(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function it_finds_one_post(PostQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $params = ['category_name' => 'video', 'posts_per_page' => 1];
         $post = $this->it_sets_up_a_wp_post();
@@ -47,7 +47,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->findOne(['category_name' => 'video'])->shouldReturn($Post);
     }
 
-    function it_finds_multiple_posts(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function it_finds_multiple_posts(PostQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $params = ['category_name' => 'video'];
         $Query->where($params)->shouldBeCalled();
@@ -57,7 +57,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
     }
 
     function it_guards_against_finding_one_by_id_not_matching_explicit_post_type(
-        PostTypeQueryBuilder $Query, PostFactory $Factory, TaxonomyRepository $Repository, $functions
+        PostQueryBuilder $Query, PostFactory $Factory, TermEntityRepository $Repository, $functions
     ) {
         $this->beAnInstanceOf(PostRepository::class);
         $this->beConstructedWith($Query, $Factory, $Repository);
@@ -70,7 +70,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
     }
 
     function it_finds_posts_with_explicit_post_type(
-        PostTypeQueryBuilder $Query, PostFactory $Factory, TaxonomyRepository $Repository, $functions
+        PostQueryBuilder $Query, PostFactory $Factory, TermEntityRepository $Repository, $functions
     ) {
         $this->beAnInstanceOf(PostRepository::class);
         $this->beConstructedWith($Query, $Factory, $Repository);
@@ -84,7 +84,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->find(['category_name' => 'video'])->shouldBeLike($Collection);
     }
 
-    function it_finds_all_posts(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function it_finds_all_posts(PostQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $params = ['posts_per_page' => -1];
         $Query->all()->shouldBeCalled();
@@ -93,7 +93,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->findAll()->shouldBeLike($Collection);
     }
 
-    function it_finds_posts_by_an_author(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function it_finds_posts_by_an_author(PostQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $params = ['author' => 10];
         $Query->where($params)->shouldBeCalled();
@@ -102,7 +102,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->findByAuthor(10)->shouldBeLike($Collection);
     }
 
-    function it_finds_posts_with_a_status(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function it_finds_posts_with_a_status(PostQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $params = ['post_status' => 'draft'];
         $Query->where($params)->shouldBeCalled();
@@ -111,7 +111,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->findWithStatus(PostStatus::draft())->shouldBeLike($Collection);
     }
 
-    function it_finds_posts_with_a_published_date(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function it_finds_posts_with_a_published_date(PostQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $params = ['date_query' => [[
             'year' => 2018,
@@ -128,7 +128,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->findPublishedOn($Date)->shouldBeLike($Collection);
     }
 
-    function it_finds_posts_published_before_a_date(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function it_finds_posts_published_before_a_date(PostQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $params = ['date_query' => [[
             'before' => '2018-04-15 00:00:00'
@@ -140,7 +140,7 @@ class PostTypeRepositorySpec extends ObjectBehavior
         $this->findPublishedBefore($Date)->shouldBeLike($Collection);
     }
 
-    function it_finds_posts_published_after_a_date(PostTypeQueryBuilder $Query, PostFactory $Factory, $functions)
+    function it_finds_posts_published_after_a_date(PostQueryBuilder $Query, PostFactory $Factory, $functions)
     {
         $params = ['date_query' => [[
             'after' => '2018-04-15 00:00:00'

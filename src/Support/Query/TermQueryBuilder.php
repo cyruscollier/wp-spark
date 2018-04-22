@@ -2,7 +2,7 @@
 
 namespace Spark\Support\Query;
 
-interface TaxonomyQueryBuilder extends QueryBuilder
+interface TermQueryBuilder extends QueryBuilder
 {
     /**
      * @param $taxonomy

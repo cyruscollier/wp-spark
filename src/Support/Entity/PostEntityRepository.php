@@ -13,7 +13,7 @@ use Spark\Model\Values\PostStatus;
  * @author cyruscollier
  *
  */
-interface PostTypeRepository extends EntityRepository
+interface PostEntityRepository extends EntityRepository
 {
     
     /**

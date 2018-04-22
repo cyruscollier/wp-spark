@@ -4,13 +4,14 @@ namespace unit\Spark\Query;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Spark\Query\PostQueryBuilder;
 use Spark\Support\Query\SubQuery;
 
-class PostTypeQueryBuilderSpec extends ObjectBehavior
+class PostQueryBuilderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Query\PostTypeQueryBuilder');
+        $this->shouldHaveType(PostQueryBuilder::class);
     }
     
     function it_resets_the_query()

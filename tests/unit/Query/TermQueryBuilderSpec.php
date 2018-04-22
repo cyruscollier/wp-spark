@@ -4,13 +4,13 @@ namespace unit\Spark\Query;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Spark\Support\Query\SubQuery;
+use Spark\Query\TermQueryBuilder;
 
-class TaxonomyQueryBuilderSpec extends ObjectBehavior
+class TermQueryBuilderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Query\TaxonomyQueryBuilder');
+        $this->shouldHaveType(TermQueryBuilder::class);
     }
 
     function it_filters_by_a_taxonomy()

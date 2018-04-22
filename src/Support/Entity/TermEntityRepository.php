@@ -13,7 +13,7 @@ use Spark\Model\Values\TermCompositeId;
  * @author cyruscollier
  *
  */
-interface TaxonomyRepository extends EntityRepository
+interface TermEntityRepository extends EntityRepository
 {
     
     /**
