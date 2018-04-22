@@ -2,11 +2,11 @@
 
 namespace Spark\Support\Entity;
 
-use Spark\Model\PostType;
+use Spark\Model\PostEntity;
 
 interface PostFactory extends EntityFactory
 {
-    function create($data): PostType;
+    function create($data): PostEntity;
 
-    function createFromWPPost(\WP_Post $post, array $metadata = []): PostType;
+    function createFromWPPost(\WP_Post $post, array $metadata = []): PostEntity;
 }

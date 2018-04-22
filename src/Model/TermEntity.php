@@ -18,11 +18,11 @@ use Spark\Model\Values;
  * @property \WP_Term $wp_term
  *
  */
-class Taxonomy extends EntityWithMetadata
+class TermEntity extends EntityWithMetadata
 {
     
     /**
-     * Taxonomy must be set in sub classes
+     * TermEntity must be set in sub classes
      * 
      * @var string
      */

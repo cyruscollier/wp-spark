@@ -23,7 +23,7 @@ use Spark\Model\Values\PostMetaField;
  * @property \WP_Post $wp_post
  *
  */
-class PostType extends EntityWithMetadata
+class PostEntity extends EntityWithMetadata
 {
 
     /**
@@ -34,7 +34,7 @@ class PostType extends EntityWithMetadata
     const POST_TYPE = null;
 
     /**
-     * Associated taxonomies, must have registered Taxonomy entity class
+     * Associated taxonomies, must have registered TermEntity entity class
      *
      * @var array
      */

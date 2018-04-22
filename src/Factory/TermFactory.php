@@ -2,7 +2,7 @@
 
 namespace Spark\Factory;
 
-use Spark\Model\Taxonomy;
+use Spark\Model\TermEntity;
 use Spark\Model\Values;
 use Spark\Support\Entity\EntityRegistry;
 use Spark\Support\Entity\TermFactory as Factory;
@@ -21,10 +21,10 @@ final class TermFactory implements Factory
 
     /**
      * @param $data
-     * @return Taxonomy
+     * @return TermEntity
      * @throws \Exception
      */
-    public function create($data): Taxonomy
+    public function create($data): TermEntity
     {
         $id = $data['id'] ?? null;
         $Term = $this->createInstance($data['taxonomy'], $id);
@@ -36,10 +36,10 @@ final class TermFactory implements Factory
     /**
      * @param \WP_Term $term
      * @param array $metadata
-     * @return Taxonomy
+     * @return TermEntity
      * @throws \Exception
      */
-    function createFromWPTerm(\WP_Term $term, array $metadata = []): Taxonomy
+    function createFromWPTerm(\WP_Term $term, array $metadata = []): TermEntity
     {
         $data = [
             'id' => $term->term_id,
@@ -58,11 +58,11 @@ final class TermFactory implements Factory
         return $Term;
     }
 
-    protected function createInstance($taxonomy, $id): Taxonomy
+    protected function createInstance($taxonomy, $id): TermEntity
     {
         $term_class = $this->Registry->getByKey($taxonomy);
-        if (!is_a($term_class, Taxonomy::class, true)) {
-            throw new \InvalidArgumentException('Supplied taxonomy does not have a registered Taxonomy class:' . $taxonomy);
+        if (!is_a($term_class, TermEntity::class, true)) {
+            throw new \InvalidArgumentException('Supplied taxonomy does not have a registered TermEntity class:' . $taxonomy);
         }
         return new $term_class($id);
     }
@@ -71,7 +71,7 @@ final class TermFactory implements Factory
      * @param $data
      * @param $Term
      */
-    protected function setIds(&$data, Taxonomy $Term)
+    protected function setIds(&$data, TermEntity $Term)
     {
         foreach (['parent_id', 'post_count'] as $key) {
             if (isset($data[$key])) {
@@ -84,7 +84,7 @@ final class TermFactory implements Factory
      * @param $data
      * @param $Term
      */
-    protected function setValues(&$data, Taxonomy $Term)
+    protected function setValues(&$data, TermEntity $Term)
     {
         $map = [
             'name' => Values\TermName::class,

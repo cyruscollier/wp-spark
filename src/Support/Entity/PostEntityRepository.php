@@ -3,7 +3,7 @@
 namespace Spark\Support\Entity;
 
 use Spark\Model\EntityCollection;
-use Spark\Model\PostType;
+use Spark\Model\PostEntity;
 use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
 
@@ -20,15 +20,15 @@ interface PostEntityRepository extends EntityRepository
      * Get Post instance matching post id
      * 
      * @param int $id
-     * @return PostType
+     * @return PostEntity
      */
-    function findById($id): PostType;
+    function findById($id): PostEntity;
 
     /**
      * @param array $params
-     * @return PostType
+     * @return PostEntity
      */
-    function findOne(array $params = []): PostType;
+    function findOne(array $params = []): PostEntity;
 
     function findByAuthor(int $author_id): EntityCollection;
 

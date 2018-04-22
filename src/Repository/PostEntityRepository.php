@@ -6,7 +6,7 @@ use Spark\Model\Values\Permalink;
 use Spark\Query\DateQuery;
 use Spark\Support\Entity\PostFactory;
 use Spark\Model\EntityCollection;
-use Spark\Model\PostType;
+use Spark\Model\PostEntity;
 use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
 use Spark\Support\Query\PostQueryBuilder;
@@ -44,16 +44,16 @@ class PostEntityRepository implements Repository
 
     /**
      * @param int $id
-     * @return PostType
+     * @return PostEntity
      * @throws \Exception
      */
-    function findById($id): PostType
+    function findById($id): PostEntity
     {
         $post = get_post($id);
         return $this->getPost($post);
     }
 
-    function findOne(array $params = []): PostType
+    function findOne(array $params = []): PostEntity
     {
         $this->Query->one();
         $Collection = $this->getPosts();
@@ -102,7 +102,7 @@ class PostEntityRepository implements Repository
 
     /**
      * @param \WP_Post $post
-     * @return PostType
+     * @return PostEntity
      * @throws \Exception
      */
     protected function getPost(\WP_Post $post)

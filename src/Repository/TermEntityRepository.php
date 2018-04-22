@@ -2,12 +2,12 @@
 
 namespace Spark\Repository;
 
-use Spark\Model\Taxonomy;
+use Spark\Model\TermEntity;
 use Spark\Model\Values\Permalink;
 use Spark\Model\Values\TermCompositeId;
 use Spark\Support\Entity\TermFactory;
 use Spark\Model\EntityCollection;
-use Spark\Model\PostType;
+use Spark\Model\PostEntity;
 use Spark\Support\Query\TermQueryBuilder;
 use Spark\Support\Entity\TermEntityRepository as Repository;
 
@@ -42,10 +42,10 @@ class TermEntityRepository implements Repository
 
     /**
      * @param int|TermCompositeId $id
-     * @return Taxonomy
+     * @return TermEntity
      * @throws \Exception
      */
-    public function findById($id): Taxonomy
+    public function findById($id): TermEntity
     {
         $taxonomy = '';
         if ($id instanceof TermCompositeId) {
@@ -56,14 +56,14 @@ class TermEntityRepository implements Repository
         return $this->getTerm($term);
     }
 
-    public function findOne(array $params = []): Taxonomy
+    public function findOne(array $params = []): TermEntity
     {
         $this->Query->one();
         $Collection = $this->getTerms();
         return $Collection[0];
     }
 
-    function findForPost(PostType $Post, $taxonomy = null): EntityCollection
+    function findForPost(PostEntity $Post, $taxonomy = null): EntityCollection
     {
         $this->Query->where(['object_ids' => [$Post->id]]);
         if ($taxonomy) {
@@ -85,7 +85,7 @@ class TermEntityRepository implements Repository
 
     /**
      * @param \WP_Term $term
-     * @return Taxonomy
+     * @return TermEntity
      * @throws \Exception
      */
     protected function getTerm(\WP_Term $term)

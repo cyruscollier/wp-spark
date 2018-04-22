@@ -3,8 +3,8 @@
 namespace Spark\Support\Entity;
 
 use Spark\Model\EntityCollection;
-use Spark\Model\PostType;
-use Spark\Model\Taxonomy;
+use Spark\Model\PostEntity;
+use Spark\Model\TermEntity;
 use Spark\Model\Values\TermCompositeId;
 
 /**
@@ -20,15 +20,15 @@ interface TermEntityRepository extends EntityRepository
      * Get Term instance matching term id
      * 
      * @param int|TermCompositeId $id
-     * @return Taxonomy
+     * @return TermEntity
      */
-    function findById($id): Taxonomy;
+    function findById($id): TermEntity;
 
     /**
      * @param array $params
-     * @return Taxonomy
+     * @return TermEntity
      */
-    function findOne(array $params = []): Taxonomy;
+    function findOne(array $params = []): TermEntity;
 
     /**
      * @param string $taxonomy
@@ -38,11 +38,11 @@ interface TermEntityRepository extends EntityRepository
     function findAll($taxonomy = null): EntityCollection;
 
     /**
-     * @param PostType $Post
+     * @param PostEntity $Post
      * @param string $taxonomy
      *
      * @return EntityCollection
      */
-    function findForPost(PostType $Post, $taxonomy = null): EntityCollection;
+    function findForPost(PostEntity $Post, $taxonomy = null): EntityCollection;
 
 }

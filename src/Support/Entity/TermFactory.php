@@ -2,11 +2,11 @@
 
 namespace Spark\Support\Entity;
 
-use Spark\Model\Taxonomy;
+use Spark\Model\TermEntity;
 
 interface TermFactory extends EntityFactory
 {
-    function create($data): Taxonomy;
+    function create($data): TermEntity;
 
-    function createFromWPTerm(\WP_Term $term, array $metadata = []): Taxonomy;
+    function createFromWPTerm(\WP_Term $term, array $metadata = []): TermEntity;
 }

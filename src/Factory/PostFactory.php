@@ -3,7 +3,7 @@
 namespace Spark\Factory;
 
 use Spark\Support\Entity\EntityRegistry;
-use Spark\Model\PostType;
+use Spark\Model\PostEntity;
 use Spark\Support\Entity\PostFactory as Factory;
 use Spark\Model\Values;
 
@@ -21,10 +21,10 @@ final class PostFactory implements Factory
 
     /**
      * @param $data
-     * @return PostType
+     * @return PostEntity
      * @throws \Exception
      */
-    public function create($data): PostType
+    public function create($data): PostEntity
     {
         $id = $data['id'] ?? null;
         $Post = $this->createInstance($data['post_type'], $id);
@@ -36,10 +36,10 @@ final class PostFactory implements Factory
     /**
      * @param \WP_Post $post
      * @param array $metadata
-     * @return PostType
+     * @return PostEntity
      * @throws \Exception
      */
-    function createFromWPPost(\WP_Post $post, array $metadata = []): PostType
+    function createFromWPPost(\WP_Post $post, array $metadata = []): PostEntity
     {
         $data = [
             'id' => $post->ID,
@@ -66,10 +66,10 @@ final class PostFactory implements Factory
         return $Post;
     }
 
-    protected function createInstance($post_type, $id): PostType
+    protected function createInstance($post_type, $id): PostEntity
     {
         $post_class = $this->Registry->getByKey($post_type);
-        if (!is_a($post_class, PostType::class, true)) {
+        if (!is_a($post_class, PostEntity::class, true)) {
             throw new \InvalidArgumentException('Supplied post type does not have a registered PostType class:' . $post_type);
         }
         return new $post_class($id);
@@ -79,7 +79,7 @@ final class PostFactory implements Factory
      * @param $data
      * @param $Post
      */
-    protected function setIds(&$data, PostType $Post)
+    protected function setIds(&$data, PostEntity $Post)
     {
         foreach (['parent_id', 'author_id'] as $key) {
             if (isset($data[$key])) {
@@ -92,7 +92,7 @@ final class PostFactory implements Factory
      * @param $data
      * @param $Post
      */
-    protected function setValues(&$data, PostType $Post)
+    protected function setValues(&$data, PostEntity $Post)
     {
         $map = [
             'title' => Values\PostTitle::class,

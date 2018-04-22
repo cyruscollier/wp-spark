@@ -5,22 +5,20 @@ namespace unit\Spark\Model;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Spark\Model\EntityCollection;
-use Spark\Model\PostType\Post;
+use Spark\Model\PostEntity;
 use Spark\Model\Taxonomy\Tag;
 use Spark\Model\Taxonomy\Category;
 use Spark\Model\Values\Permalink;
 use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostMetaField;
-use Spark\Model\Values\PostTitle;
-use Spark\Model\Values\PostStatus;
 use Spark\Model\Values\Slug;
 use Spark\Model\Values\TermMetaField;
 
-class PostTypeSpec extends ObjectBehavior
+class PostEntitySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Model\PostType');
+        $this->shouldHaveType(PostEntity::class);
     }
     
     function let()

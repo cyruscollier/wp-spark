@@ -4,15 +4,16 @@ namespace unit\Spark\Model;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Spark\Model\TermEntity;
 use Spark\Model\Values\TermCompositeId;
 use Spark\Model\Values\TermMetaField;
 use Spark\Model\Values\TermName;
 
-class TaxonomySpec extends ObjectBehavior
+class TermEntitySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Spark\Model\Taxonomy');
+        $this->shouldHaveType(TermEntity::class);
     }
     
     function let()
