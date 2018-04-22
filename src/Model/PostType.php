@@ -165,6 +165,11 @@ class PostType extends EntityWithMetadata
         $this->slug = $slug;
     }
 
+    public function getThumbnailId()
+    {
+        return $this->_metadata['_thumbnail_id'] ?? false;
+    }
+
     public function setTermsReference(callable $callback)
     {
         $this->_terms_reference = $callback;
