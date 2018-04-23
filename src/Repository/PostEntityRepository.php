@@ -2,6 +2,9 @@
 
 namespace Spark\Repository;
 
+use Spark\Media\ImageFile;
+use Spark\Media\MediaFile;
+use Spark\Model\PostType\Attachment;
 use Spark\Model\Values\Permalink;
 use Spark\Query\DateQuery;
 use Spark\Support\Entity\PostFactory;
@@ -117,8 +120,26 @@ class PostEntityRepository implements Repository
         }, $raw_metadata);
         $Post = $this->Factory->createFromWPPost($post, $metadata);
         $Post->setPermalink(new Permalink(get_permalink($post->ID)));
-        $Post->setTermsReference([$this->Repository, 'findForPost']);
+        $Post->setTermsReference(function(PostEntity $Post) {
+            return $this->Repository->findForPost($Post);
+        });
+        $Post->setFeaturedImageReference(function(PostEntity $Post) {
+            return $this->getFeaturedImage($Post);
+        });
         return $Post;
+    }
+
+    protected function getFeaturedImage(PostEntity $Post)
+    {
+        $post = get_post($Post->featured_image_id);
+        if ($post) {
+            $Attachment = $this->Factory->createFromWPPost($post);
+            if (!$Attachment instanceof Attachment) {
+                throw new \InvalidArgumentException('Post\'s featured image is not an attachment');
+            }
+            return ImageFile::createFromAttachment($Attachment);
+        }
+        return null;
     }
 
     protected function getPosts()

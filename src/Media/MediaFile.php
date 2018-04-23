@@ -3,6 +3,7 @@
 namespace Spark\Media;
 
 use Spark\Model\PostType\Attachment;
+use Spark\Model\Values\PostMetaField;
 
 class MediaFile extends \SplFileInfo
 {
@@ -11,10 +12,9 @@ class MediaFile extends \SplFileInfo
      */
     protected $Attachment;
 
-    public function __construct($file_name)
-    {
-        parent::__construct($file_name);
-    }
+    protected $relative_file_path;
+
+    protected $mime_type;
 
     public static function createFromAttachment(Attachment $Attachment)
     {
@@ -24,6 +24,7 @@ class MediaFile extends \SplFileInfo
         }
         $file = new static($file_path);
         $file->setAttachment($Attachment);
+        $file->mime_type = $Attachment->mime_type;
         return $file;
     }
 
@@ -43,5 +44,25 @@ class MediaFile extends \SplFileInfo
         $this->Attachment = $Attachment;
     }
 
+    /**
+     * @return string
+     */
+    public function getRelativeFilePath(): string
+    {
+        return $this->relative_file_path;
+    }
 
+    /**
+     * @return string
+     */
+    public function getMimeType(): string
+    {
+        return $this->mime_type;
+    }
+
+    protected function setMetadata(PostMetaField $metadata)
+    {
+        $data = $metadata->getValue();
+        $this->relative_file_path = $data['file'];
+    }
 }

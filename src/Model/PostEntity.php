@@ -2,6 +2,8 @@
 
 namespace Spark\Model;
 
+use Spark\Media\ImageFile;
+use Spark\Media\MediaFile;
 use Spark\Model\Values;
 use Spark\Model\Values\PostMetaField;
 
@@ -21,6 +23,9 @@ use Spark\Model\Values\PostMetaField;
  * @property Values\PostModifiedDate $modified_date
  * @property Values\Slug $slug
  * @property \WP_Post $wp_post
+ * @property EntityCollection $terms
+ * @property int $featured_image_id
+ * @property ImageFile $featured_image
  *
  */
 class PostEntity extends EntityWithMetadata
@@ -125,6 +130,13 @@ class PostEntity extends EntityWithMetadata
      */
     protected $terms;
 
+    protected $_featured_image_reference;
+
+    /**
+     * @var MediaFile
+     */
+    protected $featured_image;
+
     public static function getRegistryKey()
     {
         return static::POST_TYPE ?: false;
@@ -165,11 +177,6 @@ class PostEntity extends EntityWithMetadata
         $this->slug = $slug;
     }
 
-    public function getThumbnailId()
-    {
-        return $this->_metadata['_thumbnail_id'] ?? false;
-    }
-
     public function setTermsReference(callable $callback)
     {
         $this->_terms_reference = $callback;
@@ -193,6 +200,25 @@ class PostEntity extends EntityWithMetadata
             }
         }
         return $terms;
+    }
+
+    public function getFeaturedImageId()
+    {
+        return $this->_metadata['_thumbnail_id'] ?? false;
+    }
+
+    public function setFeaturedImageReference(callable $callback)
+    {
+        $this->_featured_image_reference = $callback;
+    }
+
+    public function getFeaturedImage(): ImageFile
+    {
+        if (!isset($this->featured_image) && is_callable($this->_featured_image_reference)) {
+            $this->featured_image = call_user_func($this->_featured_image_reference, $this);
+            unset($this->_featured_image_reference);
+        }
+        return $this->featured_image;
     }
 
     public function getPostType()
