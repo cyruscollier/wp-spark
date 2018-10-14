@@ -14,6 +14,9 @@ extensions:
           - clover
         output:
             clover: tests/unit-coverage.xml
+        blacklist:
+          - tests
+          - vendor
         blacklist_files:
           - src/functions.php
           - src/spark.php

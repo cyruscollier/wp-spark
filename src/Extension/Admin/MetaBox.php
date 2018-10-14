@@ -70,7 +70,9 @@ abstract class MetaBox implements Extension, View
         $this->render();
         $output = $this->cleanup();
         if ($echo !== false) {
+            // @codeCoverageIgnoreStart
             echo $output;
+            // @codeCoverageIgnoreEnd
         }
         return $output;
     }

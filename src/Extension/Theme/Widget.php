@@ -50,7 +50,9 @@ abstract class Widget extends \WP_Widget implements Extension, View
         $this->render();
         $output = $this->cleanup();
         if (is_array($instance)) {
+            // @codeCoverageIgnoreStart
             echo $output;
+            // @codeCoverageIgnoreEnd
         }
         return $output;
     }
