@@ -9,7 +9,7 @@ final class Size
     private $height;
 
     /**
-     * ImageDimensions constructor.
+     * Size constructor.
      * @param $width
      * @param $height
      */
@@ -34,8 +34,5 @@ final class Size
     {
         return $this->height;
     }
-
-
-
 
 }

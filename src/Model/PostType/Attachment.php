@@ -10,6 +10,7 @@ use Spark\Model\PostEntity;
  * @package Spark\Model\PostType
  *
  * @property $mime_type
+ * @property $metadata
  */
 final class Attachment extends PostEntity
 {
@@ -23,5 +24,10 @@ final class Attachment extends PostEntity
     public function getMimeType()
     {
         return $this->wp_post->post_mime_type;
+    }
+
+    public function getMetadata()
+    {
+        return $this->_metadata['_wp_attachment_metadata'];
     }
 }

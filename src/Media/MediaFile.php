@@ -42,6 +42,7 @@ class MediaFile extends \SplFileInfo
     public function setAttachment(Attachment $Attachment)
     {
         $this->Attachment = $Attachment;
+        $this->setMetadata($Attachment->metadata);
     }
 
     /**

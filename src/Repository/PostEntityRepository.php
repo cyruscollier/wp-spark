@@ -114,11 +114,7 @@ class PostEntityRepository implements Repository
         if ($post_type && !in_array($post->post_type, $post_type)) {
             throw new \InvalidArgumentException('Post does not match allowed post type(s)');
         }
-        $raw_metadata = get_post_meta($post->ID);
-        $metadata = array_map(function($m) {
-            return $m[0];
-        }, $raw_metadata);
-        $Post = $this->Factory->createFromWPPost($post, $metadata);
+        $Post = $this->Factory->createFromWPPost($post, $this->getMetadata($post->ID));
         $Post->setPermalink(new Permalink(get_permalink($post->ID)));
         $Post->setTermsReference(function(PostEntity $Post) {
             return $this->Repository->findForPost($Post);
@@ -133,7 +129,7 @@ class PostEntityRepository implements Repository
     {
         $post = get_post($Post->featured_image_id);
         if ($post) {
-            $Attachment = $this->Factory->createFromWPPost($post);
+            $Attachment = $this->Factory->createFromWPPost($post, $this->getMetadata($post->ID));
             if (!$Attachment instanceof Attachment) {
                 throw new \InvalidArgumentException('Post\'s featured image is not an attachment');
             }
@@ -159,6 +155,14 @@ class PostEntityRepository implements Repository
     protected function getPostType()
     {
         return static::$allowed_post_types ? (array) static::$allowed_post_types : [];
+    }
+
+    protected function getMetadata($post_id)
+    {
+        $raw_metadata = get_post_meta($post_id);
+        return array_map(function($m) {
+            return $m[0];
+        }, $raw_metadata);
     }
 
 }
