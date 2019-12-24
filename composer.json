@@ -11,15 +11,20 @@
             "homepage": "http://www.collierwebdesign.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.cyruscollier.com/"
+        }
+    ],
     "license": "MIT",
     "require": {
         "php-di/php-di": "^6.0",
         "cakephp/chronos": "^1.1"
     },
     "require-dev": {
-        "cyruscollier/wp-test": "dev-master",
-        "cyruscollier/wordpress-develop": "@dev",
-        "leanphp/phpspec-code-coverage": "^4.1.2"
+        "cyruscollier/wp-test": "^1.0.1",
+        "friends-of-phpspec/phpspec-code-coverage": "^4.3"
     },
     "autoload": {
         "psr-4": {
@@ -27,8 +32,5 @@
             "": "src/Support/Stubs"
         },
         "files": ["src/functions.php"]
-    },
-    "config": {
-        "secure-http": false
     }
 }
