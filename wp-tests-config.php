@@ -1,9 +1,9 @@
 <?php
 
 /* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
-define( 'ABSPATH', dirname( __FILE__ ) . '/vendor/cyruscollier/wordpress-develop/src/' );
+define( 'ABSPATH', dirname( __FILE__ ) . '/vendor/wordpress/wordpress/src/' );
 
-define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/vendor/cyruscollier/wordpress-develop/src/wp-content' );
+define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/vendor/wordpress/wordpress/src/wp-content' );
 
 // Test with multisite enabled.
 // Alternatively, use the tests/phpunit/multisite.xml configuration file.
@@ -27,8 +27,8 @@ define( 'WP_DEBUG', true );
 
 define( 'DB_NAME', 'wordpress_develop' );
 define( 'DB_USER', 'root' );
-define( 'DB_PASSWORD', '' );
-define( 'DB_HOST', 'localhost' );
+define( 'DB_PASSWORD', 'root' );
+define( 'DB_HOST', 'vagrant' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
 
