@@ -7,23 +7,22 @@ cache:
     - $HOME/.composer/cache
 
 php:
-  - 7.1
-  - 7.0
-  - hhvm
+  - 7.4
+  - 7.3
+  - 7.2
 
 services:
   - mysql
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: hhvm
+  allow_failures: false
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS wordpress_develop;'
 
 install:
-  - composer update
+  - composer install
   - composer dumpautoload -o
   
 script:
