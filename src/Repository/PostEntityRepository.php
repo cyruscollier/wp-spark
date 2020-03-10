@@ -3,18 +3,17 @@
 namespace Spark\Repository;
 
 use Spark\Media\ImageFile;
-use Spark\Media\MediaFile;
 use Spark\Model\PostType\Attachment;
 use Spark\Model\Values\Permalink;
 use Spark\Query\DateQuery;
 use Spark\Support\Entity\PostFactory;
-use Spark\Model\EntityCollection;
 use Spark\Model\PostEntity;
 use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
 use Spark\Support\Query\PostQueryBuilder;
 use Spark\Support\Entity\PostEntityRepository as Repository;
 use Spark\Support\Entity\TermEntityRepository;
+use Spark\Support\Collection;
 
 class PostEntityRepository implements Repository
 {
@@ -33,13 +32,13 @@ class PostEntityRepository implements Repository
         $this->Repository = $Repository;
     }
 
-    function find(array $params = []): EntityCollection
+    function find(array $params = []): Collection
     {
         $this->Query->where($params);
         return $this->getPosts();
     }
 
-    function findAll(): EntityCollection
+    function findAll(): Collection
     {
         $this->Query->all();
         return $this->getPosts();
@@ -63,31 +62,31 @@ class PostEntityRepository implements Repository
         return $Collection[0];
     }
 
-    function findByAuthor(int $author_id): EntityCollection
+    function findByAuthor(int $author_id): Collection
     {
         $this->Query->where(['author' => $author_id]);
         return $this->getPosts();
     }
 
-    function findWithStatus(PostStatus $status): EntityCollection
+    function findWithStatus(PostStatus $status): Collection
     {
         $this->Query->where(['post_status' => (string) $status]);
         return $this->getPosts();
     }
 
-    function findPublishedOn(PostDate $date): EntityCollection
+    function findPublishedOn(PostDate $date): Collection
     {
         $this->Query->withSubQuery((new DateQuery())->add($date));
         return $this->getPosts();
     }
 
-    function findPublishedBefore(PostDate $date): EntityCollection
+    function findPublishedBefore(PostDate $date): Collection
     {
         $this->Query->withSubQuery((new DateQuery())->addBefore($date));
         return $this->getPosts();
     }
 
-    function findPublishedAfter(PostDate $date): EntityCollection
+    function findPublishedAfter(PostDate $date): Collection
     {
         $this->Query->withSubQuery((new DateQuery())->addAfter($date));
         return $this->getPosts();
@@ -144,12 +143,8 @@ class PostEntityRepository implements Repository
             $this->Query->withPostType($post_type);
         }
         $posts = get_posts($this->Query->build());
-        $Collection = new EntityCollection();
-        foreach ($posts as $post) {
-            $Post = $this->getPost($post);
-            $Collection->add($Post);
-        }
-        return $Collection;
+        $Collection = new Collection($posts);
+        return $Collection->map(function($p) { return $this->getPost($p); });
     }
 
     protected function getPostType()

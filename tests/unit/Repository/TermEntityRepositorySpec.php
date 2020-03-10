@@ -2,7 +2,7 @@
 
 namespace unit\Spark\Repository;
 
-use Spark\Model\EntityCollection;
+use Spark\Support\Collection;
 use Spark\Model\PostType\Post;
 use Spark\Model\Taxonomy\Category;
 use Spark\Model\Values\PostDate;
@@ -162,6 +162,6 @@ class TermEntityRepositorySpec extends ObjectBehavior
         $Term2 = new Category(456);
         $Factory->createFromWPTerm($term1, ['meta_key1' => '1', 'meta_key2' => '2'])->willReturn($Term1);
         $Factory->createFromWPTerm($term2, ['meta_key1' => '3', 'meta_key2' => '4'])->willReturn($Term2);
-        return new EntityCollection([$Term1, $Term2]);
+        return new Collection([$Term1, $Term2]);
     }
 }

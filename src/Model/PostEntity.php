@@ -6,6 +6,7 @@ use Spark\Media\ImageFile;
 use Spark\Media\MediaFile;
 use Spark\Model\Values;
 use Spark\Model\Values\PostMetaField;
+use Spark\Support\Collection;
 
 /**
  * Base class for all post types
@@ -23,7 +24,7 @@ use Spark\Model\Values\PostMetaField;
  * @property Values\PostModifiedDate $modified_date
  * @property Values\Slug $slug
  * @property \WP_Post $wp_post
- * @property EntityCollection $terms
+ * @property Collection $terms
  * @property int $featured_image_id
  * @property ImageFile $featured_image
  *
@@ -126,7 +127,7 @@ class PostEntity extends EntityWithMetadata
     protected $_terms_reference;
 
     /**
-     * @var EntityCollection
+     * @var Collection
      */
     protected $terms;
 
@@ -182,7 +183,7 @@ class PostEntity extends EntityWithMetadata
         $this->_terms_reference = $callback;
     }
 
-    public function getTerms(): EntityCollection
+    public function getTerms(): Collection
     {
         if (!isset($this->terms) && is_callable($this->_terms_reference)) {
             $this->terms = call_user_func($this->_terms_reference, $this);
@@ -191,15 +192,9 @@ class PostEntity extends EntityWithMetadata
         return $this->terms;
     }
 
-    public function getTermsForTaxonomy($taxonomy): EntityCollection
+    public function getTermsForTaxonomy($taxonomy): Collection
     {
-        $terms = new EntityCollection();
-        foreach ($this->getTerms() as $term) {
-            if ($term->getTaxonomy() == $taxonomy) {
-                $terms->add($term);
-            }
-        }
-        return $terms;
+        return $this->getTerms()->filter(function(TermEntity $t) use ($taxonomy) { return $t->getTaxonomy() == $taxonomy; });
     }
 
     public function getFeaturedImageId()

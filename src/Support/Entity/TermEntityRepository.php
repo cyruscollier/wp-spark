@@ -2,7 +2,7 @@
 
 namespace Spark\Support\Entity;
 
-use Spark\Model\EntityCollection;
+use Spark\Support\Collection;
 use Spark\Model\PostEntity;
 use Spark\Model\TermEntity;
 use Spark\Model\Values\TermCompositeId;
@@ -33,16 +33,16 @@ interface TermEntityRepository extends EntityRepository
     /**
      * @param string $taxonomy
      *
-     * @return EntityCollection
+     * @return Collection
      */
-    function findAll($taxonomy = null): EntityCollection;
+    function findAll($taxonomy = null): Collection;
 
     /**
      * @param PostEntity $Post
      * @param string $taxonomy
      *
-     * @return EntityCollection
+     * @return Collection
      */
-    function findForPost(PostEntity $Post, $taxonomy = null): EntityCollection;
+    function findForPost(PostEntity $Post, $taxonomy = null): Collection;
 
 }

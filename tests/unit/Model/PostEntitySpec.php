@@ -4,7 +4,7 @@ namespace unit\Spark\Model;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Spark\Model\EntityCollection;
+use Spark\Support\Collection;
 use Spark\Model\PostEntity;
 use Spark\Model\Taxonomy\Tag;
 use Spark\Model\Taxonomy\Category;
@@ -117,13 +117,13 @@ class PostEntitySpec extends ObjectBehavior
         $this->setTermsReference(function() use ($Collection) {
             return $Collection;
         });
-        $Collection2 = new EntityCollection([new Category(123), new Category(124)]);
+        $Collection2 = new Collection([new Category(123), new Category(124)]);
         $this->getTermsForTaxonomy('category')->shouldBeLike($Collection2);
     }
 
     private function it_sets_up_a_term_collection()
     {
-        return new EntityCollection([
+        return new Collection([
             new Category(123), new Category(124),
             new Tag(456), new Tag(457)
         ]);

@@ -20,7 +20,7 @@ abstract class Entity
     public abstract static function getRegistryKey();
     
     /**
-     * Return unique identifier for entity, used in EntityCollection
+     * Return unique identifier for entity
      * 
      * @return string
      */

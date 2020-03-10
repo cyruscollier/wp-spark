@@ -3,8 +3,8 @@
 namespace Spark\Support\Entity;
 
 use Spark\Model\Entity;
-use Spark\Model\EntityCollection;
 use Spark\Support\ImmutableRepository;
+use Spark\Support\Collection;
 
 /**
  * Defines basic methods for an Entity repository
@@ -27,13 +27,13 @@ interface EntityRepository extends ImmutableRepository
      * Get all Entity instances matching query parameters
      *
      * @param array $params
-     * @return EntityCollection
+     * @return Collection
      */
-    function find( array $params = [] ): EntityCollection;
+    function find( array $params = [] ): Collection;
 
     /**
-     * @return EntityCollection
+     * @return Collection
      */
-    function findAll(): EntityCollection;
+    function findAll(): Collection;
 
 }

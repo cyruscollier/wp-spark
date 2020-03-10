@@ -6,7 +6,7 @@ use Spark\Model\TermEntity;
 use Spark\Model\Values\Permalink;
 use Spark\Model\Values\TermCompositeId;
 use Spark\Support\Entity\TermFactory;
-use Spark\Model\EntityCollection;
+use Spark\Support\Collection;
 use Spark\Model\PostEntity;
 use Spark\Support\Query\TermQueryBuilder;
 use Spark\Support\Entity\TermEntityRepository as Repository;
@@ -25,13 +25,13 @@ class TermEntityRepository implements Repository
         $this->Factory = $Factory;
     }
 
-    public function find(array $params = []): EntityCollection
+    public function find(array $params = []): Collection
     {
         $this->Query->where($params);
         return $this->getTerms();
     }
 
-    public function findAll($taxonomy = null): EntityCollection
+    public function findAll($taxonomy = null): Collection
     {
         if ($taxonomy) {
             $this->Query->withTaxonomy($taxonomy);
@@ -63,7 +63,7 @@ class TermEntityRepository implements Repository
         return $Collection[0];
     }
 
-    function findForPost(PostEntity $Post, $taxonomy = null): EntityCollection
+    function findForPost(PostEntity $Post, $taxonomy = null): Collection
     {
         $this->Query->where(['object_ids' => [$Post->id]]);
         if ($taxonomy) {
@@ -109,7 +109,7 @@ class TermEntityRepository implements Repository
             $this->Query->withTaxonomy($taxonomy);
         }
         $terms = get_terms($this->Query->build());
-        $Collection = new EntityCollection();
+        $Collection = new Collection();
         foreach ($terms as $term) {
             $Term = $this->getTerm($term);
             $Collection->add($Term);

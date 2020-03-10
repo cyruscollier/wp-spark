@@ -2,7 +2,7 @@
 
 namespace unit\Spark\Repository;
 
-use Spark\Model\EntityCollection;
+use Spark\Support\Collection;
 use Spark\Model\PostType\Post;
 use Spark\Model\Values\PostDate;
 use Spark\Model\Values\PostStatus;
@@ -180,7 +180,7 @@ class PostEntityRepositorySpec extends ObjectBehavior
         $Post2 = new Post(456);
         $Factory->createFromWPPost($post1, ['meta_key1' => '1', 'meta_key2' => '2'])->willReturn($Post1);
         $Factory->createFromWPPost($post2, ['meta_key1' => '3', 'meta_key2' => '4'])->willReturn($Post2);
-        return new EntityCollection([$Post1, $Post2]);
+        return new Collection([$Post1, $Post2]);
     }
 }
 

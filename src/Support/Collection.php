@@ -8,9 +8,20 @@ namespace Spark\Support;
  * @author cyruscollier
  *
  */
-interface Collection extends \ArrayAccess, \IteratorAggregate, \Countable {
+class Collection extends \Tightenco\Collect\Support\Collection {
 
-    function add($object);
+    public function add($object)
+    {
+        return $this->push($object);
+    }
 
-    function remove($object);
+    public function remove($object)
+    {
+        $index = $this->search($object, true);
+        if (false !== $index) {
+            $this->offsetUnset($index);
+            return true;
+        }
+        return false;
+    }
 }
