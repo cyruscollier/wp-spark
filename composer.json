@@ -23,7 +23,7 @@
         "cakephp/chronos": "^1.1"
     },
     "require-dev": {
-        "cyruscollier/wp-test": "^1.0.1",
+        "cyruscollier/wp-test": "dev-master",
         "friends-of-phpspec/phpspec-code-coverage": "^4.3"
     },
     "autoload": {

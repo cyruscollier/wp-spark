@@ -5,7 +5,7 @@ suites:
         spec_prefix: unit
         spec_path: tests
 
-bootstrap: vendor/cyruscollier/wp-test/bootstrap/unit.php
+bootstrap: vendor/cyruscollier/wp-test/bootstrap/phpspec.php
 
 extensions:
     PhpSpec\PhpMock\Extension\PhpMockExtension: ~
