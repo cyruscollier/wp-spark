@@ -19,6 +19,7 @@ matrix:
   allow_failures: false
 
 before_install:
+  - mysqladmin --user=root password 'root'
   - mysql -e 'CREATE DATABASE IF NOT EXISTS wordpress_develop;'
 
 install:
